@@ -1,0 +1,2 @@
+# id chromosome position e0 e1 e2
+my_locus 1 500000 100 110 120

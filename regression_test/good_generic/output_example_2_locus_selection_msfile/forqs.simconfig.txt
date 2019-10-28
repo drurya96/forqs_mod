@@ -1,0 +1,61 @@
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_lengths = 10000000 
+    chromosome_pair_count = 1
+    fitness_function = qt
+    generation_count = 100
+    id_offset_step = 0
+    population_count = 1
+    population_size = 1000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+Locus locus1
+    chromosome = 1
+    position = 2000000
+
+Locus locus2
+    chromosome = 1
+    position = 8000000
+
+VariantIndicator_File vi
+    loci = locus1 locus2 
+    msfile = ms_test_data_5.txt
+
+QuantitativeTrait_IndependentLoci qt
+    environmental_variance = 0
+    qtl = locus1 1 1.1 1.2
+    qtl = locus2 0 0.1 0.2
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+    locus = locus2
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt 
+    write_full = 0
+
+HaplotypeGrouping_IDRange hg
+    start:count = 0 500
+    start:count = 500 500
+    start:count = 1000 500
+    start:count = 1500 500
+
+Reporter_HaplotypeFrequencies reporter_haplotype_freqs
+    chromosome_step = 1000000
+    haplotype_grouping = hg
+    update_step = 10
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_example_2_locus_selection_msfile
+    population_config_generator = popconfig_generator
+    quantitative_trait = qt
+    recombination_position_generator = rpg
+    recombination_position_generator = rpg
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_haplotype_freqs
+    seed = 0
+    variant_indicator = vi
+    write_popconfig = 0
+    write_vi = 0
+

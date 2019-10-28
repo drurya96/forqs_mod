@@ -1,0 +1,45 @@
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_lengths = 1000000 
+    chromosome_pair_count = 1
+    fitness_function = my_qt
+    generation_count = 120
+    id_offset_step = 0
+    population_count = 10
+    population_size = 100
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+Locus my_locus
+    chromosome = 1
+    position = 500000
+
+VariantIndicator_File my_variant_indicator
+    loci = my_locus 
+    msfile = ms_test_data_4.txt
+
+QuantitativeTrait_SingleLocusFitness my_qt
+    locus = my_locus
+    w0 = 1
+    w1 = 1.1000000000000001
+    w2 = 1.2
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = my_locus
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = my_qt 
+    write_full = 0
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_example_1_locus_selection_msfile
+    population_config_generator = popconfig_generator
+    quantitative_trait = my_qt
+    recombination_position_generator = rpg
+    recombination_position_generator = rpg
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    seed = 0
+    variant_indicator = my_variant_indicator
+    write_popconfig = 0
+    write_vi = 0
+

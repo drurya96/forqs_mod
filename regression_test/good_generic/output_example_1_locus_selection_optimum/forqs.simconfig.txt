@@ -1,0 +1,63 @@
+Trajectory_Constant id_population_size_trajectory
+    value = 100
+
+Trajectory_Constant id_migration_rate_trajectory
+    value = 0
+
+PopulationConfigGenerator_LinearSteppingStone popconfig_generator
+    chromosome_lengths = 1000000 
+    chromosome_pair_count = 1
+    fitness_function = fitness
+    generation_count = 120
+    id_offset_step = 1000
+    migration_rate_default = id_migration_rate_trajectory
+    population_count = 10
+    population_size = id_population_size_trajectory
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+Locus my_locus
+    chromosome = 1
+    position = 500000
+
+VariantIndicator_SingleLocusHardyWeinberg my_variant_indicator
+    allele_frequency = 0.10000000000000001
+    locus = my_locus
+
+QuantitativeTrait_IndependentLoci my_qt
+    environmental_variance = 0
+    qtl = my_locus 100 110 120
+
+FitnessFunction_Optimum fitness
+    optimum = 120
+    quantitative_trait = my_qt
+    radius:power = 120 1
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = my_locus
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = my_qt fitness 
+    write_full = 0
+
+Reporter_DeterministicTrajectories reporter_deterministic_trajectories
+    initial_allele_frequency = 0.10000000000000001
+    w0 = 1
+    w1 = 1.1000000000000001
+    w2 = 1.2
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_example_1_locus_selection_optimum
+    population_config_generator = popconfig_generator
+    quantitative_trait = my_qt
+    quantitative_trait = fitness
+    recombination_position_generator = rpg
+    recombination_position_generator = rpg
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_deterministic_trajectories
+    seed = 0
+    variant_indicator = my_variant_indicator
+    write_popconfig = 0
+    write_vi = 0
+

@@ -1,0 +1,2 @@
+chromosome position pop0 pop1 pop2 pop3 pop4 pop5 pop6 pop7 pop8 pop9 
+1 500000 1 1 1 1 1 1 1 0.43 1 1 

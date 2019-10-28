@@ -1,0 +1,3 @@
+# id chromosome position e0 e1 e2
+locus1 1 2000000 1 1.1 1.2
+locus2 1 8000000 0 0.1 0.2
