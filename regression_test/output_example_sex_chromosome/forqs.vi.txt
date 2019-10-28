@@ -1,0 +1,3 @@
+VariantIndicator_IDRange vi
+    locus:start:count:step:value = locus_Y 1 40 4 1
+

@@ -1,0 +1,2 @@
+chromosome position pop0 pop1 pop2 
+1 500000 0.605 0.86 0.965 

@@ -1,0 +1,47 @@
+PopulationConfigGenerator_File pcg
+    chromosome_lengths = 1000000 1000000 
+    filename = example_sex_chromosome_popconfig.txt
+
+RecombinationPositionGenerator_Uniform rpg_female
+    rate = 1
+
+RecombinationPositionGenerator_Composite rpg_male
+    chromosome:recombination_position_generator = 1 rpg_male_no_recombination
+    default_recombination_position_generator = rpg_male_default
+
+Locus locus_Y
+    chromosome = 1
+    position = 0
+
+VariantIndicator_IDRange vi
+    locus:start:count:step:value = locus_Y 1 40 4 1
+
+QuantitativeTrait_IndependentLoci qt_male
+    environmental_variance = 0
+    qtl = locus_Y 0 1 2
+
+QuantitativeTrait_Expression qt_female
+    expression = 1-y
+    variable:quantitative_trait = y qt_male
+
+Reporter_Population reporter_population
+    update_step = 1
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt_male 
+    write_full = 1
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_example_sex_chromosome
+    population_config_generator = pcg
+    quantitative_trait = qt_male
+    quantitative_trait = qt_female
+    recombination_position_generator = rpg_female
+    recombination_position_generator = rpg_male
+    reporter = reporter_population
+    reporter = reporter_trait_values
+    seed = 0
+    variant_indicator = vi
+    write_popconfig = 0
+    write_vi = 1
+

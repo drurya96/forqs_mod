@@ -1,0 +1,24 @@
+generation 0
+population population_size=10000 chromosome_pair_count=23
+population population_size=10000 id_offset=20000 chromosome_pair_count=23
+
+generation 1
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|0,,0,>}
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|1,,1,>}
+
+generation 2
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|0,,0,>}
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|1,,1,>}
+
+generation 3
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|0,,0,>}
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|1,,1,>}
+
+generation 4
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|0,,0,>}
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|1,,1,>}
+
+generation 5
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|0,,0,>}
+population population_size=10000 chromosome_pair_count=23 mating_distribution={<1|1,,1,>}
+

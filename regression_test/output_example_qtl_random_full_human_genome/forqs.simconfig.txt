@@ -1,0 +1,71 @@
+PopulationConfigGenerator_ConstantSize pcg
+    chromosome_lengths = 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 100000000 
+    chromosome_pair_count = 23
+    fitness_function = fitness 
+    generation_count = 5
+    id_offset_step = 0
+    population_count = 2
+    population_size = 10000
+
+RecombinationPositionGenerator_Uniform rpg
+    rate = 1
+
+LocusList_Random loci
+    locus_count = 50
+
+Distribution_NeutralFrequency random_frequency
+    sample_size = 200
+
+VariantIndicator_Random vi
+    locus_list:population:frequency_distribution = loci * random_frequency
+
+Distribution_Exponential effect_size
+    rate = 10
+
+Distribution_Constant id_dummy_zero
+    value = 0
+
+QTLEffectGenerator effect_generator
+    dominance_distribution = id_dummy_zero
+    effect_size_distribution = effect_size
+    locus_list = loci
+    random_effect_sign = 1
+
+QuantitativeTrait_IndependentLoci qt
+    environmental_variance = 0.01
+    qtl_effect_generator = effect_generator
+
+FitnessFunction_Optimum ff_1
+    gaussian_width = 1
+    optimum = 1
+    quantitative_trait = qt
+
+FitnessFunction_Optimum ff_2
+    gaussian_width = 1
+    optimum = -1
+    quantitative_trait = qt
+
+QuantitativeTrait_PopulationComposite fitness
+    quantitative_traits = ff_1 ff_2 
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt fitness 
+    write_full = 0
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_example_qtl_random_full_human_genome
+    population_config_generator = pcg
+    quantitative_trait = qt
+    quantitative_trait = fitness
+    recombination_position_generator = rpg
+    recombination_position_generator = rpg
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    seed = 124
+    variant_indicator = vi
+    write_popconfig = 1
+    write_vi = 0
+
