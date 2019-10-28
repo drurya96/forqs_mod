@@ -1,0 +1,60 @@
+PopulationConfigGenerator_ConstantSize pcg
+    chromosome_lengths = 1000000 1000000 1000000 
+    chromosome_pair_count = 3
+    fitness_function = ff 
+    generation_count = 10
+    id_offset_step = 0
+    population_count = 1
+    population_size = 100
+
+RecombinationPositionGenerator_Trivial rpg_trivial
+
+Locus locus1
+    chromosome = 1
+    position = 1000
+
+Locus locus2
+    chromosome = 2
+    position = 2000
+
+Locus locus3
+    chromosome = 3
+    position = 3000
+
+LocusList loci
+    loci = locus1 locus2 locus3 
+
+VariantIndicator_Random vi
+    locus_list:population:frequencies = loci * 0.5 0.5 0.5 
+
+QuantitativeTrait_IndependentLoci qt
+    environmental_variance = 0.050000000000000003
+    qtl = locus1 0 0.1 0.2
+    qtl = locus2 0 0.2 0.4
+    qtl = locus3 0 0.1 0.2
+
+FitnessFunction_TruncationSelection ff
+    proportion_selected = 0.5
+    quantitative_trait = qt
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt 
+    write_full = 1
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_tutorial_5_qtl
+    population_config_generator = pcg
+    quantitative_trait = qt
+    quantitative_trait = ff
+    recombination_position_generator = rpg_trivial
+    recombination_position_generator = rpg_trivial
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    seed = 123
+    variant_indicator = vi
+    write_popconfig = 0
+    write_vi = 1
+
