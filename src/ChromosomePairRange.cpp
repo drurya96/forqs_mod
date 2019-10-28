@@ -58,6 +58,9 @@ ChromosomePairRange::ChromosomePairRange(ChromosomePairs& chromosome_pairs)
 
 void ChromosomePairRange::create_child(unsigned int id0, unsigned int id1)
 {
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make child (ChromosomePairRange) from ids" << endl;
+	exit(1);
     for (ChromosomePair* p=begin_; p!=end_; ++p)
     {
         p->first.haplotype_chunks().clear();
@@ -72,6 +75,9 @@ void ChromosomePairRange::create_child(const ChromosomePairRange& mom,
                                        const ChromosomePairRange& dad,
                                        const RecombinationPositionGeneratorPtrs& recombination_position_generators)
 {
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make child (ChromosomePairRange) from parents" << endl;
+	exit(1);
     if (mom.size() != dad.size())
         throw runtime_error("[ChromosomePairRange::create_child()] Parents chromosome counts differ.");
 
@@ -98,6 +104,11 @@ void ChromosomePairRange::create_child(const ChromosomePairRange& mom,
         p_baby->second.haplotype_chunks().swap(chromosome_dad.haplotype_chunks());
     }
 }
+
+
+ChromosomePairRange test = new ChromosomePairRange();
+
+test.create_child(params);
 
 // Created by Austin Drury (10/10/19)
 // Creates a child given a mother and father ChromosomePairRange

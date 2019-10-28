@@ -77,7 +77,6 @@ class ChromosomePairRange
     ChromosomePair* end_;
 };
 
-
 class ChromosomePairRangeIterator
 {
     public:

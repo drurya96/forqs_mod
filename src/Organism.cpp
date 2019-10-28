@@ -114,6 +114,11 @@ Organism::Organism(ChromosomeEncodedID id, size_t chromosomeCount)
 
 Organism::Gamete Organism::create_gamete(const RecombinationPositionGenerator& recombination_position_generator) const
 {
+
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make gamete as organism" << endl;
+	exit(1);
+
     Gamete result;
 
     for (ChromosomePairs::const_iterator it=chromosomePairs_.begin(); it!=chromosomePairs_.end(); ++it)
