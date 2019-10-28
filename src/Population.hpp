@@ -102,9 +102,9 @@ std::istream& operator>>(std::istream& is, MatingDistribution& md);
 
 
 class Population;
-typedef shared_ptr<Population> PopulationPtr;
+typedef boost::shared_ptr<Population> PopulationPtr;
 typedef std::vector<PopulationPtr> PopulationPtrs;
-typedef shared_ptr<PopulationPtrs> PopulationPtrsPtr;
+typedef boost::shared_ptr<PopulationPtrs> PopulationPtrsPtr;
 
 
 class Population

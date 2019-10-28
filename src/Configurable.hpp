@@ -72,7 +72,7 @@ class Configurable
 };
 
 
-typedef shared_ptr<Configurable> ConfigurablePtr;
+typedef boost::shared_ptr<Configurable> ConfigurablePtr;
 typedef std::vector<ConfigurablePtr> ConfigurablePtrs;
 
 
@@ -84,12 +84,12 @@ class Configurable::Registry : public std::map<std::string, ConfigurablePtr>
     public:
 
     template <typename result_type>
-    shared_ptr<result_type> get(const std::string& name) const
+    boost::shared_ptr<result_type> get(const std::string& name) const
     {
         if (!count(name))
             throw std::runtime_error(("[Configurable::Registry] Object id \"" + name + "\" requested, but not found in registry.").c_str());
 
-        shared_ptr<result_type> result = dynamic_pointer_cast<result_type>(at(name));
+        boost::shared_ptr<result_type> result = dynamic_pointer_cast<result_type>(at(name));
         if (!result.get()) // dynamic_pointer_cast doesn't throw
             throw std::runtime_error(("[Configurable::Registry] Unable to convert object " + name).c_str());
 
@@ -97,16 +97,16 @@ class Configurable::Registry : public std::map<std::string, ConfigurablePtr>
     }
 
     template <typename result_type>
-    shared_ptr<result_type> get(const std::string& name, std::nothrow_t) const
+    boost::shared_ptr<result_type> get(const std::string& name, std::nothrow_t) const
     {
-        if (!count(name)) return shared_ptr<result_type>();
+        if (!count(name)) return boost::shared_ptr<result_type>();
         return dynamic_pointer_cast<result_type>(at(name));
     }
 };
 
 
-template<> shared_ptr<Locus> Configurable::Registry::get(const std::string& name) const;
-template<> shared_ptr<Locus> Configurable::Registry::get(const std::string& name, std::nothrow_t) const;
+template<> boost::shared_ptr<Locus> Configurable::Registry::get(const std::string& name) const;
+template<> boost::shared_ptr<Locus> Configurable::Registry::get(const std::string& name, std::nothrow_t) const;
 
 
 #endif // _CONFIGURABLE_HPP_

@@ -83,7 +83,7 @@ struct Locus : public Configurable
 };
 
 
-typedef shared_ptr<Locus> LocusPtr;
+typedef boost::shared_ptr<Locus> LocusPtr;
 typedef std::set<Locus> Loci;
 
 
@@ -140,7 +140,7 @@ class LocusList : public std::vector<Locus>, public Configurable
 };
 
 
-typedef shared_ptr<LocusList> LocusListPtr;
+typedef boost::shared_ptr<LocusList> LocusListPtr;
 typedef std::vector<LocusListPtr> LocusListPtrs;
 
 

@@ -46,7 +46,7 @@
 
 
 class DataVector;
-typedef shared_ptr<DataVector> DataVectorPtr;
+typedef boost::shared_ptr<DataVector> DataVectorPtr;
 typedef std::vector<DataVectorPtr> DataVectorPtrs;
 
 
@@ -97,7 +97,7 @@ class TraitValueMap : public std::map<std::string, DataVectorPtr> // map QT id -
 };
 
 
-typedef shared_ptr<TraitValueMap> TraitValueMapPtr;
+typedef boost::shared_ptr<TraitValueMap> TraitValueMapPtr;
 
 
 #endif //  _DATAVECTOR_HPP_

@@ -46,6 +46,9 @@ using namespace std;
 
 Organism::Organism(unsigned int id0, unsigned int id1, size_t chromosomeCount)
 {
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make organism from ids" << endl;
+	exit(1);
     for (size_t i=0; i<chromosomeCount; ++i)
         chromosomePairs_.push_back(make_pair(Chromosome(id0), Chromosome(id1)));
 }
@@ -53,6 +56,9 @@ Organism::Organism(unsigned int id0, unsigned int id1, size_t chromosomeCount)
 
 Organism::Organism(const Gamete& g1, const Gamete& g2)
 {
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make organism from gametes" << endl;
+	exit(1);
     if (g1.size() != g2.size())
         throw runtime_error("[Organism::Organism()] Different gamete sizes.");
 
@@ -64,6 +70,9 @@ Organism::Organism(const Gamete& g1, const Gamete& g2)
 Organism::Organism(const Organism& mom, const Organism& dad,
                    const RecombinationPositionGenerator& recombination_position_generator)
 {
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make organism from parents" << endl;
+	exit(1);
     if (mom.chromosomePairs_.size() != dad.chromosomePairs_.size())
         throw runtime_error("[Organism::Organism(mom, dad)] Parents chromosome counts differ.");
 
@@ -85,6 +94,9 @@ Organism::Organism(const Organism& mom, const Organism& dad,
 
 Organism::Organism(ChromosomeEncodedID id, size_t chromosomeCount)
 {
+	cout << "AD Controlled Crash" << endl;
+	cout << "Attempted to make organism from random" << endl;
+	exit(1);
     cerr << "[Organism] Warning: constructor for testing only\n";
 
     ChromosomeEncodedID id0(id);

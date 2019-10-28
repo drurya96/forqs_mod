@@ -1,5 +1,5 @@
 //
-// shared_ptr.hpp
+// boost::shared_ptr.hpp
 //
 // Created by Darren Kessner with John Novembre
 //
@@ -37,7 +37,7 @@
 #define _SHARED_PTR_HPP_
 
 
-// use a single shared_ptr implementation consistently (e.g. boost, tr1, C++11)
+// use a single boost::shared_ptr implementation consistently (e.g. boost, tr1, C++11)
 // and facilitate switching implementations
 
 
@@ -47,10 +47,10 @@
 using boost::shared_ptr;
 using boost::dynamic_pointer_cast;
 
-#else // use std::shared_ptr
+#else // use std::boost::shared_ptr
 
 #include <memory>
-using std::shared_ptr;
+using std::boost::shared_ptr;
 using std::dynamic_pointer_cast;
 
 #endif // USE_BOOST_SHARED_PTR

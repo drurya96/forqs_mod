@@ -98,7 +98,7 @@ class GenotypeData : public std::vector<char>
 };
 
 
-typedef shared_ptr<GenotypeData> GenotypeDataPtr;
+typedef boost::shared_ptr<GenotypeData> GenotypeDataPtr;
 
 
 class GenotypeMap : public std::map<Locus, GenotypeDataPtr> // map locus -> trait_values
@@ -128,7 +128,7 @@ class GenotypeMap : public std::map<Locus, GenotypeDataPtr> // map locus -> trai
 };
 
 
-typedef shared_ptr<GenotypeMap> GenotypeMapPtr;
+typedef boost::shared_ptr<GenotypeMap> GenotypeMapPtr;
 
 
 //

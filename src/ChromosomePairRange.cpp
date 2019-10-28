@@ -99,6 +99,63 @@ void ChromosomePairRange::create_child(const ChromosomePairRange& mom,
     }
 }
 
+// Created by Austin Drury (10/10/19)
+// Creates a child given a mother and father ChromosomePairRange
+// Before creating the child, two complete gametes are formed and stored
+// These gametes will be passed to a fitness function before forming the gamete.
+//
+// Need to see where this child is saved
+// Need to determine what should happen if the child is not saved
+// (i.e. retry? )
+
+/*
+void ChromosomePairRange::create_child_using_gamete(const ChromosomePairRange& mom,
+                                       const ChromosomePairRange& dad,
+                                       const RecombinationPositionGeneratorPtrs& recombination_position_generators)
+{
+	
+	// Need to set in config file whether to use this function (create_child_using_gamete) or normal create_child
+	// make normal default
+
+    if (mom.size() != dad.size())
+        throw runtime_error("[ChromosomePairRange::create_child()] Parents chromosome counts differ.");
+
+    if (mom.size() != this->size())
+        throw runtime_error("[ChromosomePairRange::create_child()] Parents chromosome counts differ from child.");
+
+    if (recombination_position_generators.size() != 2)
+        throw runtime_error("[ChromosomePairRange::create_child()] Recombination position generator count != 2.");
+
+    size_t chromosome_pair_index = 0;
+    const ChromosomePair* p_mom = mom.begin();
+    const ChromosomePair* p_dad = dad.begin();
+    ChromosomePair* p_baby = this->begin();
+
+	typedef std::vector<Chromosome> Gamete;
+
+	Gamete sperm, egg;
+
+    for (; p_mom!=mom.end(); ++p_mom, ++p_dad, ++p_baby, ++chromosome_pair_index)
+    {
+        vector<unsigned int> positions_mom = recombination_position_generators[0]->get_positions(chromosome_pair_index);
+        vector<unsigned int> positions_dad = recombination_position_generators[1]->get_positions(chromosome_pair_index);
+
+        Chromosome chromosome_mom(p_mom->first, p_mom->second, positions_mom);
+        p_baby->first.haplotype_chunks().swap(chromosome_mom.haplotype_chunks());
+		egg.push_back(p_baby->first.haplotype_chunks());
+
+        Chromosome chromosome_dad(p_dad->first, p_dad->second, positions_dad);
+        p_baby->second.haplotype_chunks().swap(chromosome_dad.haplotype_chunks());
+		sperm.push_back(p_baby->second.haplotype_chunks());
+    }
+
+	// now need to check fitness of both sperm and egg
+	// if fitness is high enough for both "continue"	
+	// else, "kill"
+
+}
+*/
+
 
 bool ChromosomePairRange::equals(const ChromosomePairRange& that) const
 {
@@ -117,7 +174,7 @@ bool ChromosomePairRange::equals(const ChromosomePairRange& that) const
 
 
 // Implementation note:  const is used in the interface to determine the
-// result of dereferencing (ChomosomePair& vs const ChromosomePair&).
+// result of dereferencing (	 vs const ChromosomePair&).
 // However, the increment behavior should remain the same whether the 
 // iterator is const or non-const, so the internal state is declared
 // mutable.

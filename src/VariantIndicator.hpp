@@ -79,7 +79,7 @@ class VariantIndicator : public virtual Configurable
 };
 
 
-typedef shared_ptr<VariantIndicator> VariantIndicatorPtr;
+typedef boost::shared_ptr<VariantIndicator> VariantIndicatorPtr;
 typedef std::vector<VariantIndicatorPtr> VariantIndicatorPtrs;
 
 

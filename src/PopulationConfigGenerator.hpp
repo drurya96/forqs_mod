@@ -89,7 +89,7 @@ class PopulationConfigGenerator : public Configurable
 };
 
 
-typedef shared_ptr<PopulationConfigGenerator> PopulationConfigGeneratorPtr;
+typedef boost::shared_ptr<PopulationConfigGenerator> PopulationConfigGeneratorPtr;
 
 
 #endif // _POPULATIONCONFIGGENERATOR_HPP_

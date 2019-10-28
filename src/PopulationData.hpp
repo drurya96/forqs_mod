@@ -54,9 +54,9 @@ struct PopulationData
 };
 
 
-typedef shared_ptr<PopulationData> PopulationDataPtr;
+typedef boost::shared_ptr<PopulationData> PopulationDataPtr;
 typedef std::vector<PopulationDataPtr> PopulationDataPtrs;
-typedef shared_ptr<PopulationDataPtrs> PopulationDataPtrsPtr;
+typedef boost::shared_ptr<PopulationDataPtrs> PopulationDataPtrsPtr;
 
 
 #endif // _POPULATIONDATA_HPP_

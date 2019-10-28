@@ -252,6 +252,12 @@ void create_configurable_object(const string& name,
     else if (name == "FitnessFunction_TruncationSelection")
         configure_and_register_object(QuantitativeTraitPtr(
             new FitnessFunction_TruncationSelection(id)), name, id, parameters, registry, initialization_list);
+	else if (name == "FitnessFunction_BoundedSelection")
+        configure_and_register_object(QuantitativeTraitPtr(
+            new FitnessFunction_BoundedSelection(id)), name, id, parameters, registry, initialization_list);
+	else if (name == "FitnessFunction_Recombination")
+        configure_and_register_object(QuantitativeTraitPtr(
+            new FitnessFunction_Recombination(id)), name, id, parameters, registry, initialization_list);
 
     else if (name == "Reporter_Timer")
         configure_and_register_object(ReporterPtr(
@@ -529,7 +535,7 @@ void handle_mutation_generation(SimulatorConfig& simconfig)
 
         const unsigned int unused_id_start = simconfig.population_config_generator->min_unused_id();
 
-        shared_ptr<VariantIndicator_Mutable> vi_mutable(new VariantIndicator_Mutable("variant_indicator_mutable_wrapper",
+        boost::shared_ptr<VariantIndicator_Mutable> vi_mutable(new VariantIndicator_Mutable("variant_indicator_mutable_wrapper",
                                                                                      unused_id_start,
                                                                                      simconfig.variant_indicator,
                                                                                      simconfig.output_directory));

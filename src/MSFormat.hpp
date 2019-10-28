@@ -45,7 +45,7 @@
 
 
 struct MSFormat;
-typedef shared_ptr<MSFormat> MSFormatPtr;
+typedef boost::shared_ptr<MSFormat> MSFormatPtr;
 
 
 struct MSFormat

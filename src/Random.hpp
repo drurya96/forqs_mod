@@ -74,7 +74,7 @@ class Random
     // distributions
 
     class Distribution;
-    typedef shared_ptr<Distribution> DistributionPtr;
+    typedef boost::shared_ptr<Distribution> DistributionPtr;
 
     static DistributionPtr create_constant_distribution(const std::string& id, 
                                                         double value = 0);

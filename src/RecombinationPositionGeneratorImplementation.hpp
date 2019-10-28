@@ -218,7 +218,7 @@ class RecombinationPositionGenerator_RecombinationMap : public RecombinationPosi
     private:
 
     std::vector<std::string> filenames_;
-    std::vector< shared_ptr<RecombinationMap> > recombination_maps_;
+    std::vector< boost::shared_ptr<RecombinationMap> > recombination_maps_;
 
     void read_files();
 };

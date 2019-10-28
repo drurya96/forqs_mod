@@ -83,7 +83,7 @@ class MutationGenerator : public Configurable
 };
 
 
-typedef shared_ptr<MutationGenerator> MutationGeneratorPtr;
+typedef boost::shared_ptr<MutationGenerator> MutationGeneratorPtr;
 
 
 std::ostream& operator<<(std::ostream& os, const MutationGenerator::MutationInfo& mutation_info);

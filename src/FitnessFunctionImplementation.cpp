@@ -140,9 +140,9 @@ void FitnessFunction_Optimum::configure(const Parameters& parameters, const Regi
 }
 
 
-//
+// ======================================================================================================================================
 // FitnessFunction_TruncationSelection
-//
+// ======================================================================================================================================
 
 
 FitnessFunction_TruncationSelection::FitnessFunction_TruncationSelection(const string& id)
@@ -248,19 +248,10 @@ Parameters FitnessFunction_TruncationSelection::parameters() const
     return parameters;
 }
 
-
 void FitnessFunction_TruncationSelection::configure(const Parameters& parameters, const Registry& registry)
 {
     qtid_ = parameters.value<string>("quantitative_trait");
     proportion_selected_ = parameters.value<double>("proportion_selected");
-
-    if (proportion_selected_ < 0 || proportion_selected_ > 1)
-    {
-        ostringstream oss;
-        oss << "[FitnessFunction_TruncationSelection] Invalid proportion_selected: " 
-            << proportion_selected_;
-        throw runtime_error(oss.str().c_str());
-    }
 
     lower_tail_ = parameters.value<bool>("lower_tail", false);
 
@@ -316,4 +307,189 @@ double FitnessFunction_TruncationSelection::calculate_threshold(const Population
     return threshold;
 }
 
+// ======================================================================================================================================
+// FitnessFunction_BoundedSelection
+// Created by Austin Drury 10/19
+// ======================================================================================================================================
+
+// default lower bound is zero (no negative fitness)
+// default upper bound is 1000000000
+
+
+// calculate_threshold above returns the absolute fitness to accept.
+// This function will be directly given an absolute fitness so calculate threshold is not needed
+
+FitnessFunction_BoundedSelection::FitnessFunction_BoundedSelection(const string& id)
+:   QuantitativeTrait(id), 
+    lower_bound_(0),
+	upper_bound_(1000000000)
+    //lower_tail_(false),
+    //single_threshold_(false),
+    //single_threshold_population_index_(0),
+    //ignore_zero_(false)
+{}
+
+
+void FitnessFunction_BoundedSelection::calculate_trait_values_with_threshold(const PopulationData& population_data) const
+{
+    const DataVector& trait_values = *population_data.trait_values->get(qtid_);
+
+    // fitness = (trait_value >= threshold) ? 1 : 0;
+
+    DataVectorPtr fitnesses_lower(new DataVector(trait_values.size()));
+	DataVectorPtr fitnesses_upper(new DataVector(trait_values.size()));
+	DataVectorPtr fitnesses(new DataVector(trait_values.size()));
+
+    transform(trait_values.begin(), trait_values.end(), fitnesses_upper->begin(), 
+		bind2nd(less_equal<double>(),upper_bound_));
+	transform(trait_values.begin(), trait_values.end(), fitnesses_lower->begin(), 
+		bind2nd(greater_equal<double>(),lower_bound_));
+
+	vector<double>::const_iterator lt = fitnesses_lower->begin();
+	vector<double>::iterator ft = fitnesses->begin();
+
+	for (vector<double>::const_iterator ut = fitnesses_upper->begin(); ut != fitnesses_upper->end(); ++ut, ++lt, ++ft){
+		if(*lt && *ut){
+			*ft = 1;
+		}
+		else{
+			*ft = 0;
+		}
+	} 
+
+    // cout << "threshold: " << threshold << endl
+    //      << "trait_values: " << trait_values << endl
+    //      << "fitnesses: " << *fitnesses << endl;
+
+    (*population_data.trait_values)[object_id()] = fitnesses;
+}
+
+
+void FitnessFunction_BoundedSelection::calculate_trait_values(const PopulationDataPtrs& population_datas) const
+{
+
+    for (PopulationDataPtrs::const_iterator popdata = population_datas.begin(); 
+         popdata != population_datas.end(); ++popdata)
+    {
+        if ((*popdata)->trait_values->count(object_id()))
+            throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
+        calculate_trait_values_with_threshold(**popdata);
+    }
+}
+
+
+Parameters FitnessFunction_BoundedSelection::parameters() const
+{
+    Parameters parameters;
+    parameters.insert_name_value("quantitative_trait", qtid_);
+    parameters.insert_name_value("lower_bound", lower_bound_);
+	parameters.insert_name_value("upper_bound", upper_bound_);
+    return parameters;
+}
+
+
+// For now assume lower bound is >= 0 AND upper bount is <= 1000000000 AND upper bound > lower bound
+void FitnessFunction_BoundedSelection::configure(const Parameters& parameters, const Registry& registry)
+{
+    qtid_ = parameters.value<string>("quantitative_trait");
+    lower_bound_ = parameters.value<double>("lower_bound", 0);
+	upper_bound_ = parameters.value<double>("upper_bound", 1000000000);
+}
+
+
+
+// ======================================================================================================================================
+// FitnessFunction_Recombination
+// Created by Austin Drury 10/19
+// ======================================================================================================================================
+
+// default lower bound is zero (no negative fitness)
+// default upper bound is 1000000000
+// default varation is 0.1
+
+FitnessFunction_Recombination::FitnessFunction_Recombination(const string& id)
+:   QuantitativeTrait(id), 
+    lower_bound_(0),
+	upper_bound_(1000000000),
+	variation_(0.1)
+{}
+
+
+void FitnessFunction_Recombination::modify_trait_values(const PopulationData& population_data) const
+{
+    const DataVector& trait_values = *population_data.trait_values->get(qtid_);
+
+    // fitness = (trait_value >= threshold) ? 1 : 0;
+
+	// modify fitness to follow distribution of recombination
+	// lower bound function: ((x/lower_bound)^(1/variation))/(1+(x/lower_bound)^(1/varation))
+	// upper bound function: 1/(1+(x/lower_bound)^(1/varation))
+	//
+	// take the minimum fitness?
+
+	double new_value;
+	DataVectorPtr fitnesses(new DataVector(trait_values.size()));
+	vector<double>::iterator ft = fitnesses->begin();
+
+	for (vector<double>::const_iterator it = trait_values.begin(); it != trait_values.end(); ++it, ++ft){
+		//lb = lower_bound_function(*it);
+		//ub = upper_bound_function(*it);
+		new_value = calculate_new_value(*it);
+		*ft = new_value;
+	}
+
+    // cout << "threshold: " << threshold << endl
+    //      << "trait_values: " << trait_values << endl
+    //      << "fitnesses: " << *fitnesses << endl;
+
+    (*population_data.trait_values)[object_id()] = fitnesses;
+}
+
+double FitnessFunction_Recombination::calculate_new_value(const double value) const{
+	double inside_l = ((double)value-lower_bound_)/variation_;
+	double inside_u = ((double)value-upper_bound_)/variation_;
+	double lower_v = 0.5 + (tanh(inside_l)*0.5);
+	double upper_v = 0.5 + (tanh(inside_u*-1)*0.5);
+	//double al = pow((value/lower_bound_),((double)1/variation_));
+	//double au = pow((value/upper_bound_),((double)1/variation_));
+
+	//double lower_v = al/((double)1+al);
+	//double upper_v = 1/((double)1+au);
+
+	return min(lower_v, upper_v);
+
+}
+
+void FitnessFunction_Recombination::calculate_trait_values(const PopulationDataPtrs& population_datas) const
+{
+
+    for (PopulationDataPtrs::const_iterator popdata = population_datas.begin(); 
+         popdata != population_datas.end(); ++popdata)
+    {
+        if ((*popdata)->trait_values->count(object_id()))
+            throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
+        modify_trait_values(**popdata);
+    }
+}
+
+
+Parameters FitnessFunction_Recombination::parameters() const
+{
+    Parameters parameters;
+    parameters.insert_name_value("quantitative_trait", qtid_);
+    parameters.insert_name_value("lower_bound", lower_bound_);
+	parameters.insert_name_value("upper_bound", upper_bound_);
+	parameters.insert_name_value("variation", variation_);
+    return parameters;
+}
+
+
+// For now assume lower bound is >= 0 AND upper bount is <= 1000000000 AND upper bound > lower bound AND 0 > variation > 1
+void FitnessFunction_Recombination::configure(const Parameters& parameters, const Registry& registry)
+{
+    qtid_ = parameters.value<string>("quantitative_trait");
+    lower_bound_ = parameters.value<double>("lower_bound", 0);
+	upper_bound_ = parameters.value<double>("upper_bound", 1000000000);
+	variation_ = parameters.value<double>("variation", 0.1);
+}
 

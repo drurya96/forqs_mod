@@ -621,7 +621,7 @@ void Reporter_HaplotypeDiversity::open_streams(size_t population_count)
     {
         size_t chromosome_pair_index = it->first;
 
-        chromosome_streams_[chromosome_pair_index] = vector< shared_ptr<bfs::ofstream> >();
+        chromosome_streams_[chromosome_pair_index] = vector< boost::shared_ptr<bfs::ofstream> >();
 
         for (size_t population_index=0; population_index<population_count; ++population_index)
         {
@@ -629,7 +629,7 @@ void Reporter_HaplotypeDiversity::open_streams(size_t population_count)
             filename << "haplotype_diversity_chr" << chromosome_pair_index + 1
                      << "_pop" << population_index + 1 << ".txt";
 
-            shared_ptr<bfs::ofstream> os(new bfs::ofstream(output_directory_ / filename.str()));
+            boost::shared_ptr<bfs::ofstream> os(new bfs::ofstream(output_directory_ / filename.str()));
             if (!*os)
                 throw runtime_error(("[Reporter_HaplotypeDiversity] Unable to open file " + filename.str()).c_str());
 

@@ -297,11 +297,11 @@ class Distribution_UniformReal : public Random::Distribution
 
     void initialize_distribution()
     {
-        dist_ = shared_ptr<dist_type>(new dist_type(min_, max_));
+        dist_ = boost::shared_ptr<dist_type>(new dist_type(min_, max_));
     }
 
     typedef boost::uniform_real<> dist_type;
-    shared_ptr<dist_type> dist_;
+    boost::shared_ptr<dist_type> dist_;
 };
 
 
@@ -367,11 +367,11 @@ class Distribution_Normal : public Random::Distribution
 
     void initialize_distribution()
     {
-        dist_ = shared_ptr<dist_type>(new dist_type(mean_, sqrt(variance_)));
+        dist_ = boost::shared_ptr<dist_type>(new dist_type(mean_, sqrt(variance_)));
     }
 
     typedef boost::normal_distribution<> dist_type;
-    shared_ptr<dist_type> dist_;
+    boost::shared_ptr<dist_type> dist_;
 };
 
 
@@ -446,11 +446,11 @@ class Distribution_Exponential : public Random::Distribution
 
     void initialize_distribution()
     {
-        dist_ = shared_ptr<dist_type>(new dist_type(rate_));
+        dist_ = boost::shared_ptr<dist_type>(new dist_type(rate_));
     }
 
     typedef boost::exponential_distribution<> dist_type;
-    shared_ptr<dist_type> dist_;
+    boost::shared_ptr<dist_type> dist_;
 };
 
 
@@ -525,11 +525,11 @@ class Distribution_Poisson : public Random::Distribution
 
     void initialize_distribution()
     {
-        dist_ = shared_ptr<dist_type>(new dist_type(rate_));
+        dist_ = boost::shared_ptr<dist_type>(new dist_type(rate_));
     }
 
     typedef boost::poisson_distribution<> dist_type;
-    shared_ptr<dist_type> dist_;
+    boost::shared_ptr<dist_type> dist_;
 };
 
 
@@ -602,13 +602,13 @@ class Distribution_Discrete : public Random::Distribution
     {
         if (frequencies_.size() != values_.size())
             throw runtime_error("[Distribution_Discrete] Frequency count does not match value count.");
-        dist_ = shared_ptr<dist_type>(new dist_type(frequencies_));
+        dist_ = boost::shared_ptr<dist_type>(new dist_type(frequencies_));
     }
 
     private:
 
     typedef boost::random::discrete_distribution<size_t,double> dist_type;
-    shared_ptr<dist_type> dist_;
+    boost::shared_ptr<dist_type> dist_;
 };
 
 

@@ -51,11 +51,11 @@ void Configurable::write_configuration(std::ostream& os, std::set<std::string>& 
 
 
 template <>
-shared_ptr<Locus> Configurable::Registry::get<Locus>(const string& name) const
+boost::shared_ptr<Locus> Configurable::Registry::get<Locus>(const string& name) const
 {
     if (count(name))
     {
-        shared_ptr<Locus> result = dynamic_pointer_cast<Locus>(at(name));
+        boost::shared_ptr<Locus> result = dynamic_pointer_cast<Locus>(at(name));
         if (!result.get()) // dynamic_pointer_cast doesn't throw
             throw runtime_error(("[Configurable::Registry] Unable to convert object " + name).c_str());
         return result;
@@ -80,7 +80,7 @@ shared_ptr<Locus> Configurable::Registry::get<Locus>(const string& name) const
 
 
 template <>
-shared_ptr<Locus> Configurable::Registry::get<Locus>(const string& name, std::nothrow_t) const
+boost::shared_ptr<Locus> Configurable::Registry::get<Locus>(const string& name, std::nothrow_t) const
 {
     try
     {
@@ -88,7 +88,7 @@ shared_ptr<Locus> Configurable::Registry::get<Locus>(const string& name, std::no
     }
     catch (...)
     {
-        return shared_ptr<Locus>();
+        return boost::shared_ptr<Locus>();
     }
 }
 

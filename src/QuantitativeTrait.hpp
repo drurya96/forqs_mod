@@ -86,7 +86,7 @@ class QuantitativeTrait : public Configurable
 };
 
 
-typedef shared_ptr<QuantitativeTrait> QuantitativeTraitPtr;
+typedef boost::shared_ptr<QuantitativeTrait> QuantitativeTraitPtr;
 typedef std::vector<QuantitativeTraitPtr> QuantitativeTraitPtrs;
 
 

@@ -220,6 +220,9 @@ void RecombinationPositionGenerator_Uniform::initialize(const SimulatorConfig& c
 
         info->length = *chromosome_length;
     }
+
+	//cout << "Initiliazing a thing..." << endl;
+
 }
 
 
@@ -256,7 +259,7 @@ void RecombinationPositionGenerator_RecombinationMap::read_files()
     recombination_maps_.clear();
 
     for (vector<string>::const_iterator it=filenames_.begin(); it!=filenames_.end(); ++it)
-        recombination_maps_.push_back(shared_ptr<RecombinationMap>(
+        recombination_maps_.push_back(boost::shared_ptr<RecombinationMap>(
             new RecombinationMap(*it)));
 }
 

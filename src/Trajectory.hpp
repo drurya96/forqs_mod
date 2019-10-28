@@ -75,7 +75,7 @@ class Trajectory : public Configurable
 };
 
 
-typedef shared_ptr<Trajectory> TrajectoryPtr;
+typedef boost::shared_ptr<Trajectory> TrajectoryPtr;
 typedef std::vector<TrajectoryPtr> TrajectoryPtrs;
 
 

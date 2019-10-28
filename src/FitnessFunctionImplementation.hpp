@@ -190,6 +190,100 @@ class FitnessFunction_TruncationSelection : public QuantitativeTrait
     double calculate_threshold(const PopulationData& population_data) const;
 };
 
+// Austin Drury 10/8/2019
+//
+// FitnessFunction_BoundedSelection
+//
+
+///
+/// Fitness function assigning fitness 1 if trait value falls between boundaries, 0 otherwise.
+/// Boundaries are set by the user, either upper bound or lower bound.
+///
+/// parameter | default | notes
+/// ----------|---------|-------------
+/// quantitative_trait = \<id\> | none | required
+/// proportion_selected = \<float\> | none | required
+/// lower_tail = 1 | 0 | select from the lower tail of the distribution
+/// single_threshold_population = \<int\> | none | specify population for single threshold
+/// ignore_zero = 1 | 0 | select proportion of non-zero values only
+///
+/// Example: [example_qtl.txt](../../examples/example_qtl.txt)
+///
+/// \ingroup FitnessFunctions
+///
+
+class FitnessFunction_BoundedSelection : public QuantitativeTrait
+{
+    public:
+
+    FitnessFunction_BoundedSelection(const std::string& id);
+
+    void calculate_trait_values_with_threshold(const PopulationData& population_data) const;
+
+    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+
+    // Configurable interface
+
+    virtual std::string class_name() const {return "FitnessFunction_BoundedSelection";}
+    virtual Parameters parameters() const;
+    virtual void configure(const Parameters& parameters, const Registry& registry);
+
+    private:
+
+    std::string qtid_;
+	double lower_bound_;
+	double upper_bound_;
+};
+
+// Austin Drury 10/15/2019
+//
+// FitnessFunction_Recombination
+//
+
+///
+/// Fitness function assigning fitness based on distributions around maximum and minimum values
+/// Boundaries are set by the user, either upper bound or lower bound or both. User also sets varation
+///
+/// parameter | default | notes
+/// ----------|---------|-------------
+/// quantitative_trait = \<id\> | none | required
+/// proportion_selected = \<float\> | none | required
+/// lower_tail = 1 | 0 | select from the lower tail of the distribution
+/// single_threshold_population = \<int\> | none | specify population for single threshold
+/// ignore_zero = 1 | 0 | select proportion of non-zero values only
+///
+/// Example: [example_qtl.txt](../../examples/example_qtl.txt)
+///
+/// \ingroup FitnessFunctions
+///
+
+class FitnessFunction_Recombination : public QuantitativeTrait
+{
+    public:
+
+    FitnessFunction_Recombination(const std::string& id);
+
+    void modify_trait_values(const PopulationData& population_data) const;
+
+	double calculate_new_value(const double value) const;
+
+    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+
+    // Configurable interface
+
+    virtual std::string class_name() const {return "FitnessFunction_Recombination";}
+    virtual Parameters parameters() const;
+    virtual void configure(const Parameters& parameters, const Registry& registry);
+
+    private:
+
+    std::string qtid_;
+	double lower_bound_;
+	double upper_bound_;
+	double variation_;
+};
+
+
 
 #endif // _FITNESSFUNCTIONIMPLEMENTATION_HPP_
 

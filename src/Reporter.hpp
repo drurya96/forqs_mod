@@ -90,7 +90,7 @@ class Reporter : public virtual Configurable
 };
 
 
-typedef shared_ptr<Reporter> ReporterPtr;
+typedef boost::shared_ptr<Reporter> ReporterPtr;
 typedef std::vector<ReporterPtr> ReporterPtrs;
 
 

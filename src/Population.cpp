@@ -535,7 +535,7 @@ class RandomOrganismIndexGenerator
 };
 
 
-typedef shared_ptr<RandomOrganismIndexGenerator> RandomOrganismIndexGeneratorPtr;
+typedef boost::shared_ptr<RandomOrganismIndexGenerator> RandomOrganismIndexGeneratorPtr;
 
 
 class RandomOrganismIndexGeneratorMap
@@ -680,6 +680,8 @@ void Population::create_organisms(const Config& config,
         const ChromosomePairRange range_mom = populations[entry.first]->chromosome_pair_range(index_mom);
         const ChromosomePairRange range_dad = populations[entry.second]->chromosome_pair_range(index_dad);
         
+		//cout << "Attempting to create a child from parents...." << endl;
+
         range_child->create_child(range_mom, range_dad, recombination_position_generators);
     }
 }

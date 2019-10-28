@@ -193,7 +193,7 @@ class Reporter_AlleleFrequencies : public Reporter
     LocusListPtrs locus_lists_specified_;
     QuantitativeTraitPtrs qts_specified_;
 
-    typedef shared_ptr<std::ostream> OstreamPtr;
+    typedef boost::shared_ptr<std::ostream> OstreamPtr;
     typedef std::map<Locus, OstreamPtr> OstreamMap;
     OstreamMap os_map_;
 
@@ -301,7 +301,7 @@ class Reporter_TraitValues : public Reporter
     bool write_full_;
     std::string filetag_;
 
-    typedef shared_ptr<std::ostream> OstreamPtr;
+    typedef boost::shared_ptr<std::ostream> OstreamPtr;
     typedef std::vector<OstreamPtr> OstreamPtrs;
     OstreamPtrs os_means_;
 
@@ -359,7 +359,7 @@ class Reporter_HaplotypeDiversity : public Reporter
     ChromosomeEntries chromosome_entries_;
 
     // map chromosome pair index -> vector<stream> (one stream for each population)
-    typedef std::map< size_t, std::vector< shared_ptr<bfs::ofstream> > > ChromosomeStreams;
+    typedef std::map< size_t, std::vector< boost::shared_ptr<bfs::ofstream> > > ChromosomeStreams;
     ChromosomeStreams chromosome_streams_;
 
     void open_streams(size_t population_count);
@@ -390,7 +390,7 @@ class HaplotypeGrouping : public Configurable
 };
 
 
-typedef shared_ptr<HaplotypeGrouping> HaplotypeGroupingPtr;
+typedef boost::shared_ptr<HaplotypeGrouping> HaplotypeGroupingPtr;
 
 
 //

@@ -50,9 +50,9 @@
 
 // forward declarations to make SimulatorConfig accessible to VariantIndicator and Reporter
 class VariantIndicator;
-typedef shared_ptr<VariantIndicator> VariantIndicatorPtr;
+typedef boost::shared_ptr<VariantIndicator> VariantIndicatorPtr;
 class Reporter;
-typedef shared_ptr<Reporter> ReporterPtr;
+typedef boost::shared_ptr<Reporter> ReporterPtr;
 typedef std::vector<ReporterPtr> ReporterPtrs;
 
 
@@ -114,7 +114,7 @@ struct SimulatorConfig : public Configurable
 };
 
 
-typedef shared_ptr<SimulatorConfig> SimulatorConfigPtr;
+typedef boost::shared_ptr<SimulatorConfig> SimulatorConfigPtr;
 
 
 class Simulator
@@ -140,7 +140,7 @@ class Simulator
 };
 
 
-typedef shared_ptr<Simulator> SimulatorPtr;
+typedef boost::shared_ptr<Simulator> SimulatorPtr;
 
 
 #endif //  _SIMULATOR_HPP_

@@ -603,7 +603,7 @@ void QuantitativeTrait_Expression::configure(const Parameters& parameters, const
 
     try
     {
-        parser_ = shared_ptr<mu::Parser>(new mu::Parser);
+        parser_ = boost::shared_ptr<mu::Parser>(new mu::Parser);
         parser_->SetExpr(expression_);
     }
     catch (mu::ParserError& e)

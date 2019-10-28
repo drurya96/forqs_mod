@@ -242,7 +242,7 @@ class QTLEffectGenerator : public Configurable
 };
 
 
-typedef shared_ptr<QTLEffectGenerator> QTLEffectGeneratorPtr;
+typedef boost::shared_ptr<QTLEffectGenerator> QTLEffectGeneratorPtr;
 
 
 //
@@ -339,7 +339,7 @@ class QuantitativeTrait_Expression : public QuantitativeTrait
     Assignments assignments_;
     std::string expression_;
 
-    shared_ptr<mu::Parser> parser_;
+    boost::shared_ptr<mu::Parser> parser_;
 };
 
 

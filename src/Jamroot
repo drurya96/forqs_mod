@@ -50,6 +50,7 @@ project forqs
         #<threading>multi
     : requirements
         <toolset>gcc:<cxxflags>-Wno-parentheses
+	<toolset>gcc:<cxxflags>-I.
         <toolset>gcc:<cxxflags>-DUSE_BOOST_SHARED_PTR
         <toolset>clang:<cxxflags>-Wno-logical-op-parentheses
         <toolset>darwin:<cxxflags>-Wno-logical-op-parentheses
@@ -109,34 +110,34 @@ lib libforqs_implementations :
 
 
 
-unit-test ChromosomeTest : ChromosomeTest.cpp libforqs ;
-unit-test ChromosomePairRangeTest : ChromosomePairRangeTest.cpp libforqs ;
-unit-test ConfigurableTest : ConfigurableTest.cpp Configurable.cpp Parameters.cpp libforqs ;
-unit-test FitnessFunctionImplementationTest : FitnessFunctionImplementationTest.cpp FitnessFunctionImplementation.cpp libforqs ;
-unit-test GenotypeTest : GenotypeTest.cpp libforqs ;
-unit-test LocusTest : LocusTest.cpp libforqs ;
-unit-test DataVectorTest : DataVectorTest.cpp libforqs ;
-unit-test MSFormatTest : MSFormatTest.cpp libforqs ;
-unit-test MutationGeneratorImplementationTest : MutationGeneratorImplementationTest.cpp MutationGeneratorImplementation.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
-unit-test OrganismTest : OrganismTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
-unit-test ParametersTest : ParametersTest.cpp Parameters.cpp ;
-unit-test PopulationTest : PopulationTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
-unit-test PopulationDataTest : PopulationDataTest.cpp libforqs ;
-unit-test PopulationConfigGeneratorImplementationTest : PopulationConfigGeneratorImplementationTest.cpp PopulationConfigGeneratorImplementation.cpp libforqs ;
-unit-test PopulationConfigGeneratorExperimentalTest : PopulationConfigGeneratorExperimentalTest.cpp PopulationConfigGeneratorExperimental.cpp libforqs libforqs_implementations ;
-unit-test Population_Organisms_Test : Population_Organisms_Test.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
-unit-test Population_ChromosomePairs_Test : Population_ChromosomePairs_Test.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
-unit-test QuantitativeTraitTest : QuantitativeTraitTest.cpp ;
-unit-test QuantitativeTraitImplementationTest : QuantitativeTraitImplementationTest.cpp QuantitativeTraitImplementation.cpp libforqs muparser//libmuparser ;
-unit-test RandomTest : RandomTest.cpp Random.cpp Parameters.cpp ;
-unit-test RecombinationMapTest : RecombinationMapTest.cpp libforqs ;
-unit-test RecombinationPositionGeneratorImplementationTest : RecombinationPositionGeneratorImplementationTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
-unit-test ReporterImplementationTest : ReporterImplementationTest.cpp ReporterImplementation.cpp libforqs ;
-unit-test SimulatorTest : SimulatorTest.cpp libforqs libforqs_implementations ;
-unit-test SimulationBuilder_Generic_Test : SimulationBuilder_Generic_Test.cpp libforqs libforqs_implementations ;
-unit-test TrajectoryTest : TrajectoryTest.cpp libforqs ;
-unit-test VariantIndicatorImplementationTest : VariantIndicatorImplementationTest.cpp VariantIndicatorImplementation.cpp libforqs ;
-unit-test muparser_test : muparser_test.cpp muparser//libmuparser ;
+#unit-test Testing/ChromosomeTest : Testing/ChromosomeTest.cpp libforqs ;
+#unit-test Testing/ChromosomePairRangeTest : Testing/ChromosomePairRangeTest.cpp libforqs ;
+#unit-test Testing/ConfigurableTest : Testing/ConfigurableTest.cpp Configurable.cpp Parameters.cpp libforqs ;
+#unit-test Testing/FitnessFunctionImplementationTest : Testing/FitnessFunctionImplementationTest.cpp FitnessFunctionImplementation.cpp libforqs ;
+#unit-test Testing/GenotypeTest : Testing/GenotypeTest.cpp libforqs ;
+#unit-test Testing/LocusTest : Testing/LocusTest.cpp libforqs ;
+#unit-test Testing/DataVectorTest : Testing/DataVectorTest.cpp libforqs ;
+#unit-test Testing/MSFormatTest : Testing/MSFormatTest.cpp libforqs ;
+#unit-test Testing/MutationGeneratorImplementationTest : Testing/MutationGeneratorImplementationTest.cpp MutationGeneratorImplementation.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/OrganismTest : Testing/OrganismTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/ParametersTest : Testing/ParametersTest.cpp Parameters.cpp ;
+#unit-test Testing/PopulationTest : Testing/PopulationTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/PopulationDataTest : Testing/PopulationDataTest.cpp libforqs ;
+#unit-test Testing/PopulationConfigGeneratorImplementationTest : Testing/PopulationConfigGeneratorImplementationTest.cpp PopulationConfigGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/PopulationConfigGeneratorExperimentalTest : Testing/PopulationConfigGeneratorExperimentalTest.cpp PopulationConfigGeneratorExperimental.cpp libforqs libforqs_implementations ;
+#unit-test Testing/Population_Organisms_Test : Testing/Population_Organisms_Test.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/Population_ChromosomePairs_Test : Testing/Population_ChromosomePairs_Test.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/QuantitativeTraitTest : Testing/QuantitativeTraitTest.cpp ;
+#unit-test Testing/QuantitativeTraitImplementationTest : Testing/QuantitativeTraitImplementationTest.cpp QuantitativeTraitImplementation.cpp libforqs muparser//libmuparser ;
+#unit-test Testing/RandomTest : Testing/RandomTest.cpp Random.cpp Parameters.cpp ;
+#unit-test Testing/RecombinationMapTest : Testing/RecombinationMapTest.cpp libforqs ;
+#unit-test Testing/RecombinationPositionGeneratorImplementationTest : Testing/RecombinationPositionGeneratorImplementationTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+#unit-test Testing/ReporterImplementationTest : Testing/ReporterImplementationTest.cpp ReporterImplementation.cpp libforqs ;
+#unit-test Testing/SimulatorTest : Testing/SimulatorTest.cpp libforqs libforqs_implementations ;
+#unit-test Testing/SimulationBuilder_Generic_Test : Testing/SimulationBuilder_Generic_Test.cpp libforqs libforqs_implementations ;
+#unit-test Testing/TrajectoryTest : Testing/TrajectoryTest.cpp libforqs ;
+#unit-test Testing/VariantIndicatorImplementationTest : Testing/VariantIndicatorImplementationTest.cpp VariantIndicatorImplementation.cpp libforqs ;
+#unit-test muparser_test : muparser_test.cpp muparser//libmuparser ;
 
 
 exe forqs : forqs.cpp libforqs libforqs_implementations ;
