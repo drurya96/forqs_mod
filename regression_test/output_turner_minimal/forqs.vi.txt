@@ -1,0 +1,4 @@
+VariantIndicator_File vi
+    loci = locus_Y qtls 
+    msfile = turner_minimal_snps.txt
+

@@ -1,0 +1,27 @@
+PopulationConfigGenerator_ConstantSize pcg
+    chromosome_lengths = 1000000 
+    chromosome_pair_count = 1
+    generation_count = 3
+    id_offset_step = 0
+    population_count = 1
+    population_size = 10
+
+RecombinationPositionGenerator_Uniform rpg
+    rate = 1
+
+VariantIndicator_Trivial vi_trivial
+
+Reporter_Population reporter_population
+    update_step = 0
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_tutorial_1_recombination_reporter
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    recombination_position_generator = rpg
+    reporter = reporter_population
+    seed = 123
+    variant_indicator = vi_trivial
+    write_popconfig = 0
+    write_vi = 0
+

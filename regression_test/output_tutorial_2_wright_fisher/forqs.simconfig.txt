@@ -1,0 +1,31 @@
+PopulationConfigGenerator_ConstantSize pcg
+    chromosome_pair_count = 1
+    generation_count = 200
+    id_offset_step = 0
+    population_count = 1
+    population_size = 100
+
+RecombinationPositionGenerator_Trivial rpg_trivial
+
+Locus my_locus
+    chromosome = 1
+    position = 100000
+
+VariantIndicator_SingleLocusHardyWeinberg vi
+    allele_frequency = 0.5
+    locus = my_locus
+
+Reporter_AlleleFrequencies reporter_allele_freqs
+    locus = my_locus
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_tutorial_2_wright_fisher
+    population_config_generator = pcg
+    recombination_position_generator = rpg_trivial
+    recombination_position_generator = rpg_trivial
+    reporter = reporter_allele_freqs
+    seed = 123
+    variant_indicator = vi
+    write_popconfig = 0
+    write_vi = 0
+

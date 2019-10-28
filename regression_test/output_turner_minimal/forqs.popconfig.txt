@@ -1,0 +1,15 @@
+generation 0
+population population_size=20 chromosome_pair_count=3
+
+generation 1
+population population_size=20 chromosome_pair_count=3 mating_distribution={<1|0,_female,0,_selected_low_1_even>}
+population population_size=20 chromosome_pair_count=3 mating_distribution={<1|0,_female,0,_selected_low_1_odd>}
+population population_size=20 chromosome_pair_count=3 mating_distribution={<1|0,_female,0,_selected_high_1_even>}
+population population_size=20 chromosome_pair_count=3 mating_distribution={<1|0,_female,0,_selected_high_1_odd>}
+
+generation 2
+population population_size=20 chromosome_pair_count=3 mating_distribution={<2|0,_female,0,_selected_low_1>}
+population population_size=20 chromosome_pair_count=3 mating_distribution={<3|1,_female,1,_selected_low_2><1|1,_female,2,_selected_low_2_odd>}
+population population_size=20 chromosome_pair_count=3 mating_distribution={<3|2,_female,2,_selected_high_3><1|2,_female,0,_selected_high_3_even><1|2,_female,1,_selected_high_3_even>}
+population population_size=20 chromosome_pair_count=3 mating_distribution={<2|3,_female,3,_selected_high_4>}
+

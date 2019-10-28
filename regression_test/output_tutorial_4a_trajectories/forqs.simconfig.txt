@@ -1,0 +1,36 @@
+Trajectory_Constant popsize_1
+    value = 100
+
+Trajectory_Linear popsize_2
+    begin:value = 2 100
+    end:value = 5 400
+
+Trajectory_Constant popsize_3
+    value = 400
+
+Trajectory_GenerationComposite popsize
+    generation:trajectory = 0 popsize_1
+    generation:trajectory = 2 popsize_2
+    generation:trajectory = 5 popsize_3
+
+PopulationConfigGenerator_LinearSteppingStone pcg
+    chromosome_pair_count = 1
+    generation_count = 8
+    id_offset_step = 0
+    population_count = 2
+    population_size = popsize
+
+RecombinationPositionGenerator_Trivial rpg_trivial
+
+VariantIndicator_Trivial vi_trivial
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_tutorial_4a_trajectories
+    population_config_generator = pcg
+    recombination_position_generator = rpg_trivial
+    recombination_position_generator = rpg_trivial
+    seed = 123
+    variant_indicator = vi_trivial
+    write_popconfig = 1
+    write_vi = 0
+

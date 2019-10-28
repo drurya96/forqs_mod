@@ -1,0 +1,181 @@
+PopulationConfigGenerator_TurnerExperiment pcg
+    generation_count_neutral = 0
+    generation_count_selected = 2
+    population_size_founders = 20
+    population_size_neutral = 1000
+    population_size_replicate = 20
+    proportion_selected = 0.20000000000000001
+    quantitative_trait = qt
+    report_hidden = 1
+
+RecombinationPositionGenerator_Trivial rpg_trivial
+
+Locus locus_Y
+    chromosome = 1
+    position = 0
+
+LocusList qtls
+    chromosome:position = 1 1000
+    chromosome:position = 1 2000
+    chromosome:position = 1 3000
+    chromosome:position = 1 4000
+    chromosome:position = 1 5000
+    chromosome:position = 1 6000
+    chromosome:position = 1 7000
+    chromosome:position = 1 8000
+    chromosome:position = 1 9000
+    chromosome:position = 1 10000
+
+VariantIndicator_File vi
+    loci = locus_Y qtls 
+    msfile = turner_minimal_snps.txt
+
+Distribution_Constant positive_effect
+    value = 1
+
+Distribution_Constant no_dominance
+    value = 0
+
+QTLEffectGenerator generator_positive
+    dominance_distribution = no_dominance
+    effect_size_distribution = positive_effect
+    locus_list = qtls
+
+QuantitativeTrait_IndependentLoci qt
+    environmental_variance = 0
+    qtl_effect_generator = generator_positive
+
+Locus _locus_Y
+    chromosome = 1
+    position = 0
+
+QuantitativeTrait_IndependentLoci _male
+    environmental_variance = 0
+    qtl = _locus_Y 0 1 2
+
+QuantitativeTrait_Expression _female
+    expression = 1-y
+    variable:quantitative_trait = y _male
+
+QuantitativeTrait_Expression _trait_male
+    expression = trait * male
+    variable:quantitative_trait = trait qt
+    variable:quantitative_trait = male _male
+
+FitnessFunction_TruncationSelection _selected_low_1
+    ignore_zero = 1
+    lower_tail = 1
+    proportion_selected = 0.20000000000000001
+    quantitative_trait = _trait_male
+    single_threshold_population = 1
+
+FitnessFunction_TruncationSelection _selected_high_1
+    ignore_zero = 1
+    proportion_selected = 0.20000000000000001
+    quantitative_trait = _trait_male
+    single_threshold_population = 1
+
+FitnessFunction_TruncationSelection _selected_low_2
+    ignore_zero = 1
+    lower_tail = 1
+    proportion_selected = 0.20000000000000001
+    quantitative_trait = _trait_male
+    single_threshold_population = 2
+
+FitnessFunction_TruncationSelection _selected_high_3
+    ignore_zero = 1
+    proportion_selected = 0.20000000000000001
+    quantitative_trait = _trait_male
+    single_threshold_population = 3
+
+FitnessFunction_TruncationSelection _selected_high_4
+    ignore_zero = 1
+    proportion_selected = 0.20000000000000001
+    quantitative_trait = _trait_male
+    single_threshold_population = 4
+
+QuantitativeTrait_Alternator _even
+
+QuantitativeTrait_Expression _odd
+    expression = 1 - even
+    variable:quantitative_trait = even _even
+
+QuantitativeTrait_Expression _selected_low_1_even
+    expression = selected_low_1 * even
+    variable:quantitative_trait = selected_low_1 _selected_low_1
+    variable:quantitative_trait = even _even
+
+QuantitativeTrait_Expression _selected_low_1_odd
+    expression = selected_low_1 * odd
+    variable:quantitative_trait = selected_low_1 _selected_low_1
+    variable:quantitative_trait = odd _odd
+
+QuantitativeTrait_Expression _selected_high_1_even
+    expression = selected_high_1 * even
+    variable:quantitative_trait = selected_high_1 _selected_high_1
+    variable:quantitative_trait = even _even
+
+QuantitativeTrait_Expression _selected_high_1_odd
+    expression = selected_high_1 * odd
+    variable:quantitative_trait = selected_high_1 _selected_high_1
+    variable:quantitative_trait = odd _odd
+
+QuantitativeTrait_Expression _selected_low_2_odd
+    expression = selected_low_2 * odd
+    variable:quantitative_trait = selected_low_2 _selected_low_2
+    variable:quantitative_trait = odd _odd
+
+QuantitativeTrait_Expression _selected_high_3_even
+    expression = selected_high_3 * even
+    variable:quantitative_trait = selected_high_3 _selected_high_3
+    variable:quantitative_trait = even _even
+
+QuantitativeTrait_Expression _selected_high_4_odd
+    expression = selected_high_4 * odd
+    variable:quantitative_trait = selected_high_4 _selected_high_4
+    variable:quantitative_trait = odd _odd
+
+Reporter_Population reporter_population
+    update_step = 1
+
+Reporter_Variants reporter_variants
+    loci = locus_Y qtls 
+    update_step = 1
+
+Reporter_TraitValues _reporter_trait_values
+    filetag = hidden
+    ignore_zero_values = _trait_male qt 
+    quantitative_traits = _male _female qt _trait_male _selected_low_1 _selected_high_1 _selected_low_2 _selected_high_3 _selected_high_4 _selected_low_1_even _selected_low_1_odd _selected_high_1_even _selected_high_1_odd _selected_low_2_odd _selected_high_3_even _selected_high_4_odd 
+    write_full = 1
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_turner_minimal
+    population_config_generator = pcg
+    quantitative_trait = qt
+    quantitative_trait = _male
+    quantitative_trait = _female
+    quantitative_trait = _trait_male
+    quantitative_trait = _selected_low_1
+    quantitative_trait = _selected_high_1
+    quantitative_trait = _selected_low_2
+    quantitative_trait = _selected_high_3
+    quantitative_trait = _selected_high_4
+    quantitative_trait = _even
+    quantitative_trait = _odd
+    quantitative_trait = _selected_low_1_even
+    quantitative_trait = _selected_low_1_odd
+    quantitative_trait = _selected_high_1_even
+    quantitative_trait = _selected_high_1_odd
+    quantitative_trait = _selected_low_2_odd
+    quantitative_trait = _selected_high_3_even
+    quantitative_trait = _selected_high_4_odd
+    recombination_position_generator = rpg_trivial
+    recombination_position_generator = rpg_trivial
+    reporter = reporter_population
+    reporter = reporter_variants
+    reporter = _reporter_trait_values
+    seed = 0
+    variant_indicator = vi
+    write_popconfig = 1
+    write_vi = 1
+

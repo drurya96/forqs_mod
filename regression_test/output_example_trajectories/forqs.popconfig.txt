@@ -1,0 +1,55 @@
+generation 0
+population population_size=100 chromosome_pair_count=1
+population population_size=1000 id_offset=10000 chromosome_pair_count=1
+population population_size=2000 id_offset=20000 chromosome_pair_count=1
+
+generation 1
+population population_size=100 chromosome_pair_count=1 mating_distribution={<0.95|0,,0,><0.05|1,,1,>}
+population population_size=1000 chromosome_pair_count=1 mating_distribution={<0.9|1,,1,><0.05|0,,0,><0.05|2,,2,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 2
+population population_size=100 chromosome_pair_count=1 mating_distribution={<0.96|0,,0,><0.04|1,,1,>}
+population population_size=1000 chromosome_pair_count=1 mating_distribution={<0.92|1,,1,><0.04|0,,0,><0.04|2,,2,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 3
+population population_size=100 chromosome_pair_count=1 mating_distribution={<0.97|0,,0,><0.03|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.94|1,,1,><0.03|0,,0,><0.03|2,,2,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 4
+population population_size=100 chromosome_pair_count=1 mating_distribution={<0.98|0,,0,><0.02|1,,1,>}
+population population_size=4000 chromosome_pair_count=1 mating_distribution={<0.96|1,,1,><0.02|0,,0,><0.02|2,,2,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 5
+population population_size=200 chromosome_pair_count=1 mating_distribution={<1|0,,0,>}
+population population_size=8000 chromosome_pair_count=1 mating_distribution={<1|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 6
+population population_size=300 chromosome_pair_count=1 mating_distribution={<1|0,,0,>}
+population population_size=16000 chromosome_pair_count=1 mating_distribution={<1|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 7
+population population_size=400 chromosome_pair_count=1 mating_distribution={<1|0,,0,>}
+population population_size=16000 chromosome_pair_count=1 mating_distribution={<1|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 8
+population population_size=400 chromosome_pair_count=1 mating_distribution={<1|0,,0,>}
+population population_size=16000 chromosome_pair_count=1 mating_distribution={<1|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 9
+population population_size=400 chromosome_pair_count=1 mating_distribution={<1|0,,0,>}
+population population_size=16000 chromosome_pair_count=1 mating_distribution={<1|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
+generation 10
+population population_size=400 chromosome_pair_count=1 mating_distribution={<1|0,,0,>}
+population population_size=16000 chromosome_pair_count=1 mating_distribution={<1|1,,1,>}
+population population_size=2000 chromosome_pair_count=1 mating_distribution={<0.9|2,,2,><0.1|1,,1,>}
+
