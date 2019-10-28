@@ -1,0 +1,21 @@
+#
+# Jamfile for muparser library
+#
+
+
+lib libmuparser :
+    muParserBase.cpp
+    muParserBytecode.cpp
+    muParserCallback.cpp
+    muParser.cpp
+    muParserDLL.cpp
+    muParserError.cpp
+    muParserInt.cpp
+    muParserTest.cpp
+    muParserTokenReader.cpp
+    : <cxxflags>-Wno-error
+      <cxxflags>-Wno-switch
+      <toolset>clang:<cxxflags>-Wno-nested-anon-types
+      <toolset>darwin:<cxxflags>-Wno-nested-anon-types
+    ;
+

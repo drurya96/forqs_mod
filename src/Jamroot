@@ -1,0 +1,181 @@
+#
+# Jamroot
+#
+# Created by Darren Kessner with John Novembre
+#
+# Copyright (c) 2013 Regents of the University of California
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+#     * Redistributions of source code must retain the above copyright notice,
+#       this list of conditions and the following disclaimer.  
+# 
+#     * Redistributions in binary form must reproduce the above copyright notice,
+#       this list of conditions and the following disclaimer in the documentation
+#       and/or other materials provided with the distribution.  
+# 
+#     * Neither UCLA nor the names of its contributors may be used to endorse or
+#       promote products derived from this software without specific prior
+#       written permission.  
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+
+import testing ; # for unit-test rule
+import notfile ;
+
+
+project forqs
+    : default-build
+        <warnings-as-errors>on
+        <warnings>all
+        <runtime-link>static
+        <link>static
+        <variant>release
+        <inlining>off
+        #<variant>debug
+        #<variant>profile
+        #<threading>multi
+    : requirements
+        <toolset>gcc:<cxxflags>-Wno-parentheses
+        <toolset>gcc:<cxxflags>-DUSE_BOOST_SHARED_PTR
+        <toolset>clang:<cxxflags>-Wno-logical-op-parentheses
+        <toolset>darwin:<cxxflags>-Wno-logical-op-parentheses
+        <toolset>clang:<cxxflags>-Wno-nested-anon-types
+        <toolset>darwin:<cxxflags>-Wno-nested-anon-types
+        <toolset>darwin:<runtime-link>shared
+    : build-dir ../build
+    ;
+
+
+
+lib boost_system ;
+lib boost_filesystem ;
+
+
+lib libforqs :
+    Chromosome.cpp 
+    ChromosomePairRange.cpp 
+    Configurable.cpp
+    DataVector.cpp
+    Genotype.cpp
+    Locus.cpp
+    MSFormat.cpp
+    MutationGenerator.cpp
+    Organism.cpp 
+    Parameters.cpp
+    Population.cpp
+    PopulationData.cpp
+    Population_Organisms.cpp
+    Population_ChromosomePairs.cpp
+    PopulationConfigGenerator.cpp
+    QuantitativeTrait.cpp
+    RecombinationMap.cpp 
+    RecombinationPositionGenerator.cpp
+    Random.cpp 
+    Reporter.cpp
+    Simulator.cpp
+    Trajectory.cpp
+    VariantIndicator.cpp
+    boost_filesystem
+    boost_system
+    ;
+
+
+lib libforqs_implementations :
+    FitnessFunctionImplementation.cpp
+    MutationGeneratorImplementation.cpp
+    PopulationConfigGeneratorImplementation.cpp
+    PopulationConfigGeneratorExperimental.cpp
+    QuantitativeTraitImplementation.cpp
+    RecombinationPositionGeneratorImplementation.cpp
+    ReporterImplementation.cpp
+    SimulationBuilder_Generic.cpp
+    VariantIndicatorImplementation.cpp
+    muparser//libmuparser    
+    ;
+
+
+
+unit-test ChromosomeTest : ChromosomeTest.cpp libforqs ;
+unit-test ChromosomePairRangeTest : ChromosomePairRangeTest.cpp libforqs ;
+unit-test ConfigurableTest : ConfigurableTest.cpp Configurable.cpp Parameters.cpp libforqs ;
+unit-test FitnessFunctionImplementationTest : FitnessFunctionImplementationTest.cpp FitnessFunctionImplementation.cpp libforqs ;
+unit-test GenotypeTest : GenotypeTest.cpp libforqs ;
+unit-test LocusTest : LocusTest.cpp libforqs ;
+unit-test DataVectorTest : DataVectorTest.cpp libforqs ;
+unit-test MSFormatTest : MSFormatTest.cpp libforqs ;
+unit-test MutationGeneratorImplementationTest : MutationGeneratorImplementationTest.cpp MutationGeneratorImplementation.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+unit-test OrganismTest : OrganismTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+unit-test ParametersTest : ParametersTest.cpp Parameters.cpp ;
+unit-test PopulationTest : PopulationTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+unit-test PopulationDataTest : PopulationDataTest.cpp libforqs ;
+unit-test PopulationConfigGeneratorImplementationTest : PopulationConfigGeneratorImplementationTest.cpp PopulationConfigGeneratorImplementation.cpp libforqs ;
+unit-test PopulationConfigGeneratorExperimentalTest : PopulationConfigGeneratorExperimentalTest.cpp PopulationConfigGeneratorExperimental.cpp libforqs libforqs_implementations ;
+unit-test Population_Organisms_Test : Population_Organisms_Test.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+unit-test Population_ChromosomePairs_Test : Population_ChromosomePairs_Test.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+unit-test QuantitativeTraitTest : QuantitativeTraitTest.cpp ;
+unit-test QuantitativeTraitImplementationTest : QuantitativeTraitImplementationTest.cpp QuantitativeTraitImplementation.cpp libforqs muparser//libmuparser ;
+unit-test RandomTest : RandomTest.cpp Random.cpp Parameters.cpp ;
+unit-test RecombinationMapTest : RecombinationMapTest.cpp libforqs ;
+unit-test RecombinationPositionGeneratorImplementationTest : RecombinationPositionGeneratorImplementationTest.cpp RecombinationPositionGeneratorImplementation.cpp libforqs ;
+unit-test ReporterImplementationTest : ReporterImplementationTest.cpp ReporterImplementation.cpp libforqs ;
+unit-test SimulatorTest : SimulatorTest.cpp libforqs libforqs_implementations ;
+unit-test SimulationBuilder_Generic_Test : SimulationBuilder_Generic_Test.cpp libforqs libforqs_implementations ;
+unit-test TrajectoryTest : TrajectoryTest.cpp libforqs ;
+unit-test VariantIndicatorImplementationTest : VariantIndicatorImplementationTest.cpp VariantIndicatorImplementation.cpp libforqs ;
+unit-test muparser_test : muparser_test.cpp muparser//libmuparser ;
+
+
+exe forqs : forqs.cpp libforqs libforqs_implementations ;
+exe forqs_aux : forqs_aux.cpp libforqs ;
+exe forqs_map_ms : forqs_map_ms.cpp libforqs ;
+exe forqs_focal_subset : forqs_focal_subset.cpp libforqs libforqs_implementations ;
+
+
+install bin  
+    : forqs forqs_aux forqs_map_ms forqs_focal_subset
+    : <location>../bin 
+      <install-dependencies>on
+      <install-type>EXE
+      <install-type>LIB
+      <link>static
+      <runtime-link>static
+    ;
+
+
+#
+# cross-compilation for Windows
+# (works with Ubuntu mingw installation)
+#
+# define toolset gcc-windows in user-config.jam:
+#   using gcc : windows : i686-w64-mingw32-g++ : <archiver>i686-w64-mingw32-ar <ranlib>i686-w64-mingw32-ranlib ;
+#   format: using [tool] : [version] : [executable] : [options] ;
+#
+
+
+install windows
+    : forqs forqs_aux forqs_map_ms
+    : <location>../bin_windows
+      <install-type>EXE
+      <toolset>gcc-windows
+      <runtime-link>static
+      <link>static
+      <target-os>windows
+    ;
+
+explicit windows ; # don't build by default
+
+

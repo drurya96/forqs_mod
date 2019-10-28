@@ -1,0 +1,13 @@
+#
+# example forqs_focal_subset config file
+#
+
+filename_full_population full.pop
+filename_full_ms full.ms
+filename_original_snps unused
+filename_subset_population subset_2.pop
+filename_subset_ms subset_2.ms
+population_size 100
+focal_locus 0 0
+focal_allele_frequency 0
+
