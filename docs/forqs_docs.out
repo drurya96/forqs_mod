@@ -1,0 +1,49 @@
+\BOOKMARK [1][-]{toc.1}{Top}{}% 1
+\BOOKMARK [1][-]{section.1}{Citing forqs }{}% 2
+\BOOKMARK [1][-]{section.2}{Getting Started}{}% 3
+\BOOKMARK [1][-]{section.3}{Design Overview}{}% 4
+\BOOKMARK [1][-]{section.4}{Tutorial Introduction}{}% 5
+\BOOKMARK [2][-]{subsection.4.0}{A minimal example}{section.4}% 6
+\BOOKMARK [2][-]{subsection.4.1}{Recombination and reporting output}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{Wright-Fisher simulation}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{Selection}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{Trajectories}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.5}{Quantitative traits}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.6}{Reporting haplotype frequencies}{section.4}% 12
+\BOOKMARK [1][-]{section.5}{Modules}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{Module types and interfaces}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{Module specification and instantiation}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.3}{Top-level module: SimulatorConfig}{section.5}% 16
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Global simulation parameters}{subsection.5.3}% 17
+\BOOKMARK [3][-]{subsubsection.5.3.2}{References to primary modules}{subsection.5.3}% 18
+\BOOKMARK [2][-]{subsection.5.4}{Primary modules}{section.5}% 19
+\BOOKMARK [3][-]{subsubsection.5.4.1}{PopulationConfigGenerator}{subsection.5.4}% 20
+\BOOKMARK [3][-]{subsubsection.5.4.2}{RecombinationPositionGenerator}{subsection.5.4}% 21
+\BOOKMARK [3][-]{subsubsection.5.4.3}{MutationGenerator}{subsection.5.4}% 22
+\BOOKMARK [3][-]{subsubsection.5.4.4}{VariantIndicator}{subsection.5.4}% 23
+\BOOKMARK [3][-]{subsubsection.5.4.5}{QuantitativeTrait}{subsection.5.4}% 24
+\BOOKMARK [3][-]{subsubsection.5.4.6}{Reporter}{subsection.5.4}% 25
+\BOOKMARK [2][-]{subsection.5.5}{Building block modules}{section.5}% 26
+\BOOKMARK [3][-]{subsubsection.5.5.1}{Locus and LocusList}{subsection.5.5}% 27
+\BOOKMARK [3][-]{subsubsection.5.5.2}{Trajectory}{subsection.5.5}% 28
+\BOOKMARK [3][-]{subsubsection.5.5.3}{Distribution}{subsection.5.5}% 29
+\BOOKMARK [1][-]{section.6}{Simulating background variation}{}% 30
+\BOOKMARK [2][-]{subsection.6.1}{Example 1: No new mutations}{section.6}% 31
+\BOOKMARK [2][-]{subsection.6.2}{Example 2: Including new mutations}{section.6}% 32
+\BOOKMARK [1][-]{section.7}{Validation}{}% 33
+\BOOKMARK [2][-]{subsection.7.1}{Single locus selection}{section.7}% 34
+\BOOKMARK [2][-]{subsection.7.2}{Decay of linkage disequilibrium}{section.7}% 35
+\BOOKMARK [2][-]{subsection.7.3}{Mutation-drift equilibrium}{section.7}% 36
+\BOOKMARK [2][-]{subsection.7.4}{Response to selection}{section.7}% 37
+\BOOKMARK [2][-]{subsection.7.5}{Performance}{section.7}% 38
+\BOOKMARK [1][-]{section.8}{Software development}{}% 39
+\BOOKMARK [2][-]{subsection.8.1}{Software dependencies}{section.8}% 40
+\BOOKMARK [2][-]{subsection.8.2}{Building the program}{section.8}% 41
+\BOOKMARK [2][-]{subsection.8.3}{Structure of the codebase}{section.8}% 42
+\BOOKMARK [2][-]{subsection.8.4}{Software architecture}{section.8}% 43
+\BOOKMARK [3][-]{subsubsection.8.4.1}{Low-level data structures}{subsection.8.4}% 44
+\BOOKMARK [3][-]{subsubsection.8.4.2}{Configurable modules}{subsection.8.4}% 45
+\BOOKMARK [3][-]{subsubsection.8.4.3}{Mutation handling}{subsection.8.4}% 46
+\BOOKMARK [2][-]{subsection.8.5}{Appendix: Boost libraries}{section.8}% 47
+\BOOKMARK [2][-]{subsection.8.6}{Appendix: Cross-compilation targeting Windows}{section.8}% 48
+\BOOKMARK [1][-]{references.1}{References}{}% 49
