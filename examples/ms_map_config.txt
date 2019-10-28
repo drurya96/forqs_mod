@@ -1,0 +1,30 @@
+#
+# ms_map_config.txt
+#
+# sample mapping config file for forqs_map_ms
+#
+
+# ms-format files are read sequentially; a single ms-format file may contain more
+# than one set (replicate) of sequences (e.g. ms_test_data_2.txt contains two sets)
+
+ms_filenames = ms_test_data_1.txt ms_test_data_2.txt      
+
+# ms relative positions in [0,1] get mapped to single chromosome with specified [begin,end)
+
+chromosome = 1
+position_begin = 0
+position_end = 1000000
+
+# each map_entry maps a block of haplotype ids to a set of ms sequences:
+#
+# map_entry = <int_id_start> <int_id_count> <int_ms_index> <int_ms_offset>
+#
+#   id_start: first haplotype id in the block of ids
+#   id_count: number of haplotype ids in the block of ids
+#   ms_index: 0-based index indicating which set of ms sequences
+#   ms_offset: 0-based index of the sequence within the set that the first haplotype id gets mapped to
+
+map_entry = 0 26 0 0               # maps haplotype ids [0-25] -> ['aaaaaaaaa', ..., 'zzzzzzzzz']
+map_entry = 100 16 1 10            # maps haplotype ids [100-115] -> ['KKKKKKKKK', ..., 'ZZZZZZZZZ']
+map_entry = 200 10 2 0             # maps haplotype ids [200-209] -> ['000000000', ..., '999999999']
+

@@ -1,0 +1,25 @@
+#
+# example_neutral_admixture.txt
+#
+
+PopulationConfigGenerator_File popconfig_generator
+    filename = popconfig_10k.txt
+
+RecombinationPositionGenerator_RecombinationMap rpg_map
+    filename = genetic_map_chr21_b36.txt
+    filename = genetic_map_chr21_b36.txt
+    filename = genetic_map_chr21_b36.txt
+
+Reporter_Population reporter_population
+    update_step = 7
+
+Reporter_Timer reporter_timer
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_neutral_admixture
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg_map
+    reporter = reporter_population
+    reporter = reporter_timer
+

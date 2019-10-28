@@ -1,0 +1,57 @@
+#
+# tutorial_5_qtl.txt
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 10
+    population_count = 1
+    population_size = 100
+    chromosome_pair_count = 3
+    chromosome_lengths = 1e6 1e6 1e6
+    fitness_function = ff
+
+Locus locus1
+    chromosome = 1 
+    position = 1000
+
+Locus locus2
+    chromosome = 2 
+    position = 2000
+
+Locus locus3
+    chromosome = 3 
+    position = 3000
+
+LocusList loci
+    loci = locus1 locus2 locus3
+
+VariantIndicator_Random vi
+    locus_list:population:frequencies = loci * .5 .5 .5
+
+QuantitativeTrait_IndependentLoci qt
+    qtl = locus1 0 .1 .2
+    qtl = locus2 0 .2 .4
+    qtl = locus3 0 .1 .2
+    environmental_variance = .05
+
+FitnessFunction_TruncationSelection ff
+    quantitative_trait = qt
+    proportion_selected = .5
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt
+    write_full = 1
+
+SimulatorConfig
+    output_directory = output_tutorial_5_qtl
+    population_config_generator = pcg
+    variant_indicator = vi
+    quantitative_trait = qt
+    quantitative_trait = ff
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    write_vi = 1
+

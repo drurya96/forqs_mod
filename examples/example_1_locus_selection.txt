@@ -1,0 +1,86 @@
+#
+# example_1_locus_selection.txt
+#
+# This example is a simulation of selection at a single locus with additive
+# fitness effects.  
+
+# Ten isolated populations (each with 100 individuals) are simulated in
+# parallel (no migration) for 120 generations.  Individuals have a single pair
+# of chromosomes (chromosome_pair_count = 1).  
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 120
+    population_count = 10
+    population_size = 100
+    chromosome_pair_count = 1
+    chromosome_lengths = 1000000
+    fitness_function = qt 
+
+# The locus under selection is located at position 500000 on the first/only
+# chromosome.
+
+Locus selected_locus
+    chromosome = 1
+    position = 500000
+
+# RecombinationPositionGenerator_SingleCrossover specifies that a single crossover
+# event occurs per chromosome per generation, with equal probabilities of a
+# gamete receiving one of the two parental copies or one of the two reciprocal
+# recombinants, resulting in a recombination fraction of 1/2.  The
+# recombination position is chosen uniformly at random between 0 and the
+# specified chromosome lentgh.
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+# VariantIndicators are used to map variant values to haplotype chunk ids.
+# VariantIndicator_SingleLocusHardyWeinberg specifies 0/1 variant values, at a
+# specified allele frequency (for allele 1) within the population.  If N is the
+# population size and p (= 1-q) is the allele frequency, the first N * p^2
+# individuals are homozygous for allele 1, and next N*2pq individuals are
+# heterozygous, and the remaining individuals are homozygous for allele 0.
+
+VariantIndicator_SingleLocusHardyWeinberg vi
+    locus = selected_locus
+    allele_frequency = .1
+
+# QuantitativeTrait_SingleLocusFitness represents a single quantitative trait
+# whose value is determined by the individuals genotype at the specified locus.
+# In this case, the value 1 is assigned to homozygotes for allele 0, the value
+# 1.1 is assigned to heterozygotes, and 1.2 is assigned to homozygotes for
+# allele 1.
+
+QuantitativeTrait_SingleLocusFitness qt
+    locus = selected_locus
+    w0 = 1
+    w1 = 1.1
+    w2 = 1.2
+
+# Multiple Reporters can be specified to report information about the simulation.
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = selected_locus
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt
+
+Reporter_DeterministicTrajectories reporter_deterministic_trajectories
+    initial_allele_frequency = .1
+    w0 = 1
+    w1 = 1.1
+    w2 = 1.2
+
+# SimulatorConfig is the top-level module, and must appear last in the
+# configuration file.  This module specifies which of the previously
+# specified primary modules are plugged into the main simulator.
+
+SimulatorConfig
+    output_directory = output_example_1_locus_selection
+    seed = 0
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    variant_indicator = vi
+    quantitative_trait = qt
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_deterministic_trajectories
+

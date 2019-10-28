@@ -1,0 +1,16 @@
+#
+# example_include.txt
+#
+
+
+#include example_include_1.txt
+#include example_include_2.txt
+
+
+SimulatorConfig
+    output_directory = output_example_include
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    reporter = reporter_population
+    seed = 123
+

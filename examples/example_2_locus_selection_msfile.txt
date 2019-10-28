@@ -1,0 +1,71 @@
+#
+# example_2_locus_selection_msfile.txt
+#
+
+
+# 
+# This config file runs the same simulation as example_2_locus_selection.txt
+#
+# The only difference is that this simulation uses VariantIndicator_File, with variants defined
+# in the ms-format file ms_test_data_5.txt.
+#
+# ms_test_data_5.txt gives 0/1 SNP values for 1000 diploid individuals (2000 haplotypes),
+# which are mapped by VariantIndicator_File to ids 0-1999.
+#
+
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    generation_count = 100
+    population_count = 1
+    chromosome_pair_count = 1
+    chromosome_lengths = 10000000
+    population_size = 1000 # 2000 ids
+    fitness_function = qt
+
+Locus locus1
+    chromosome = 1
+    position = 2000000
+
+Locus locus2
+    chromosome = 1
+    position = 8000000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+VariantIndicator_File vi
+    msfile = ms_test_data_5.txt  # SNP values defined in this file
+    loci = locus1 locus2         # multiple loci can be mapped; number of loci must match ms segsites field
+
+QuantitativeTrait_IndependentLoci qt  # 2 loci with additive fitness effects
+    qtl = locus1 1 1.1 1.2
+    qtl = locus2 0 0.1 0.2
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+    locus = locus2
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt
+
+HaplotypeGrouping_IDRange hg # 4 groups:  note that there are 2 chromosome ids per initial individual
+    start:count = 0 500
+    start:count = 500 500
+    start:count = 1000 500
+    start:count = 1500 500
+
+Reporter_HaplotypeFrequencies reporter_haplotype_freqs
+    haplotype_grouping = hg
+    chromosome_step = 1000000
+    update_step = 10
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_2_locus_selection_msfile
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    variant_indicator = vi
+    quantitative_trait = qt
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_haplotype_freqs
+

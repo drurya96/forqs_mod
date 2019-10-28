@@ -1,0 +1,84 @@
+#
+# example_2_locus_selection.txt
+#
+
+
+# 
+# This simulation has 1000 diploid individuals, so they have haplotype ids
+# 0-1999.
+#
+# The individuals have a single chromosome (chromosome == 1) that is
+# 10 MB long.  Note that the length of the chromosome doesn't affect the
+# performance of the simulation, but is used for recombination and by
+# Reporter_HaplotypeFrequencies.
+#
+# A single quantitative trait is defined with two qtls (locus1, locus2), both
+# with additive effect .1 on fitness.  The individuals are grouped into 4
+# groups of equal size (250 individuals, 500 haplotype ids).  The first group
+# (group 1) has variant (SNP) value 1 at locus1, and the last group (group 4)
+# has variant value 1 at locus2.  All other variant values are 0.
+#
+# The haplotype frequency output (haplotype_frequencies_*_pop0.txt) show the
+# local haplotype frequencies (i.e. local ancestry) moving toward 100% group 1
+# near locus1 and toward 100% group 4 near locus2.  Note that in the region at
+# the middle of the chromosome the proportions are near .25, as would be
+# expected due to recombination.  One can also see that the mean fitnesses
+# (mean_fitnesses.txt) rise steadily to 1.4, i.e. all individuals are fixed for
+# variant 1 at both locus1 and locus2.
+#
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    generation_count = 100
+    population_count = 1
+    chromosome_pair_count = 1
+    chromosome_lengths = 10000000
+    population_size = 1000 # 2000 ids
+    fitness_function = qt
+
+Locus locus1
+    chromosome = 1
+    position = 2000000
+
+Locus locus2
+    chromosome = 1
+    position = 8000000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+VariantIndicator_IDRange vi
+    locus:start:count:step:value = locus1 0 500 1 1       # first 250 individuals are homozygous at locus1 for variant value 1
+    locus:start:count:step:value = locus2 1500 500 1 1    # last 250 individuals are homozygous at locus2 for variant value 1
+
+QuantitativeTrait_IndependentLoci qt  # 2 loci with additive fitness effects
+    qtl = locus1 1 1.1 1.2
+    qtl = locus2 0 0.1 0.2
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+    locus = locus2
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt
+
+HaplotypeGrouping_IDRange hg # 4 groups:  note that there are 2 chromosome ids per initial individual
+    start:count = 0 500
+    start:count = 500 500
+    start:count = 1000 500
+    start:count = 1500 500
+
+Reporter_HaplotypeFrequencies reporter_haplotype_freqs
+    haplotype_grouping = hg
+    chromosome_step = 1000000
+    update_step = 10
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_2_locus_selection
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    variant_indicator = vi
+    quantitative_trait = qt
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_haplotype_freqs
+

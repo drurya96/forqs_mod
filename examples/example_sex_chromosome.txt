@@ -1,0 +1,68 @@
+#
+# example_sex_chromosome.txt
+#
+
+
+PopulationConfigGenerator_File pcg
+    chromosome_lengths = 1e6 1e6
+    filename = example_sex_chromosome_popconfig.txt
+
+#
+# no recombination with male sex chromosome (chromosome 1)
+#
+
+RecombinationPositionGenerator_Uniform rpg_female
+    rate = 1
+
+RecombinationPositionGenerator_Uniform rpg_male_default
+    rate = 1
+
+RecombinationPositionGenerator_Trivial rpg_male_no_recombination
+
+RecombinationPositionGenerator_Composite rpg_male
+    default_recombination_position_generator = rpg_male_default
+    chromosome:recombination_position_generator = 1 rpg_male_no_recombination
+
+#
+# gender == quantitative trait
+#
+
+Locus locus_Y
+    chromosome = 1
+    position = 0
+
+QuantitativeTrait_IndependentLoci qt_male
+    qtl = locus_Y 0 1 2
+
+QuantitativeTrait_Expression qt_female
+    variable:quantitative_trait = y qt_male 
+    expression = 1-y
+
+#
+# specify males in initial population
+#
+
+VariantIndicator_IDRange vi
+    locus:start:count:step:value = locus_Y 1 40 4 1
+
+Reporter_Population reporter_population
+    update_step = 1
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt_male
+    write_full = 1
+
+SimulatorConfig
+    output_directory = output_example_sex_chromosome
+    population_config_generator = pcg
+    variant_indicator = vi
+    recombination_position_generator = rpg_female
+    recombination_position_generator = rpg_male
+    quantitative_trait = qt_male
+    quantitative_trait = qt_female
+    reporter = reporter_population
+    reporter = reporter_trait_values
+    write_vi = 1
+    seed = 0
+
+

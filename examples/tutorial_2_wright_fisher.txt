@@ -1,0 +1,25 @@
+#
+# tutorial_2_wright_fisher.txt
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    population_size = 100
+    generation_count = 200
+    # population_count = 10
+
+Locus my_locus
+    chromosome = 1
+    position = 100000
+
+VariantIndicator_SingleLocusHardyWeinberg vi
+    locus = my_locus
+    allele_frequency = .5
+
+Reporter_AlleleFrequencies reporter_allele_freqs
+    locus = my_locus
+
+SimulatorConfig
+    output_directory = output_tutorial_2_wright_fisher
+    population_config_generator = pcg
+    variant_indicator = vi
+    reporter = reporter_allele_freqs

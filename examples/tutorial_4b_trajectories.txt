@@ -1,0 +1,43 @@
+#
+# tutorial_4b_trajectories.txt
+#
+
+# population 1
+
+Trajectory_Constant popsize_pop1_1
+    value = 100
+
+Trajectory_Linear popsize_pop1_2
+    begin:value = 2 100
+    end:value = 5 400
+
+Trajectory_Constant popsize_pop1_3
+    value = 400
+
+Trajectory_GenerationComposite popsize_pop1
+    generation:trajectory = 0 popsize_pop1_1
+    generation:trajectory = 2 popsize_pop1_2
+    generation:trajectory = 5 popsize_pop1_3
+
+# population 2
+
+Trajectory_Exponential popsize_pop2
+    generation_begin = 0
+    value_begin = 1000
+    rate = 0.693147     # log(2); population size doubles each generation
+
+# composite trajectory
+
+Trajectory_PopulationComposite popsize
+    trajectories = popsize_pop1 popsize_pop2
+
+PopulationConfigGenerator_LinearSteppingStone pcg
+    generation_count = 8
+    population_count = 2
+    population_size = popsize
+
+SimulatorConfig
+    output_directory = output_tutorial_4b_trajectories
+    write_popconfig = 1        # set this flag to write out the popconfig file
+    population_config_generator = pcg
+

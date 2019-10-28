@@ -1,0 +1,50 @@
+#
+# example_neutral_mutation_recessive_regions.txt
+#
+# same simulation as example_neutral_mutation_recessive,
+# but demonstrating the use of MutationGenerator_Regions with the special
+# case of a single site
+#
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_pair_count = 1
+    population_size = 10000
+    population_count = 1
+    generation_count = 1000
+    fitness_function = qt
+
+RecombinationPositionGenerator_Trivial rpg
+
+Locus locus1
+    chromosome = 1
+    position = 500
+
+VariantIndicator_SingleLocusHardyWeinberg vi
+    locus = locus1
+    allele_frequency = .5
+
+QuantitativeTrait_SingleLocusFitness qt
+    locus = locus1
+    w0 = 1
+    w1 = 1
+    w2 = .9
+
+Trajectory_Constant mu
+    value = .001
+
+MutationGenerator_Regions mg
+    locus:length:rate = locus1 1 mu
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_mutation_selection_recessive_regions
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    mutation_generator = mg
+    variant_indicator = vi
+    quantitative_trait = qt
+    reporter = reporter_allele_frequencies
+

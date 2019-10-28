@@ -1,0 +1,79 @@
+#
+# example_1_locus_selection_optimum.txt
+#
+# this demonstrates the use of more generic modules to do the single locus selection simulation:
+#
+#       PopulationConfigGenerator_LinearSteppingStone
+#           - constant population size trajectory
+#           - constant 0 migration rate trajectory
+#
+#       QuantitativeTrait_IndependentLoci
+#           - single qtl with effect sizes 100, 110, 120
+#
+#       FitnessFunction_Optimum
+#           - optimum 120, radius 120, power 1 (linear)
+# 
+# the simulation results are identical to those from example_1_locus_selection.txt
+#
+
+Trajectory_Constant id_population_size_trajectory
+    value = 100
+
+Trajectory_Constant id_migration_rate_trajectory
+    value = 0
+
+PopulationConfigGenerator_LinearSteppingStone popconfig_generator
+    generation_count = 120
+    population_count = 10
+    id_offset_step = 1000
+    chromosome_pair_count = 1
+    chromosome_lengths = 1000000
+    population_size = id_population_size_trajectory
+    migration_rate_default = id_migration_rate_trajectory
+    fitness_function = fitness
+
+Locus my_locus
+    chromosome = 1
+    position = 500000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+VariantIndicator_SingleLocusHardyWeinberg my_variant_indicator
+    locus = my_locus
+    allele_frequency = .1
+
+# for illustration, the fitnesses (1, 1.1, 1.2) have been transformed to trait values of (100, 110, 120)
+
+QuantitativeTrait_IndependentLoci my_qt
+    qtl = my_locus 100 110 120
+
+FitnessFunction_Optimum fitness
+    quantitative_trait = my_qt
+    optimum = 120
+    radius:power = 120 1
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = my_locus
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = my_qt fitness
+
+Reporter_DeterministicTrajectories reporter_deterministic_trajectories
+    initial_allele_frequency = .1
+    w0 = 1
+    w1 = 1.1
+    w2 = 1.2
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_1_locus_selection_optimum
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    variant_indicator = my_variant_indicator
+    quantitative_trait = my_qt
+    quantitative_trait = fitness
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_deterministic_trajectories
+
+

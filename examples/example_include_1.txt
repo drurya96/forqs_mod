@@ -1,0 +1,11 @@
+#
+# example_include_1.txt
+#
+
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 3
+    population_count = 1
+    population_size = 10
+    chromosome_lengths = 1e6
+

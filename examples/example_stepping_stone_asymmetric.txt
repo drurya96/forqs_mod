@@ -1,0 +1,76 @@
+#
+# example_stepping_stone_asymmetric.txt
+#
+
+Trajectory_Constant id_population_size_trajectory
+    value = 100
+
+Trajectory_Constant id_migration_rate_trajectory_default
+    value = 0.05
+
+#
+# "123" to make it easy to find in output "forqs.popconfig.txt"
+#
+
+Trajectory_Constant id_migration_rate_123
+    value = .123
+
+PopulationConfigGenerator_LinearSteppingStone popconfig_generator
+    generation_count = 100
+    population_count = 3
+    id_offset_step = 1000
+    chromosome_pair_count = 1
+    chromosome_lengths = 1000000
+    population_size = id_population_size_trajectory
+    migration_rate_default = id_migration_rate_trajectory_default
+    migration_rate:from:to = id_migration_rate_123 2 1 # special migration rate from pop1 to pop0
+    migration_rate:from:to = id_migration_rate_123 3 2 # special migration rate from pop2 to pop1
+    fitness_function = fitness
+
+Locus my_locus
+    chromosome = 1
+    position = 500000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+VariantIndicator_SingleLocusHardyWeinberg my_variant_indicator
+    locus = my_locus
+    allele_frequency = .5
+
+QuantitativeTrait_IndependentLoci my_qt
+    qtl = my_locus 0 50 100
+
+FitnessFunction_Optimum ff_0
+    quantitative_trait = my_qt
+    optimum = 0
+    radius:power = 500 1
+
+FitnessFunction_Trivial ff_1
+
+FitnessFunction_Optimum ff_2
+    quantitative_trait = my_qt
+    optimum = 100
+    radius:power = 500 1
+
+QuantitativeTrait_PopulationComposite fitness
+    quantitative_traits = ff_0 ff_1 ff_2
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = my_locus
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = my_qt fitness
+
+Reporter_Timer reporter_timer
+
+SimulatorConfig
+    seed = 1
+    output_directory = output_example_stepping_stone_asymmetric
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    variant_indicator = my_variant_indicator
+    quantitative_trait = my_qt
+    quantitative_trait = fitness
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+

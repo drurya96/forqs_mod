@@ -1,0 +1,110 @@
+#
+# example_male_selection.txt
+#
+
+
+PopulationConfigGenerator_File pcg
+    chromosome_lengths = 1e6
+    filename = example_male_selection_popconfig.txt
+
+#
+# no male recombination
+#
+
+RecombinationPositionGenerator_Uniform rpg_female
+    rate = 1
+
+RecombinationPositionGenerator_Trivial rpg_male
+
+#
+# gender
+#
+
+Locus locus_Y
+    chromosome = 1
+    position = 0
+
+QuantitativeTrait_IndependentLoci qt_male
+    qtl = locus_Y 0 1 2
+
+QuantitativeTrait_Expression qt_female
+    variable:quantitative_trait = y qt_male 
+    expression = 1-y
+
+#
+# trait
+#
+
+LocusList qtls
+    chromosome:position = 1 1000
+    chromosome:position = 1 2000
+    chromosome:position = 1 3000
+    chromosome:position = 1 4000
+    chromosome:position = 1 5000
+    chromosome:position = 1 6000
+    chromosome:position = 1 7000
+    chromosome:position = 1 8000
+    chromosome:position = 1 9000
+    chromosome:position = 1 10000
+
+Distribution_Constant positive_effect
+    value = .1
+
+Distribution_Constant no_dominance
+    value = 0
+
+QTLEffectGenerator generator_positive
+    locus_list = qtls
+    effect_size_distribution = positive_effect
+    dominance_distribution = no_dominance
+
+QuantitativeTrait_IndependentLoci qt
+    qtl_effect_generator = generator_positive
+    
+FitnessFunction_TruncationSelection qt_selected_high
+    quantitative_trait = qt 
+    proportion_selected = .2
+    ignore_zero = 1
+
+FitnessFunction_TruncationSelection qt_selected_low
+    quantitative_trait = qt 
+    proportion_selected = .2
+    lower_tail = 1
+
+QuantitativeTrait_Expression qt_selected_high_male
+    variable:quantitative_trait = fitness qt_selected_high
+    variable:quantitative_trait = male qt_male
+    expression = fitness * male
+
+#
+# specify SNPs via file
+#
+
+VariantIndicator_File vi
+    msfile = example_male_selection_snps.txt
+    loci = locus_Y qtls
+
+Reporter_Population reporter_population
+    update_step = 1
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt_male qt qt_selected_high qt_selected_high_male
+    write_full = 1
+
+SimulatorConfig
+    output_directory = output_example_male_selection
+    population_config_generator = pcg
+    variant_indicator = vi
+    recombination_position_generator = rpg_female
+    recombination_position_generator = rpg_male
+    quantitative_trait = qt_male
+    quantitative_trait = qt_female
+    quantitative_trait = qt
+    quantitative_trait = qt_selected_high
+    quantitative_trait = qt_selected_high_male
+    reporter = reporter_population
+    reporter = reporter_trait_values
+    write_vi = 1
+    seed = 0
+
+

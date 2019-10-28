@@ -1,0 +1,46 @@
+#
+# example_neutral_mutation_region.txt
+#
+
+
+#
+# mu = 2.5e-7
+# N = 10
+# region size = 1mb
+#
+# theta (whole region) = 4N*mu*region_size = 10
+#
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_pair_count = 1
+    population_size = 10
+    population_count = 1
+    generation_count = 100
+
+RecombinationPositionGenerator_Trivial rpg
+
+Locus locus1
+    chromosome = 1
+    position = 0
+
+Trajectory_Constant mu
+    value = 2.5e-7
+
+MutationGenerator_Regions mg
+    locus:length:rate = locus1 1e6 mu
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+
+Reporter_Regions reporter_regions
+    locus:length = locus1 1000000
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_neutral_mutation_region
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    mutation_generator = mg
+    reporter = reporter_allele_frequencies
+    reporter = reporter_regions
+

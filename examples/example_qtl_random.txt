@@ -1,0 +1,75 @@
+#
+# example_qtl_random.txt
+#
+
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 10
+    population_count = 1
+    chromosome_pair_count = 3
+    chromosome_lengths = 1e6 1e6 1e6
+    population_size = 1000
+    fitness_function = fitness
+
+RecombinationPositionGenerator_Uniform rpg
+
+# LocusList_Random chooses loci uniformly at random; this requires 
+# chromosome_lengths to be specified in the PopulationConfigGenerator
+
+LocusList_Random loci
+    locus_count = 10
+
+
+# VariantIndicator_Random can use frequencies drawn from a random distribution;
+# Distribution_NeutralFrequency produces random frequencies according to a
+# neutral site frequency spectrum with the specified sample size
+
+Distribution_NeutralFrequency random_frequency
+    sample_size = 2000
+
+VariantIndicator_Random vi
+    locus_list:population:frequency_distribution = loci * random_frequency
+
+
+# The QuantitativeTrait is defined by generating random effect sizes and 
+# dominance values for each locus in the LocusList, according to specified 
+# distributions.  In this case, the dominance distribution is constant 0, so
+# the effects are additive.
+
+Distribution_Exponential positive_effect
+    mean = .1
+
+QTLEffectGenerator generator_positive
+    locus_list = loci
+    effect_size_distribution = positive_effect
+
+QuantitativeTrait_IndependentLoci qt
+    qtl_effect_generator = generator_positive
+    environmental_variance = .05
+
+
+# FitnessFunction, Reporters, SimulatorConfig
+
+FitnessFunction_TruncationSelection fitness
+    quantitative_trait = qt
+    proportion_selected = .25
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt                             # reports for all QTLs
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt fitness
+    write_full = 1
+
+SimulatorConfig
+    output_directory = output_example_qtl_random
+    seed = 123
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    variant_indicator = vi
+    quantitative_trait = qt
+    quantitative_trait = fitness
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    write_vi = 1
+

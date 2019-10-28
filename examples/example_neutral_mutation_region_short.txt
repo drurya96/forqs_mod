@@ -1,0 +1,48 @@
+#
+# example_neutral_mutation_region_short.txt
+#
+
+
+#
+# mu = 2.5e-8
+# N = 10
+# region size = 10mb
+#
+# theta (whole region) = 4N*mu*region_size = 10
+#
+
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    generation_count = 3
+    population_count = 1
+    chromosome_pair_count = 1
+    chromosome_lengths = 10000000
+    population_size = 10
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+Locus locus1
+    chromosome = 1
+    position = 0
+
+Trajectory_Constant mu
+    value = 2.5e-8
+
+MutationGenerator_Regions mg
+    locus:length:rate = locus1 10000000 mu
+
+Reporter_Population reporter_population
+    update_step = 0
+
+Reporter_Regions reporter_regions
+    locus:length = locus1 10000000
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_neutral_mutation_region_short
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    mutation_generator = mg
+    reporter = reporter_population
+    reporter = reporter_regions
+

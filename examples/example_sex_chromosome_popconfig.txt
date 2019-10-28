@@ -1,0 +1,37 @@
+#
+# example_sex_chromosome_popconfig.txt
+#
+
+generation 0
+population population_size=20 chromosome_pair_count=2
+
+generation 1
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+
+generation
+population population_size=20 chromosome_pair_count=2 mating_distribution={<1|0,qt_female,0,qt_male>}
+

@@ -1,0 +1,22 @@
+#
+# benchmark_10k_neutral.txt
+#
+# benchmark configuration: 10k individuals, recombination only
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    population_size = 10000
+    generation_count = 200
+    chromosome_pair_count = 1
+    chromosome_lengths = 1e8
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+Reporter_Timer reporter_timer
+
+SimulatorConfig
+    output_directory = output_benchmark_10k_neutral
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    reporter = reporter_timer
+    

@@ -1,0 +1,114 @@
+#
+# example_qtl_random_full_human_genome.txt
+#
+
+
+# This configuration file specifies a simulation of two populations (each size
+# 1000) where individuals have roughly human genome sizes (23 chromosome pairs,
+# 100 million bp each chromosome).  One quantitative trait is simulated, with
+# 50 QTLs distributed randomly over the genome, with effect sizes drawn from an
+# exponential distribution.  The two populations have different optimal trait
+# values with Gaussian decay in fitness away from the optima; the populations
+# move toward their optima over the course of the simulation.  The whole-genome
+# mosaic haplotype structure can optionally be reported for each individual at
+# any generation (commented out below -- the output files can be large).
+
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 5                        # 50
+    population_count = 2
+    chromosome_pair_count = 23
+    chromosome_lengths = 1e8 1e8 1e8 1e8 1e8 1e8 1e8 1e8 1e8 1e8 
+    chromosome_lengths = 1e8 1e8 1e8 1e8 1e8 1e8 1e8 1e8 1e8 1e8 
+    chromosome_lengths = 1e8 1e8 1e8
+    population_size = 10000
+    fitness_function = fitness
+
+
+RecombinationPositionGenerator_Uniform rpg
+    rate = 1
+
+
+# LocusList_Random chooses loci uniformly at random across the genome
+
+LocusList_Random loci
+    locus_count = 50
+
+
+# VariantIndicator_Random can use frequencies drawn from a random distribution;
+# Distribution_NeutralFrequency produces random frequencies according to a
+# neutral site frequency spectrum with the specified sample size
+
+Distribution_NeutralFrequency random_frequency
+    sample_size = 200
+
+VariantIndicator_Random vi
+    locus_list:population:frequency_distribution = loci * random_frequency
+
+
+# The QuantitativeTrait is defined by generating random effect sizes and 
+# dominance values for each locus in the LocusList, according to specified 
+# distributions.  In this case, the dominance distribution is constant 0, so
+# the effects are additive.  The effect sizes are drawn from an exponential distribution
+
+Distribution_Exponential effect_size
+     mean = .1
+
+QTLEffectGenerator effect_generator
+    locus_list = loci
+    effect_size_distribution = effect_size
+    random_effect_sign = 1
+
+QuantitativeTrait_IndependentLoci qt
+    qtl_effect_generator = effect_generator
+    environmental_variance = .01
+
+
+# FitnessFunction: the two populations have different optimal values for the trait,
+# with Gaussian decay in fitness away from the optima.
+
+FitnessFunction_Optimum ff_1
+    quantitative_trait = qt
+    optimum = 1
+    gaussian_width = 1
+
+FitnessFunction_Optimum ff_2
+    quantitative_trait = qt
+    optimum = -1
+    gaussian_width = 1
+
+QuantitativeTrait_PopulationComposite fitness
+    quantitative_traits = ff_1 ff_2
+
+
+# Reporters for allele frequencies at the QTLs, mean fitnesses, trait values, and
+# the individual haplotype structure in the final generation
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt                             # reports for all QTLs
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt fitness
+#    write_full = 1                                     # uncomment to report individual trait values
+
+Reporter_Population reporter_population
+#    update_step = 1                                    # uncomment to report each generation
+
+Reporter_Timer reporter_timer
+
+
+SimulatorConfig
+    output_directory = output_example_qtl_random_full_human_genome
+    seed = 124
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    variant_indicator = vi
+    quantitative_trait = qt
+    quantitative_trait = fitness
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+#    reporter = reporter_population                     # uncomment to report individual haplotype structure
+#    reporter = reporter_timer
+#    write_vi = 1
+    write_popconfig = 1
+

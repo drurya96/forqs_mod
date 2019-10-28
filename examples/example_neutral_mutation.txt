@@ -1,0 +1,31 @@
+#
+# example_neutral_mutation.txt
+#
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_pair_count = 1
+    population_size = 1000
+    population_count = 1
+    generation_count = 200
+
+RecombinationPositionGenerator_Trivial rpg
+
+Locus locus1
+    chromosome = 1
+    position = 500
+
+MutationGenerator_SingleLocus mg
+    locus = locus1
+    mu = .01
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_neutral_mutation
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    mutation_generator = mg
+    reporter = reporter_allele_frequencies
+

@@ -1,0 +1,50 @@
+#
+# example_ld.txt
+#
+
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    generation_count = 100
+    population_count = 10
+    chromosome_pair_count = 1
+    chromosome_lengths = 1000000
+    population_size = 1000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+Locus locus1
+    chromosome = 1
+    position = 500000
+
+Locus locus2
+    chromosome = 1
+    position = 600000
+
+VariantIndicator_TwoLocusLD variant_indicator
+    population_size = 1000
+    locus_1 = locus1
+    allele_frequency_1 = .5
+    locus_2 = locus2
+    allele_frequency_2 = .5
+    D = .25
+    id_offset_step = 2000  # matches (2 * population_size) from PCG_ConstantSize
+
+Reporter_AlleleFrequencies reporter_allele_frequencies_1
+    locus = locus1
+
+Reporter_AlleleFrequencies reporter_allele_frequencies_2
+    locus = locus2
+
+Reporter_LD reporter_ld
+    locus_1 = locus1
+    locus_2 = locus2
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_ld
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    variant_indicator = variant_indicator
+    reporter = reporter_allele_frequencies_1
+    reporter = reporter_allele_frequencies_2
+    reporter = reporter_ld
+

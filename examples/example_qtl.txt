@@ -1,0 +1,78 @@
+#
+# example_qtl.txt
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    chromosome_pair_count = 10
+    population_size = 100
+    population_count = 1
+    generation_count = 20
+    fitness_function = fitness
+
+LocusList positive_loci
+    chromosome:position = 1 0
+    chromosome:position = 2 0
+    chromosome:position = 3 0
+    chromosome:position = 4 0
+    chromosome:position = 5 0
+
+LocusList negative_loci
+    chromosome:position = 6 0
+    chromosome:position = 7 0
+    chromosome:position = 8 0
+    chromosome:position = 9 0
+    chromosome:position = 10 0
+
+VariantIndicator_Random vi
+    locus_list:population:frequencies = positive_loci * .5 .5 .5 .5 .5
+    locus_list:population:frequencies = negative_loci * .5 .5 .5 .5 .5
+
+Distribution_Constant positive_effect
+    value = .1
+
+Distribution_Constant negative_effect
+    value = -.1
+
+Distribution_Constant no_dominance
+    value = 0
+
+QTLEffectGenerator generator_positive
+    locus_list = positive_loci
+    effect_size_distribution = positive_effect
+    dominance_distribution = no_dominance
+
+QTLEffectGenerator generator_negative
+    locus_list = negative_loci
+    effect_size_distribution = negative_effect
+    dominance_distribution = no_dominance
+
+QuantitativeTrait_IndependentLoci qt
+    qtl_effect_generator = generator_positive
+    qtl_effect_generator = generator_negative
+    environmental_variance = .05
+
+FitnessFunction_TruncationSelection fitness
+    quantitative_trait = qt
+    proportion_selected = .5
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt                             # reports for all QTLs
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt fitness
+    write_full = 1
+
+Reporter_Population reporter_population
+
+SimulatorConfig
+    seed = 0
+    output_directory = output_example_qtl
+    population_config_generator = pcg
+    variant_indicator = vi
+    quantitative_trait = qt
+    quantitative_trait = fitness
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_population
+    write_vi = 1
+

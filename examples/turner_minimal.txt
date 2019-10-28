@@ -1,0 +1,82 @@
+#
+# turner_minimal.txt
+#
+
+PopulationConfigGenerator_TurnerExperiment pcg
+    population_size_founders = 20
+    population_size_neutral = 1000
+    population_size_replicate = 20
+    generation_count_neutral = 0
+    generation_count_selected = 2
+    quantitative_trait = qt
+    proportion_selected = .2
+    report_hidden = 1
+
+#
+# trait
+#
+
+LocusList qtls
+    chromosome:position = 1 1000
+    chromosome:position = 1 2000
+    chromosome:position = 1 3000
+    chromosome:position = 1 4000
+    chromosome:position = 1 5000
+    chromosome:position = 1 6000
+    chromosome:position = 1 7000
+    chromosome:position = 1 8000
+    chromosome:position = 1 9000
+    chromosome:position = 1 10000
+
+Distribution_Constant positive_effect
+    value = 1
+
+Distribution_Constant no_dominance
+    value = 0
+
+QTLEffectGenerator generator_positive
+    locus_list = qtls
+    effect_size_distribution = positive_effect
+    dominance_distribution = no_dominance
+
+QuantitativeTrait_IndependentLoci qt
+    qtl_effect_generator = generator_positive
+
+Locus locus_Y
+    chromosome = 1
+    position = 0
+
+VariantIndicator_File vi
+    msfile = turner_minimal_snps.txt
+    loci = locus_Y qtls
+
+
+#
+# Reporters
+#
+
+Reporter_Population reporter_population
+    update_step = 1
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt
+    write_full = 1
+    ignore_zero_values = 1
+
+Reporter_Variants reporter_variants
+    loci = locus_Y qtls
+    update_step = 1
+
+SimulatorConfig
+    output_directory = output_turner_minimal
+    population_config_generator = pcg
+    variant_indicator =  vi
+    quantitative_trait = qt
+    reporter = reporter_population
+    #reporter = reporter_trait_values
+    reporter = reporter_variants
+    write_vi = 1
+    write_popconfig = 1
+    seed = 0
+
+

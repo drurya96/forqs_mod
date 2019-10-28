@@ -1,0 +1,11 @@
+#
+# tutorial_0_minimal.txt
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    population_size = 10
+    generation_count = 3
+
+SimulatorConfig
+    output_directory = output_tutorial_0_minimal
+    population_config_generator = pcg

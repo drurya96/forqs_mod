@@ -1,0 +1,15 @@
+#
+# ms_map_config_2.txt
+#
+
+ms_filenames = ms_test_data_1.txt
+
+chromosome = 1
+position_begin = 0
+position_end = 10000000
+
+map_entry = 0 20 0 0
+
+new_mutations_map = regions_pop1.ms forqs.id_ancestry_map.txt
+
+

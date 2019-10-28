@@ -1,0 +1,11 @@
+#
+# example_include_2.txt
+#
+
+RecombinationPositionGenerator_Uniform rpg
+    rate = 1
+
+Reporter_Population reporter_population
+    # update_step = 1
+
+

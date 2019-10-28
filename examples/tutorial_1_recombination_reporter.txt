@@ -1,0 +1,21 @@
+#
+# tutorial_1_recombination_reporter.txt
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 3
+    population_count = 1
+    population_size = 10
+    chromosome_lengths = 1e6
+
+RecombinationPositionGenerator_Uniform rpg
+    rate = 1
+
+Reporter_Population reporter_population
+    # update_step = 1
+
+SimulatorConfig
+    output_directory = output_tutorial_1_recombination_reporter
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    reporter = reporter_population

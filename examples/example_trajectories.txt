@@ -1,0 +1,126 @@
+#
+# example_trajectories.txt
+#
+# This configuration file  illustrates the use of Trajectory modules.   In
+# particular, Trajectory_GenerationComposite and Trajectory_PopulationComposite
+# are used to build trajectories that vary in time (generation) and space
+# (population).
+#
+# After running "forqs example_trajectories.txt", examine the file:
+#   output_example_trajectories/forqs.popconfig.txt
+# to see the population sizes and migration rates for each generation.
+#
+
+# 3 populations:  pop1, pop2, pop3
+#
+# population size trajectories:
+#   pop1: constant 100, then linear increase to 400, then constant 400
+#   pop2: constant 1000, then exponential doubling to 16000, then constant
+#   pop3: constant 2000
+
+# pop1
+
+Trajectory_Constant id_population_size_pop1_0
+    value = 100
+
+Trajectory_Linear id_population_size_pop1_1
+    begin:value = 4 100
+    end:value = 7 400
+
+Trajectory_Constant id_population_size_pop1_2
+    value = 400
+
+Trajectory_GenerationComposite id_population_size_pop1
+    generation:trajectory = 0 id_population_size_pop1_0
+    generation:trajectory = 4 id_population_size_pop1_1
+    generation:trajectory = 7 id_population_size_pop1_2
+
+# pop2
+
+Trajectory_Constant id_population_size_pop2_0
+    value = 1000
+
+Trajectory_Exponential id_population_size_pop2_1
+    generation_begin = 2
+    value_begin = 1000
+    rate = 0.6931471805599453 # log(2)
+
+Trajectory_Constant id_population_size_pop2_2
+    value = 16000
+
+Trajectory_GenerationComposite id_population_size_pop2
+    generation:trajectory = 0 id_population_size_pop2_0
+    generation:trajectory = 2 id_population_size_pop2_1
+    generation:trajectory = 6 id_population_size_pop2_2
+
+# pop3
+
+Trajectory_Constant id_population_size_pop3
+    value = 2000
+
+#
+# population composite:  specify trajectory for each population (in order)
+#
+
+Trajectory_PopulationComposite id_population_size
+    trajectories = id_population_size_pop1 id_population_size_pop2 id_population_size_pop3
+
+#
+# default migration rate trajectory:  linear decrease from .05 to 0
+#
+
+Trajectory_Linear id_migration_rate_0
+    begin:value = 1 .05
+    end:value = 6 0
+
+Trajectory_Constant id_migration_rate_1
+    value = 0
+
+Trajectory_GenerationComposite id_migration_rate
+    generation:trajectory = 0 id_migration_rate_0
+    generation:trajectory = 5 id_migration_rate_1
+
+#
+# migration rate from pop2 to pop3:  constant .1
+#
+
+Trajectory_Constant id_migration_rate_pop2_pop3
+    value = .1
+
+#
+# PopulationConfigGenerator_LinearSteppingStone represents a linear steppping
+# stone demographic model, where migration is permitted only between adjacent
+# populations.
+#
+# population_size, migration_rate_default, and migration_rate:from:to
+# are references to Trajectory modules specified above.
+#
+# The simulator uses the population_size trajectory to obtain the population 
+# size for a given population and generation.
+#
+# migration_rate_default represents the default migration rate between each
+# pair of adjacent populations (which may vary per-generation).
+#
+# migration_rate:from:to can be used to specify a migration rate for a
+# particular pair of adjacent populations that differs from the default
+# migration rate.
+#
+
+PopulationConfigGenerator_LinearSteppingStone popconfig_generator
+    chromosome_pair_count = 1
+    population_count = 3
+    generation_count = 10
+    id_offset_step = 10000
+    population_size = id_population_size
+    migration_rate_default = id_migration_rate
+    migration_rate:from:to = id_migration_rate_pop2_pop3 2 3 
+
+RecombinationPositionGenerator_Trivial id_rpg
+
+SimulatorConfig
+    seed = 1
+    output_directory = output_example_trajectories
+    write_popconfig = 1                                    # set this flag to write out the popconfig file
+    population_config_generator = popconfig_generator
+    recombination_position_generator = id_rpg
+

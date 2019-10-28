@@ -1,0 +1,56 @@
+#
+# benchmark_1m_selection.txt
+#
+# benchmark configuration: 1 million individuals, recombination, selection at single locus
+#
+
+PopulationConfigGenerator_ConstantSize pcg
+    generation_count = 10
+    population_count = 1
+    population_size = 1000000
+    chromosome_pair_count = 1
+    chromosome_lengths = 1000000
+    fitness_function = qt
+
+Locus selected_locus
+    chromosome = 1
+    position = 500000
+
+RecombinationPositionGenerator_SingleCrossover rpg
+
+VariantIndicator_SingleLocusHardyWeinberg vi
+    locus = selected_locus
+    allele_frequency = .1
+
+QuantitativeTrait_SingleLocusFitness qt
+    locus = selected_locus
+    w0 = 1
+    w1 = 1.1
+    w2 = 1.2
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = selected_locus
+
+Reporter_TraitValues reporter_fitness
+    quantitative_trait = qt
+
+Reporter_DeterministicTrajectories reporter_deterministic_trajectories
+    initial_allele_frequency = .1
+    w0 = 1
+    w1 = 1.1
+    w2 = 1.2
+
+Reporter_Timer reporter_timer
+
+SimulatorConfig
+    output_directory = output_benchmark_1m_selection
+    seed = 0
+    population_config_generator = pcg
+    recombination_position_generator = rpg
+    variant_indicator = vi
+    quantitative_trait = qt
+    reporter = reporter_allele_frequencies
+    reporter = reporter_fitness
+    reporter = reporter_deterministic_trajectories
+    reporter = reporter_timer
+
