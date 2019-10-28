@@ -1,0 +1,30 @@
+INCLUDE2: ['config_0.txt', 'config_1.txt']
+VALUE: [1111, 2222]
+COLOR: ['red', 'green', 'blue']
+replicate count: 2
+Ready to generate 24 configuration files.
+<Enter> to continue, 'q' to quit
+config_1.txt
+config_2.txt
+config_3.txt
+config_4.txt
+config_5.txt
+config_6.txt
+config_7.txt
+config_8.txt
+config_9.txt
+config_10.txt
+config_11.txt
+config_12.txt
+config_13.txt
+config_14.txt
+config_15.txt
+config_16.txt
+config_17.txt
+config_18.txt
+config_19.txt
+config_20.txt
+config_21.txt
+config_22.txt
+config_23.txt
+config_24.txt

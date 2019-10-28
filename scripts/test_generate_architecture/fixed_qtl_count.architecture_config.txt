@@ -1,0 +1,20 @@
+#
+# fixed_qtl_count_architecture_config.txt
+#
+
+trait_replicate_count 10
+population_replicate_count 1
+
+trait_generator fixed_qtl_count
+population_generator homozygous_founders
+
+founder_line_count 10
+individuals_per_founder_line 10
+
+chromosome_lengths 2.5e7 5e7 5e7
+trait_name ipi
+qtl_count 10
+total_variance .01
+heritability 0.5
+
+

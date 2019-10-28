@@ -1,0 +1,22 @@
+#
+# focal_qtl.architecture_config.txt
+#
+
+trait_replicate_count 2
+population_replicate_count 2
+
+trait_generator focal_qtl
+population_generator homozygous_founders
+
+founder_line_count 10
+individuals_per_founder_line 10
+
+chromosome_lengths 2.5e7 5e7 5e7
+trait_name ipi
+qtl_count 10            # including focal qtl
+total_variance .01
+heritability 0.5
+focal_qtl_locus 2 1e7
+focal_qtl_effect_sizes .05 .1
+focal_qtl_allele_frequencies .1 .5
+

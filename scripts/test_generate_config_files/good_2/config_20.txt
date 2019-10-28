@@ -1,0 +1,16 @@
+#
+# config_20.txt
+#
+
+# different for each file
+#include include_file_20.txt
+
+# replaced by iterable range
+#include config_1.txt
+
+Hello hello
+    output_directory = output_20
+    seed = 580067372
+    value = 2222
+    color = red
+

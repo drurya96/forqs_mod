@@ -1,0 +1,17 @@
+#
+# demo.architecture_config.txt
+#
+
+trait_replicate_count 2
+population_replicate_count 1
+
+trait_generator demo                   # comments are ignored
+chromosome_lengths 2.5e7 5e7 5e7
+trait_name ipi
+qtl_count 6
+environmental_variance .01
+
+population_generator haplotype_count
+haplotype_count 20
+
+

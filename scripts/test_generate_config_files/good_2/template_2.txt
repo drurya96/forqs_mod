@@ -1,0 +1,16 @@
+#
+# FILENAME
+#
+
+# different for each file
+#include INCLUDE1
+
+# replaced by iterable range
+#include INCLUDE2
+
+Hello hello
+    output_directory = OUTDIR
+    seed = SEED
+    value = VALUE
+    color = COLOR
+

@@ -1,0 +1,31 @@
+#
+# trait3.config.txt
+#
+
+LocusList qtls
+    chromosome:position = 1 0
+    chromosome:position = 2 10000000
+    chromosome:position = 1 8801188
+    chromosome:position = 2 21017866
+    chromosome:position = 1 8876536
+    chromosome:position = 2 428060
+    chromosome:position = 1 17355148
+    chromosome:position = 3 13127001
+    chromosome:position = 3 16741527
+    chromosome:position = 2 48484304
+    chromosome:position = 2 35885896
+
+QuantitativeTrait_IndependentLoci ipi
+    environmental_variance = 0.005
+    qtl = qtls[0] 0 100 1000
+    qtl = qtls[1] 0 0.05 0.1
+    qtl = qtls[2] 0 0.0442830397292 0.0885660794585
+    qtl = qtls[3] 0 0.0438962334174 0.0877924668348
+    qtl = qtls[4] 0 0.0260349087336 0.0520698174673
+    qtl = qtls[5] 0 0.012109868654 0.024219737308
+    qtl = qtls[6] 0 0.0116204861914 0.0232409723828
+    qtl = qtls[7] 0 0.00971430903687 0.0194286180737
+    qtl = qtls[8] 0 0.00729350220899 0.014587004418
+    qtl = qtls[9] 0 0.0071779884755 0.014355976951
+    qtl = qtls[10] 0 0.00484905534236 0.00969811068471
+
