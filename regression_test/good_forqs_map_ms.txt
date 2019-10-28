@@ -1,0 +1,12 @@
+//
+segsites: 9
+positions: 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+aabccccdd
+aabccccdd
+KKLMMMMNN
+KKLMMMMNN
+001222233
+001222233
+aaL2222dd
+aaL2222dd
+

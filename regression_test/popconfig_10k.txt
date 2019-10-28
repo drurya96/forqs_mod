@@ -1,0 +1,26 @@
+generation 0
+population population_size=0
+population population_size=10000 chromosome_pair_count=3
+population population_size=10000 chromosome_pair_count=3
+
+generation 1
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<0.64|1,1><0.32|1,2><0.04|2,2>}
+
+generation 2
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<1|0,0>}
+
+generation 3
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<1|0,0>}
+
+generation 4
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<1|0,0>}
+
+generation 5
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<1|0,0>}
+
+generation 6
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<1|0,0>}
+
+generation 7
+population population_size=10000 chromosome_pair_count=3 mating_distribution={<1|0,0>}
+

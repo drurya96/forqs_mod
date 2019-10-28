@@ -1,0 +1,8 @@
+seed = 0
+popcount = 10
+popsize = 100
+gencount = 120
+allelefreq = 0.1
+w0 = 1
+w1 = 1.1
+w2 = 1.2

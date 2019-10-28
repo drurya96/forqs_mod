@@ -1,0 +1,3 @@
+../examples/genetic_map_chr21_b36.txt
+../examples/genetic_map_chr21_b36.txt
+../examples/genetic_map_chr21_b36.txt

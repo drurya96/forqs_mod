@@ -1,0 +1,3 @@
+seed = 0
+popconfig = popconfig_100k.txt
+genetic_map_list = genetic_map_list.txt

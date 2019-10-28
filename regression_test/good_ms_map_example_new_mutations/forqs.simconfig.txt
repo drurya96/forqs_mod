@@ -1,0 +1,37 @@
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_pair_count = 1
+    generation_count = 3
+    population_count = 1
+    population_size = 10
+
+RecombinationPositionGenerator_SingleCrossover rpg
+    chromosome_length = 10000000
+
+Locus locus1
+    chromosome = 1
+    position = 0
+
+Trajectory_Constant mu
+    value = 2.4999999999999999e-08
+
+MutationGenerator_Regions mg
+    locus_length_rate = locus1 10000000 mu
+
+Reporter_Population reporter_population
+    update_step = 0
+
+Reporter_Regions reporter_regions
+    locus_length = locus1 10000000
+    ms_mapping_begin = 0
+    ms_mapping_end = 10000000
+
+Simulator::Config simconfig_!@#$_
+    mutation_generator = mg
+    output_directory = output_example_neutral_mutation_region_short
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    reporter = reporter_population
+    reporter = reporter_regions
+    seed = 0
+    write_popconfig = 0
+
