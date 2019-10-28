@@ -1,0 +1,7 @@
+#
+# config_9.txt
+#
+    output_directory = output_9
+    seed = 3870619698
+    value = 1
+    color = green

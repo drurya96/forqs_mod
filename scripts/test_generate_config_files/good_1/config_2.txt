@@ -1,0 +1,7 @@
+#
+# config_2.txt
+#
+    output_directory = output_2
+    seed = 1149664691
+    value = 0
+    color = red

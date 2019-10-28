@@ -1,0 +1,7 @@
+#
+# config_4.txt
+#
+    output_directory = output_4
+    seed = 3302642556
+    value = 0
+    color = green

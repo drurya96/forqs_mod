@@ -1,0 +1,3 @@
+VALUE: [0, 1, 2]
+COLOR: ['red', 'green', 'blue']
+replicate count: 2

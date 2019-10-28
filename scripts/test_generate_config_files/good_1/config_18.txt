@@ -1,0 +1,7 @@
+#
+# config_18.txt
+#
+    output_directory = output_18
+    seed = 222915915
+    value = 2
+    color = blue

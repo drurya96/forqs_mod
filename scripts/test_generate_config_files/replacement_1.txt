@@ -1,0 +1,11 @@
+#
+# replacement.txt
+#
+
+function FILENAME lambda i: "config_" + str(i) + ".txt"
+function OUTDIR lambda i: "output_" + str(i)
+function SEED lambda i: random.getrandbits(32)
+
+range VALUE range(3)
+range COLOR ['red', 'green', 'blue']
+

@@ -1,0 +1,7 @@
+#
+# config_3.txt
+#
+    output_directory = output_3
+    seed = 374463918
+    value = 0
+    color = green

@@ -1,0 +1,7 @@
+#
+# config_8.txt
+#
+    output_directory = output_8
+    seed = 3601345173
+    value = 1
+    color = red

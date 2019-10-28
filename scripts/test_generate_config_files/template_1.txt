@@ -1,0 +1,7 @@
+#
+# FILENAME
+#
+    output_directory = OUTDIR
+    seed = SEED
+    value = VALUE
+    color = COLOR

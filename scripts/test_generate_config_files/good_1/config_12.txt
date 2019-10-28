@@ -1,0 +1,7 @@
+#
+# config_12.txt
+#
+    output_directory = output_12
+    seed = 1628326613
+    value = 1
+    color = blue

@@ -1,0 +1,7 @@
+#
+# config_6.txt
+#
+    output_directory = output_6
+    seed = 1144839923
+    value = 0
+    color = blue

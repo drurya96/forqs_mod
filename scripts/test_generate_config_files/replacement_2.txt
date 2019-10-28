@@ -1,0 +1,13 @@
+#
+# replacement_2.txt
+#
+
+function FILENAME lambda i: "config_" + str(i) + ".txt"
+function OUTDIR lambda i: "output_" + str(i)
+function SEED lambda i: random.getrandbits(32)
+function INCLUDE1 lambda i: "include_file_" + str(i) + '.txt'
+
+range INCLUDE2 ['config_' + str(i) + '.txt' for i in range(2)]
+range VALUE [1111, 2222]
+range COLOR ['red', 'green', 'blue']
+

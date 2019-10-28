@@ -1,0 +1,7 @@
+#
+# config_15.txt
+#
+    output_directory = output_15
+    seed = 1426778249
+    value = 2
+    color = green
