@@ -1,0 +1,81 @@
+PopulationConfigGenerator_ConstantSize pcg
+    chromosome_pair_count = 10
+    fitness_function = fitness 
+    generation_count = 20
+    id_offset_step = 0
+    population_count = 1
+    population_size = 100
+
+RecombinationPositionGenerator_Trivial rpg_trivial
+
+LocusList positive_loci
+    chromosome:position = 1 0
+    chromosome:position = 2 0
+    chromosome:position = 3 0
+    chromosome:position = 4 0
+    chromosome:position = 5 0
+
+LocusList negative_loci
+    chromosome:position = 6 0
+    chromosome:position = 7 0
+    chromosome:position = 8 0
+    chromosome:position = 9 0
+    chromosome:position = 10 0
+
+VariantIndicator_Random vi
+    locus_list:population:frequencies = positive_loci * 0.5 0.5 0.5 0.5 0.5 
+    locus_list:population:frequencies = negative_loci * 0.5 0.5 0.5 0.5 0.5 
+
+Distribution_Constant positive_effect
+    value = 0.10000000000000001
+
+Distribution_Constant no_dominance
+    value = 0
+
+QTLEffectGenerator generator_positive
+    dominance_distribution = no_dominance
+    effect_size_distribution = positive_effect
+    locus_list = positive_loci
+
+Distribution_Constant negative_effect
+    value = -0.10000000000000001
+
+QTLEffectGenerator generator_negative
+    dominance_distribution = no_dominance
+    effect_size_distribution = negative_effect
+    locus_list = negative_loci
+
+QuantitativeTrait_IndependentLoci qt
+    environmental_variance = 0.050000000000000003
+    qtl_effect_generator = generator_positive
+    qtl_effect_generator = generator_negative
+
+FitnessFunction_TruncationSelection fitness
+    proportion_selected = 0.5
+    quantitative_trait = qt
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    quantitative_trait = qt
+
+Reporter_TraitValues reporter_trait_values
+    quantitative_traits = qt fitness 
+    write_full = 1
+
+Reporter_Population reporter_population
+    update_step = 0
+
+SimulatorConfig simconfig_!@#$_
+    output_directory = output_example_qtl
+    population_config_generator = pcg
+    quantitative_trait = qt
+    quantitative_trait = fitness
+    recombination_position_generator = rpg_trivial
+    recombination_position_generator = rpg_trivial
+    reporter = reporter_allele_frequencies
+    reporter = reporter_trait_values
+    reporter = reporter_population
+    seed = 0
+    variant_indicator = vi
+    write_popconfig = 0
+    write_vi = 1
+

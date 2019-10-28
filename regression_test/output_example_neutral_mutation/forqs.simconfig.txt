@@ -1,0 +1,34 @@
+PopulationConfigGenerator_ConstantSize popconfig_generator
+    chromosome_pair_count = 1
+    generation_count = 200
+    id_offset_step = 0
+    population_count = 1
+    population_size = 1000
+
+RecombinationPositionGenerator_Trivial rpg
+
+VariantIndicator_Trivial vi_trivial
+
+Locus locus1
+    chromosome = 1
+    position = 500
+
+MutationGenerator_SingleLocus mg
+    locus = locus1
+    mu = 0.01
+
+Reporter_AlleleFrequencies reporter_allele_frequencies
+    locus = locus1
+
+SimulatorConfig simconfig_!@#$_
+    mutation_generator = mg
+    output_directory = output_example_neutral_mutation
+    population_config_generator = popconfig_generator
+    recombination_position_generator = rpg
+    recombination_position_generator = rpg
+    reporter = reporter_allele_frequencies
+    seed = 0
+    variant_indicator = vi_trivial
+    write_popconfig = 0
+    write_vi = 0
+

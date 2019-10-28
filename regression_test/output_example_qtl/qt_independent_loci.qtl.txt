@@ -1,0 +1,11 @@
+# id chromosome position e0 e1 e2
+positive_loci[0] 1 0 0 0.1 0.2
+positive_loci[1] 2 0 0 0.1 0.2
+positive_loci[2] 3 0 0 0.1 0.2
+positive_loci[3] 4 0 0 0.1 0.2
+positive_loci[4] 5 0 0 0.1 0.2
+negative_loci[0] 6 0 0 -0.1 -0.2
+negative_loci[1] 7 0 0 -0.1 -0.2
+negative_loci[2] 8 0 0 -0.1 -0.2
+negative_loci[3] 9 0 0 -0.1 -0.2
+negative_loci[4] 10 0 0 -0.1 -0.2
