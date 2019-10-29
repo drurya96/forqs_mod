@@ -72,6 +72,8 @@ class RecombinationPositionGenerator : public Configurable
 typedef boost::shared_ptr<RecombinationPositionGenerator> RecombinationPositionGeneratorPtr;
 typedef std::vector<RecombinationPositionGeneratorPtr> RecombinationPositionGeneratorPtrs;
 
+typedef RecombinationPositionGeneratorPtrsArray* RecombinationPositionGeneratorPtrs; // A.D. 10/29/2019
+
 
 #endif // _RECOMBINATIONPOSITIONGENERATOR_HPP_
 

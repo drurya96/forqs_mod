@@ -116,7 +116,6 @@ struct SimulatorConfig : public Configurable
 
 typedef boost::shared_ptr<SimulatorConfig> SimulatorConfigPtr;
 
-
 class Simulator
 {
     public:
