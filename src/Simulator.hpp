@@ -121,7 +121,7 @@ class Simulator
 {
     public:
 
-    Simulator(const SimulatorConfig& config);
+    Simulator(SimulatorConfig& config);
     void simulate_single_generation();
     void simulate_all();
     void update_final();

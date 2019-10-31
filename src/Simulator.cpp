@@ -160,7 +160,7 @@ void SimulatorConfig::write_child_configurations(ostream& os, set<string>& ids_w
 //
 
 
-Simulator::Simulator(const SimulatorConfig& config)
+Simulator::Simulator(SimulatorConfig& config)
 :   config_(config),
     current_generation_index_(0), 
     current_populations_(new PopulationPtrs),
@@ -170,6 +170,9 @@ Simulator::Simulator(const SimulatorConfig& config)
     const size_t generation_count = config_.population_config_generator->generation_count();
     update_step_ = max(int(pow(10.0, int(log10(generation_count))-1)), 1);
     if (update_step_ > 10000) update_step_ = 10000;
+	int temp_number_of_recombination_rates = 1;
+	config_.recombination_position_generators_array = (RecombinationPositionGeneratorPtrs*)malloc(temp_number_of_recombination_rates*sizeof(RecombinationPositionGeneratorPtrs));
+	config_.recombination_position_generators_array[0] = config_.recombination_position_generators;
 }
 
 
