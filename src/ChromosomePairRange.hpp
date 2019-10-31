@@ -67,7 +67,7 @@ class ChromosomePairRange
 
     void create_child(const ChromosomePairRange& mom,
                       const ChromosomePairRange& dad,
-                      const RecombinationPositionGeneratorPtrs& recombination_position_generators);
+                      const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
 
     bool equals(const ChromosomePairRange& that) const; // deep equality comparison
 

@@ -73,8 +73,9 @@ void ChromosomePairRange::create_child(unsigned int id0, unsigned int id1)
 
 void ChromosomePairRange::create_child(const ChromosomePairRange& mom,
                                        const ChromosomePairRange& dad,
-                                       const RecombinationPositionGeneratorPtrs& recombination_position_generators)
+                                       const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array)
 {
+	RecombinationPositionGeneratorPtrs recombination_position_generators = recombination_position_generators_array[0];
 	cout << "AD Controlled Crash" << endl;
 	cout << "Attempted to make child (ChromosomePairRange) from parents" << endl;
 	exit(1);
