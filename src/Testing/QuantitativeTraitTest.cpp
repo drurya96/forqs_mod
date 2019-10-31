@@ -1,5 +1,5 @@
 //
-// SimulationBuilder.hpp
+// QuantitativeTraitTest.cpp
 //
 // Created by Darren Kessner with John Novembre
 //
@@ -33,29 +33,86 @@
 //
 
 
-#ifndef _SIMULATIONBUILDER_HPP_
-#define _SIMULATIONBUILDER_HPP_
+#include "QuantitativeTrait.hpp"
+#include "unit.hpp"
+#include <iostream>
+#include <cstring>
 
 
-#include "Simulator.hpp"
-#include "shared_ptr.hpp"
-#include <map>
-#include <string>
+using namespace std;
 
 
-class SimulationBuilder
+ostream* os_ = 0;
+//ostream* os_ = &cout;
+
+
+void test_map_get()
 {
-    public:
+    DataVectorPtr data(new DataVector);
+    string id_good("id_good");
+    string id_bad("id_bad");
+    TraitValueMap tvm;
+    tvm[id_good] = data;
 
-    virtual void usage() const = 0;
-    virtual SimulatorConfigPtr create_simulator_config() const = 0;
+    DataVectorPtr retrieved = tvm.get(id_good); // ok
+    unit_assert(retrieved.get() == data.get());
 
-    virtual ~SimulationBuilder() {} 
-};
+    // try to retrieve data that isn't in the map
+
+    bool caught = false;
+    try
+    {
+        DataVectorPtr dummy = tvm.get(id_bad);
+    }
+    catch (exception& e)
+    {
+        if (os_) *os_ << "caught exception:\n" << e.what() << endl;
+        caught = true;
+    }
+    unit_assert(caught);
+
+    // try to retrieve null data vector
+
+    DataVectorPtr null;
+    tvm[id_bad] = null;
+    caught = false;
+    try
+    {
+        DataVectorPtr dummy = tvm.get(id_bad);
+    }
+    catch (exception& e)
+    {
+        if (os_) *os_ << "caught exception:\n" << e.what() << endl;
+        caught = true;
+    }
+    unit_assert(caught);
+}
 
 
-typedef boost::shared_ptr<SimulationBuilder> SimulationBuilderPtr;
+void test()
+{
+    test_map_get();
+}
 
 
-#endif //  _SIMULATIONBUILDER_HPP_
+int main(int argc, char* argv[])
+{
+    try
+    {
+        if (argc>1 && !strcmp(argv[1],"-v")) os_ = &cout;
+        test();
+        return 0;
+    }
+    catch(exception& e)
+    {
+        cerr << e.what() << endl;
+        return 1;
+    }
+    catch(...)
+    {
+        cerr << "Caught unknown exception.\n";
+        return 1;
+    }
+}
+
 

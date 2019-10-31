@@ -74,7 +74,7 @@ void subsamplePopulation(const Config& config)
 
     for (size_t i=0; i<config.replicateCount; i++)
     {
-        shared_ptr<Population> subsample = p.randomSubsample(config.sampleSize);
+        boost::shared_ptr<Population> subsample = p.randomSubsample(config.sampleSize);
 
         ostringstream filename;
         filename << "subsample_" << config.sampleSize << "_" << i << ".txt";

@@ -98,6 +98,7 @@ struct SimulatorConfig : public Configurable
 
     PopulationConfigGeneratorPtr population_config_generator;
     RecombinationPositionGeneratorPtrs recombination_position_generators;
+	RecombinationPositionGeneratorPtrsArray recombination_position_generators_array;
     VariantIndicatorPtr variant_indicator;
     QuantitativeTraitPtrs quantitative_traits;
     MutationGeneratorPtr mutation_generator;

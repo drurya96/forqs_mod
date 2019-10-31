@@ -1,5 +1,5 @@
 //
-// SimulationBuilder.hpp
+// PopulationDataTest.cpp
 //
 // Created by Darren Kessner with John Novembre
 //
@@ -33,29 +33,55 @@
 //
 
 
-#ifndef _SIMULATIONBUILDER_HPP_
-#define _SIMULATIONBUILDER_HPP_
+#include "PopulationData.hpp"
+#include "unit.hpp"
+#include <iostream>
+#include <cstring>
 
 
-#include "Simulator.hpp"
-#include "shared_ptr.hpp"
-#include <map>
-#include <string>
+using namespace std;
 
 
-class SimulationBuilder
+ostream* os_ = 0;
+//ostream* os_ = &cout;
+
+
+void test_constructor()
 {
-    public:
+    PopulationData population_data;
 
-    virtual void usage() const = 0;
-    virtual SimulatorConfigPtr create_simulator_config() const = 0;
+    population_data.genotypes->clear(); // ok
+    population_data.trait_values->clear(); // ok
 
-    virtual ~SimulationBuilder() {} 
-};
-
-
-typedef boost::shared_ptr<SimulationBuilder> SimulationBuilderPtr;
+    //population_data.genotypes = GenotypeMapPtr(new GenotypeMap); // not ok
+    //population_data.trait_values = TraitValueMapPtr(new TraitValueMap); // not ok
+}
 
 
-#endif //  _SIMULATIONBUILDER_HPP_
+void test()
+{
+    test_constructor();
+}
+
+
+int main(int argc, char* argv[])
+{
+    try
+    {
+        if (argc>1 && !strcmp(argv[1],"-v")) os_ = &cout;
+        test();
+        return 0;
+    }
+    catch(exception& e)
+    {
+        cerr << e.what() << endl;
+        return 1;
+    }
+    catch(...)
+    {
+        cerr << "Caught unknown exception.\n";
+        return 1;
+    }
+}
+
 

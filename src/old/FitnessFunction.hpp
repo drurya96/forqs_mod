@@ -71,7 +71,7 @@ class FitnessFunction : public Configurable
 };
 
 
-typedef shared_ptr<FitnessFunction> FitnessFunctionPtr;
+typedef boost::shared_ptr<FitnessFunction> FitnessFunctionPtr;
 typedef std::vector<FitnessFunctionPtr> FitnessFunctionPtrs;
 
 

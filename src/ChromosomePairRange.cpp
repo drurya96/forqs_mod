@@ -107,10 +107,6 @@ void ChromosomePairRange::create_child(const ChromosomePairRange& mom,
 }
 
 
-ChromosomePairRange test = new ChromosomePairRange();
-
-test.create_child(params);
-
 // Created by Austin Drury (10/10/19)
 // Creates a child given a mother and father ChromosomePairRange
 // Before creating the child, two complete gametes are formed and stored

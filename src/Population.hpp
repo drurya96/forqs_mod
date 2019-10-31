@@ -141,14 +141,14 @@ class Population
     void create_organisms(const Config& config,
                           const PopulationPtrs& populations,
                           const PopulationDataPtrs& population_datas,
-                          const RecombinationPositionGeneratorPtrs& recombination_position_generators);
+                          const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
 
     // convenience function: creates new generation from previous by calling create_organisms() for each Population
 
     static PopulationPtrsPtr create_populations(const Configs& configs,
                                                 const PopulationPtrs& previous, 
                                                 const PopulationDataPtrs& population_datas, 
-                                                const RecombinationPositionGeneratorPtrs& recombination_position_generators);
+                                                const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
 
     // implementation-dependent range iteration
 

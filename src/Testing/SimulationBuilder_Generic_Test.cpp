@@ -1,5 +1,5 @@
 //
-// SimulationBuilder.hpp
+// SimulationBuilder_Generic_Test.cpp
 //
 // Created by Darren Kessner with John Novembre
 //
@@ -33,29 +33,52 @@
 //
 
 
-#ifndef _SIMULATIONBUILDER_HPP_
-#define _SIMULATIONBUILDER_HPP_
+#include "SimulationBuilder_Generic.hpp"
+#include "unit.hpp"
+#include <iostream>
+#include <iterator>
+#include <cstring>
 
 
-#include "Simulator.hpp"
-#include "shared_ptr.hpp"
-#include <map>
-#include <string>
+using namespace std;
 
 
-class SimulationBuilder
+ostream* os_ = 0;
+//ostream* os_ = &cout;
+
+
+void demo_builder()
 {
-    public:
+    SimulationBuilder_Generic builder("../examples/generic_config_example_sls.txt", Parameters());
 
-    virtual void usage() const = 0;
-    virtual SimulatorConfigPtr create_simulator_config() const = 0;
-
-    virtual ~SimulationBuilder() {} 
-};
+    SimulatorConfigPtr simconfig = builder.create_simulator_config();
+}
 
 
-typedef boost::shared_ptr<SimulationBuilder> SimulationBuilderPtr;
+void test()
+{
+    //demo_builder();
+}
 
 
-#endif //  _SIMULATIONBUILDER_HPP_
+int main(int argc, char* argv[])
+{
+    try
+    {
+        if (argc>1 && !strcmp(argv[1],"-v")) os_ = &cout;
+        test();
+        return 0;
+    }
+    catch(exception& e)
+    {
+        cerr << e.what() << endl;
+        return 1;
+    }
+    catch(...)
+    {
+        cerr << "Caught unknown exception.\n";
+        return 1;
+    }
+}
+
 

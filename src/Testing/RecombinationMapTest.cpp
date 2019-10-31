@@ -1,5 +1,5 @@
 //
-// SimulationBuilder.hpp
+// RecombinationMapTest.cpp
 //
 // Created by Darren Kessner with John Novembre
 //
@@ -33,29 +33,55 @@
 //
 
 
-#ifndef _SIMULATIONBUILDER_HPP_
-#define _SIMULATIONBUILDER_HPP_
+#include "RecombinationMap.hpp"
+#include "unit.hpp"
+#include <iostream>
+#include <iterator>
+#include <cstring>
 
 
-#include "Simulator.hpp"
-#include "shared_ptr.hpp"
-#include <map>
-#include <string>
+using namespace std;
 
 
-class SimulationBuilder
+ostream* os_ = 0;
+
+
+void test()
 {
-    public:
+    RecombinationMap r("../examples/genetic_map_chr21_b36.txt");
+    unit_assert(r.records().size() == 44250);
 
-    virtual void usage() const = 0;
-    virtual SimulatorConfigPtr create_simulator_config() const = 0;
+    for (int i=0; i<10; i++) 
+    {
+        vector<unsigned int> positions = r.random_positions();
+        if (os_) 
+        {
+            *os_ << "random_positions(): " << positions.size() << endl;
+            copy(positions.begin(), positions.end(), ostream_iterator<unsigned int>(*os_, " "));
+            *os_ << endl;
+        }
+    }
+}
 
-    virtual ~SimulationBuilder() {} 
-};
 
+int main(int argc, char* argv[])
+{
+    try
+    {
+        if (argc>1 && !strcmp(argv[1],"-v")) os_ = &cout;
+        test();
+        return 0;
+    }
+    catch(exception& e)
+    {
+        cerr << e.what() << endl;
+        return 1;
+    }
+    catch(...)
+    {
+        cerr << "Caught unknown exception.\n";
+        return 1;
+    }
+}
 
-typedef boost::shared_ptr<SimulationBuilder> SimulationBuilderPtr;
-
-
-#endif //  _SIMULATIONBUILDER_HPP_
 

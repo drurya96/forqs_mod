@@ -594,7 +594,7 @@ class RandomOrganismIndexGeneratorMap
 void Population::create_organisms(const Config& config,
                                   const PopulationPtrs& populations,
                                   const PopulationDataPtrs& population_datas,
-                                  const RecombinationPositionGeneratorPtrs& recombination_position_generators)
+                                  const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array)
 {
     if (config.population_size == 0)
         return;
@@ -682,7 +682,7 @@ void Population::create_organisms(const Config& config,
         
 		//cout << "Attempting to create a child from parents...." << endl;
 
-        range_child->create_child(range_mom, range_dad, recombination_position_generators);
+        range_child->create_child(range_mom, range_dad, recombination_position_generators_array);
     }
 }
 
@@ -691,14 +691,14 @@ void Population::create_organisms(const Config& config,
 PopulationPtrsPtr Population::create_populations(const Population::Configs& configs,
                                                  const PopulationPtrs& previous, 
                                                  const PopulationDataPtrs& population_datas,
-                                                 const RecombinationPositionGeneratorPtrs& recombination_position_generators)
+                                                 const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array)
 {
     PopulationPtrsPtr result(new PopulationPtrs);
 
     for (vector<Population::Config>::const_iterator it=configs.begin(); it!=configs.end(); ++it)
     {
         PopulationPtr p(new Population_ChromosomePairs);
-        p->create_organisms(*it, previous, population_datas, recombination_position_generators);
+        p->create_organisms(*it, previous, population_datas, recombination_position_generators_array);
         result->push_back(p);
     }        
 

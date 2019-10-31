@@ -261,7 +261,7 @@ void Simulator::simulate_single_generation() // main loop iteration
         popconfigs, 
         *current_populations_, 
         *current_population_datas_, 
-        config_.recombination_position_generators);
+        config_.recombination_position_generators_array);
 
     // generate mutations
 
