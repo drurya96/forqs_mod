@@ -414,6 +414,11 @@ FitnessFunction_Recombination::FitnessFunction_Recombination(const string& id)
 	variation_(0.1)
 {}
 
+//void FitnessFunction_Recombination::set_recombination_array(){
+
+	//cout << "Configuring Fitness Function" << endl;
+
+//}
 
 void FitnessFunction_Recombination::modify_trait_values(const PopulationData& population_data) const
 {
@@ -480,11 +485,14 @@ Parameters FitnessFunction_Recombination::parameters() const
     parameters.insert_name_value("lower_bound", lower_bound_);
 	parameters.insert_name_value("upper_bound", upper_bound_);
 	parameters.insert_name_value("variation", variation_);
+
+	//Attempting to set min and max real recombination in parameters, which hopefully is global..... its not global :(
+
     return parameters;
 }
 
 
-// For now assume lower bound is >= 0 AND upper bount is <= 1000000000 AND upper bound > lower bound AND 0 > variation > 1
+// For now assume lower bound is >= 0 AND upper bound is <= 1000000000 AND upper bound > lower bound AND 0 > variation > 1
 void FitnessFunction_Recombination::configure(const Parameters& parameters, const Registry& registry)
 {
     qtid_ = parameters.value<string>("quantitative_trait");

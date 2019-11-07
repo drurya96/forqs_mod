@@ -116,6 +116,12 @@ void configure_and_register_object(ptr_type p, const string& name, const string&
 
     registry[id] = p;
     initialization_list.push_back(p);
+
+	// maybe check to see if initialization_list, which contains pointers to objects, can retreive the name??
+	//cout << "Using p: " << p->class_name() << endl;
+	//cout << "Using registry: " << registry[id]->class_name() << endl;
+	// THIS LOOKS LIKE IT WORKS!!!!!!!!!
+
 }
 
 
@@ -130,6 +136,8 @@ void create_configurable_object(const string& name,
                                 ConfigurablePtrs& initialization_list)
 {
     // instantiate, configure, and register the object
+
+	// Try to make this 'parameters' non-const so it can be modified inside the fitness function?
 
     if (name == "Locus") 
         configure_and_register_object(LocusPtr(
@@ -358,6 +366,13 @@ void parse_object(const string& first_line, istream& is, Configurable::Registry&
     try
     {
         parse_name_id_parameters(first_line, is, name, id, parameters);
+		// Checking to see if the fitness function is here
+
+		// It seems like we can test if name is "FitnessFunction_Recombination" and maybe modify the array if so?
+
+		//cout << "Parsing object with name: " << name << endl;
+		//if (name == "FitnessFunction_Recombination")
+		//	cout << "found a fitness function" << endl;
         create_configurable_object(name, id, parameters, registry, initialization_list);
     }
     catch (exception& e)
@@ -561,11 +576,19 @@ SimulatorConfigPtr SimulationBuilder_Generic::create_simulator_config() const
 
     SimulatorConfigPtr simconfig = dynamic_pointer_cast<SimulatorConfig>(initialization_list.back());
 
+	//cout << "1st In pointer: simconfig.recombination_position_generators size: " << (*simconfig).recombination_position_generators.size() << endl;
+
     process_command_line_parameters(command_line_parameters_, *simconfig);
+	//cout << "2nd In pointer: simconfig.recombination_position_generators size: " << (*simconfig).recombination_position_generators.size() << endl;
     validate_and_instantiate_defaults(*simconfig);
+	//cout << "3rd In pointer: simconfig.recombination_position_generators size: " << (*simconfig).recombination_position_generators.size() << endl;
     initialize(initialization_list, *simconfig);
+	//cout << "4th In pointer: simconfig.recombination_position_generators size: " << (*simconfig).recombination_position_generators.size() << endl;
     write_config_used(*simconfig);
+	//cout << "5th In pointer: simconfig.recombination_position_generators size: " << (*simconfig).recombination_position_generators.size() << endl;
     handle_mutation_generation(*simconfig);
+
+	//cout << "Last In pointer: simconfig.recombination_position_generators size: " << (*simconfig).recombination_position_generators.size() << endl;
 
     return simconfig;
 }

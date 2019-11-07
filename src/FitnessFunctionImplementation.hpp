@@ -263,6 +263,8 @@ class FitnessFunction_Recombination : public QuantitativeTrait
 
     FitnessFunction_Recombination(const std::string& id);
 
+	//void set_recombination_array();
+
     void modify_trait_values(const PopulationData& population_data) const;
 
 	double calculate_new_value(const double value) const;

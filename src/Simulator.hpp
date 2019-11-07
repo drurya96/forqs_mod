@@ -95,6 +95,7 @@ struct SimulatorConfig : public Configurable
     bool write_popconfig;
     bool write_vi;
     bool use_random_seed;
+	bool recombination_tracker = false;
 
     PopulationConfigGeneratorPtr population_config_generator;
     RecombinationPositionGeneratorPtrs recombination_position_generators;
@@ -103,6 +104,7 @@ struct SimulatorConfig : public Configurable
     QuantitativeTraitPtrs quantitative_traits;
     MutationGeneratorPtr mutation_generator;
     ReporterPtrs reporters;
+	Configurable::Registry registry;
 
     SimulatorConfig(const std::string& id = "dummy");
 
@@ -121,7 +123,7 @@ class Simulator
 {
     public:
 
-    Simulator(SimulatorConfig& config);
+    Simulator(SimulatorConfig& config, const Parameters& parameters);
     void simulate_single_generation();
     void simulate_all();
     void update_final();

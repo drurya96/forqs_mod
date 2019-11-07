@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         SimulationBuilder_Generic builder(filename, parameters);
         SimulatorConfigPtr simconfig = builder.create_simulator_config();
 
-        Simulator simulator(*simconfig);
+        Simulator simulator(*simconfig, parameters);
         simulator.simulate_all();
         simulator.update_final();
 
