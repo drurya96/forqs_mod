@@ -277,7 +277,10 @@ class FitnessFunction_Recombination : public QuantitativeTrait
     virtual Parameters parameters() const;
     virtual void configure(const Parameters& parameters, const Registry& registry);
 
-    private:
+	double getLowerBound(void){ return this->lower_bound_; }
+	double getUpperBound(void){ return this->upper_bound_; }
+
+    //private:
 
     std::string qtid_;
 	double lower_bound_;

@@ -51,11 +51,11 @@ class Configurable
 {
     public:
 
-    class Registry;
+	class Registry;    
+
 
     Configurable(const std::string& id) : id_(id) {}
     const std::string& object_id() const {return id_;}
-
     virtual std::string class_name() const = 0;
     virtual Parameters parameters() const = 0;
     virtual void configure(const Parameters& parameters, const Registry& registry) = 0;

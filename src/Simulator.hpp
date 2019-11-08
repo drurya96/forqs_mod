@@ -43,6 +43,7 @@
 #include "QuantitativeTrait.hpp"
 #include "Reporter.hpp"
 #include "VariantIndicator.hpp"
+#include "FitnessFunctionImplementation.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -116,7 +117,6 @@ struct SimulatorConfig : public Configurable
     void write_child_configurations(std::ostream& os, std::set<std::string>& ids_written) const;
 };
 
-
 typedef boost::shared_ptr<SimulatorConfig> SimulatorConfigPtr;
 
 class Simulator
@@ -144,6 +144,7 @@ class Simulator
 
 typedef boost::shared_ptr<Simulator> SimulatorPtr;
 
+void set_recombination_generators(FitnessFunction_Recombination& ff, RecombinationPositionGeneratorPtrsArray& rpg_vector);
 
 #endif //  _SIMULATOR_HPP_
 

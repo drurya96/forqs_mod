@@ -500,6 +500,6 @@ void FitnessFunction_Recombination::configure(const Parameters& parameters, cons
 	upper_bound_ = parameters.value<double>("upper_bound", 1000000000);
 	variation_ = parameters.value<double>("variation", 0.1);
 	// This only appears once, so this is a good place to modify the RPGPtrsArray
-	cout << "Configuring Fitness Function" << endl;
+	//cout << "Configuring Fitness Function" << endl;
 }
 

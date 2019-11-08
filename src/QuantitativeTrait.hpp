@@ -58,7 +58,6 @@ class QuantitativeTrait : public Configurable
 
     // return set of loci (the QTLs contributing to the trait)
     const Loci& loci() const {return loci_;}
-
     // calculate trait values for a single population using genotypes
     virtual void calculate_trait_values(const PopulationData& population_data) const;
 

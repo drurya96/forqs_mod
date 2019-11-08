@@ -186,33 +186,42 @@ Simulator::Simulator(SimulatorConfig& config, const Parameters& parameters)
 	update_step_ = max(int(pow(10.0, int(log10(generation_count))-1)), 1);
 	if (update_step_ > 10000) update_step_ = 10000;
 
-
-	//cout << "Now we need to check" << endl;
-
-	//cout << "Size of vector: " << config.recombination_position_generators_array.size() << endl;
-
-	//A.D. 10/31/2019
-	
-	//Configurable::Registry::iterator it = config_.registry.begin();
-	//cout << "First item in registry: " << (*(it->second)).class_name() << endl;
-
-	for (Configurable::Registry::iterator it = config_.registry.begin(); it != config_.registry.end(); it++){
-		cout << "Item in registry: " << (*(it->second)).class_name() << endl;
-	}
-
-
-	//looks like probably not using get, it needs an id instead of a name
-
-	// Maybe try using the get(nothrow) instead of iterator
-
-	//cout << "Tryign to get: " << config.registry.get<QuantitativeTraitPtr>("FitnessFunction_Recombination") << endl;
-
-	//cout << "config_.recombination_position_generators size: " << config_.recombination_position_generators.size() << endl;
+	//A.D. 11/07/2019
 
 	config_.recombination_position_generators_array.resize(1);
 	config_.recombination_position_generators_array[0] = config_.recombination_position_generators;
-	
 
+	string cname;
+	//Parameters temp_params;
+	for (Configurable::Registry::iterator it = config_.registry.begin(); it != config_.registry.end(); it++){
+		cname = (*(it->second)).class_name();
+		if(cname == "FitnessFunction_Recombination"){
+			//string tid = typeid(*(it->second)).name();
+
+
+			//DerivedType * m_derivedType = dynamic_cast<DerivedType*>(&m_baseType);
+
+			FitnessFunction_Recombination * ffptr = dynamic_cast<FitnessFunction_Recombination*>(&(*(it->second)));
+			FitnessFunction_Recombination ff = *ffptr;
+			set_recombination_generators(ff, config_.recombination_position_generators_array);
+
+			//cout << ff.getLowerBound() << endl;
+
+
+			//double lb = (*(it->second)).lower_bound_;
+			//cout<<tid<<endl;
+			//set_recombination_generators(it->second, config_.recombination_position_generators_array);
+			//config_.recombination_position_generators_array.resize(10);
+			//config_.recombination_position_generators_array[0] = config_.recombination_position_generators;
+		}
+	}
+}
+
+
+void set_recombination_generators(FitnessFunction_Recombination& ff, RecombinationPositionGeneratorPtrsArray& rpg_vector){
+	rpg_vector.resize(10);
+	cout << "lower bound is " << ff.getLowerBound() << endl;
+	cout << "upper bound is " << ff.getUpperBound() << endl;
 }
 
 

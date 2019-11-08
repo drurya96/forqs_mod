@@ -40,6 +40,7 @@
 #include "PopulationConfigGenerator.hpp"
 #include "Trajectory.hpp"
 
+#include "Configurable.hpp"
 
 ///
 /// \defgroup PopulationConfigGenerators PopulationConfigGenerators
@@ -155,7 +156,7 @@ struct MigrationRateTrajectoryInfo
     
     MigrationRateTrajectoryInfo() : population_index_from(0), population_index_to(0) {}
     MigrationRateTrajectoryInfo(const std::string& configuration, const Configurable::Registry& registry);
-    std::string configuration() const;
+	std::string configuration() const;
 };
 
 
