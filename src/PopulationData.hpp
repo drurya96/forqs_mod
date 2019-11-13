@@ -40,17 +40,21 @@
 #include "Genotype.hpp"
 #include "DataVector.hpp"
 #include "shared_ptr.hpp"
+#include "ChromosomePairRange.hpp"
 
 
 struct PopulationData
 {
-    size_t generation_index;
-    size_t population_index;
-    size_t population_size;
-    const GenotypeMapPtr genotypes;         // pointer always valid
-    const TraitValueMapPtr trait_values;    // pointer always valid
+	size_t generation_index;
+	size_t population_index;
+	size_t population_size;
+	const GenotypeMapPtr genotypes;		 // pointer always valid
+	const TraitValueMapPtr trait_values;	// pointer always valid
 
-    PopulationData();
+	std::vector<ChromosomePairRange> organisms;
+
+
+	PopulationData();
 };
 
 

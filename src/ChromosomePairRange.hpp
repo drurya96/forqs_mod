@@ -42,65 +42,68 @@
 
 class ChromosomePairRange
 {
-    public:
+	public:
 
-    ChromosomePairRange(ChromosomePair* begin = 0, ChromosomePair* end = 0)
-    :   begin_(begin), end_(end)
-    {}
+	ChromosomePairRange(ChromosomePair* begin = 0, ChromosomePair* end = 0)
+	:   begin_(begin), end_(end)
+	{}
 
-    ChromosomePairRange(ChromosomePairs& chromosome_pairs);
-    
-    ChromosomePair* begin() {return begin_;}
-    const ChromosomePair* begin() const {return begin_;}
+	int recombination_rate = 0; // This only applies when using the FitnessFunction_Recombination.
+				    // This determines which recombination rate to pull from the vector.
 
-    ChromosomePair* end() {return end_;}
-    const ChromosomePair* end() const {return end_;}
+	ChromosomePairRange(ChromosomePairs& chromosome_pairs);
+	
+	ChromosomePair* begin() {return begin_;}
+	const ChromosomePair* begin() const {return begin_;}
 
-    size_t size() const {return end_ - begin_;}
+	ChromosomePair* end() {return end_;}
+	const ChromosomePair* end() const {return end_;}
 
-    void step(int step_size) {begin_ += step_size; end_ += step_size;}
+	size_t size() const {return end_ - begin_;}
+
+	void step(int step_size) {begin_ += step_size; end_ += step_size;}
 
 
-    // In-place versions of Organism constructors.
+	// In-place versions of Organism constructors.
 
-    void create_child(unsigned int id0, unsigned int id1);
+	void create_child(unsigned int id0, unsigned int id1);
 
-    void create_child(const ChromosomePairRange& mom,
-                      const ChromosomePairRange& dad,
-                      const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
+	void create_child(const ChromosomePairRange& mom,
+					  const ChromosomePairRange& dad,
+					  const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
 
-    bool equals(const ChromosomePairRange& that) const; // deep equality comparison
+	bool equals(const ChromosomePairRange& that) const; // deep equality comparison
 
-    private:
+	private:
 
-    ChromosomePair* begin_;
-    ChromosomePair* end_;
+	ChromosomePair* begin_;
+	ChromosomePair* end_;
 };
 
 class ChromosomePairRangeIterator
 {
-    public:
+	public:
 
-    ChromosomePairRangeIterator(Organisms::iterator it);
-    ChromosomePairRangeIterator(ChromosomePair* begin, size_t chromosome_pair_count = 0);
+	ChromosomePairRangeIterator(Organisms::iterator it);
+	ChromosomePairRangeIterator(ChromosomePair* begin, size_t chromosome_pair_count = 0);
 
-    ChromosomePairRange& operator*();
-    const ChromosomePairRange& operator*() const;
+	ChromosomePairRange& operator*();
+	const ChromosomePairRange& operator*() const;
 
-    ChromosomePairRange* operator->();
-    const ChromosomePairRange* operator->() const;
+	ChromosomePairRange* operator->();
+	const ChromosomePairRange* operator->() const;
 
-    void operator++() const;
+	void operator++() const;
 
-    private:
+	private:
 
-    const bool using_organism_implementation_;
-    mutable Organisms::iterator current_organism_;
-    mutable ChromosomePairRange current_;
-    const size_t chromosome_pair_count_;
+	const bool using_organism_implementation_;
+	mutable Organisms::iterator current_organism_;
+	mutable ChromosomePairRange current_;
+	const size_t chromosome_pair_count_;
 
-    void update_current_from_current_organism() const;
-    friend bool operator==(const ChromosomePairRangeIterator& a, const ChromosomePairRangeIterator& b);
+	void update_current_from_current_organism() const;
+	friend bool operator==(const ChromosomePairRangeIterator& a, const ChromosomePairRangeIterator& b);
 };
 
 

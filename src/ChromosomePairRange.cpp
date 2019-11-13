@@ -77,6 +77,10 @@ void ChromosomePairRange::create_child(const ChromosomePairRange& mom,
 {
 	//cout << "Trying to retrieve RPGptrs" << endl;
 	RecombinationPositionGeneratorPtrs recombination_position_generators = recombination_position_generators_array[0];
+
+	recombination_position_generators[0] = recombination_position_generators_array[mom.recombination_rate][0];
+	recombination_position_generators[1] = recombination_position_generators_array[dad.recombination_rate][1];
+
 	//cout << "Retrieved RPGptrs" << endl;
 	//cout << "AD Controlled Crash" << endl;
 	//cout << "Attempted to make child (ChromosomePairRange) from parents" << endl;

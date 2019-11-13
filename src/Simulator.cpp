@@ -39,6 +39,7 @@
 #include <cmath>
 #include <algorithm>
 
+#include "Population_ChromosomePairs.hpp"
 
 using namespace std;
 
@@ -306,8 +307,7 @@ void Simulator::simulate_single_generation() // main loop iteration
 	// create next generation
 
 	Population::Configs popconfigs = 
-		config_.population_config_generator->population_configs(current_generation_index_, 
-																*current_population_datas_);
+		config_.population_config_generator->population_configs(current_generation_index_,*current_population_datas_);
 
 	PopulationPtrsPtr next_populations = Population::create_populations(
 		popconfigs, 
@@ -346,12 +346,19 @@ void Simulator::simulate_single_generation() // main loop iteration
 
 	PopulationPtrs::const_iterator population = next_populations->begin();
 	PopulationDataPtrs::iterator popdata = next_population_datas->begin();
+	PopulationDataPtrs::iterator currentpopdata = current_population_datas_->begin();
 	for (size_t population_index=0; population_index!=next_population_count; 
-		 ++population_index, ++population, ++popdata)
+		 ++population_index, ++population, ++popdata, ++currentpopdata)
 	{
+
+		// Somewhere here I need to try to get the ChromosomePairRanges into the PopulationData..............
+
+		// Actually instead try inside Population::create_populations...................
+
 		(*popdata)->generation_index = current_generation_index_;
 		(*popdata)->population_index = population_index;
 		(*popdata)->population_size = (*population)->population_size();
+		//(*popdata)->organisms = (*currentpopdata)->organisms;
 
 		genotyper_.genotype(loci_all, **population, *config_.variant_indicator, 
 			*(*popdata)->genotypes);
@@ -370,6 +377,24 @@ void Simulator::simulate_single_generation() // main loop iteration
 	current_populations_ = next_populations;
 	current_population_datas_ = next_population_datas;
 
+	/*
+	// ------------------------------------------------------------------------------------------------------------------
+	// This was all just to check how next_populations works and is in no way functional --A.D.
+
+	PopulationPtrs::iterator vecpopptrit = (*next_populations).begin();
+
+	for (; vecpopptrit != (*next_populations).end(); vecpopptrit++){
+		Population_ChromosomePairs * tmpPairPtr = dynamic_cast<Population_ChromosomePairs*>(&(**vecpopptrit));
+		//cout << typeid(tmpPairPtr).name() << endl;
+	}
+
+
+	//cout << "ID of current_populations_: " << typeid(current_populations_).name() << endl;
+	//cout << "ID of current_population_datas_: " << typeid(current_population_datas_).name() << endl;
+
+
+	// ------------------------------------------------------------------------------------------------------------------
+	*/
 	for (ReporterPtrs::iterator reporter=config_.reporters.begin(); reporter!=config_.reporters.end(); ++reporter)
 	{
 		const bool is_final_generation = false;
