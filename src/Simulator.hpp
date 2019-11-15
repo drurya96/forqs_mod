@@ -91,54 +91,55 @@ typedef std::vector<ReporterPtr> ReporterPtrs;
 
 struct SimulatorConfig : public Configurable
 {
-    unsigned int seed;
-    std::string output_directory;
-    bool write_popconfig;
-    bool write_vi;
-    bool use_random_seed;
+	unsigned int seed;
+	std::string output_directory;
+	bool write_popconfig;
+	bool write_vi;
+	bool use_random_seed;
 	bool recombination_tracker = false;
 
-    PopulationConfigGeneratorPtr population_config_generator;
-    RecombinationPositionGeneratorPtrs recombination_position_generators;
+	PopulationConfigGeneratorPtr population_config_generator;
+	RecombinationPositionGeneratorPtrs recombination_position_generators;
 	RecombinationPositionGeneratorPtrsArray recombination_position_generators_array;
-    VariantIndicatorPtr variant_indicator;
-    QuantitativeTraitPtrs quantitative_traits;
-    MutationGeneratorPtr mutation_generator;
-    ReporterPtrs reporters;
+	VariantIndicatorPtr variant_indicator;
+	QuantitativeTraitPtrs quantitative_traits;
+	MutationGeneratorPtr mutation_generator;
+	ReporterPtrs reporters;
 	Configurable::Registry registry;
 
-    SimulatorConfig(const std::string& id = "dummy");
+	SimulatorConfig(const std::string& id = "dummy");
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "SimulatorConfig";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
-    void write_child_configurations(std::ostream& os, std::set<std::string>& ids_written) const;
+	virtual std::string class_name() const {return "SimulatorConfig";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
+	void make_recombination_generators(Parameters& parameters) const;
+	void write_child_configurations(std::ostream& os, std::set<std::string>& ids_written) const;
 };
 
 typedef boost::shared_ptr<SimulatorConfig> SimulatorConfigPtr;
 
 class Simulator
 {
-    public:
+	public:
 
-    Simulator(SimulatorConfig& config, const Parameters& parameters);
-    void simulate_single_generation();
-    void simulate_all();
-    void update_final();
+	Simulator(SimulatorConfig& config, const Parameters& parameters);
+	void simulate_single_generation();
+	void simulate_all();
+	void update_final();
 
-    private:
+	private:
 
-    SimulatorConfig config_;
-    Genotyper genotyper_;
+	SimulatorConfig config_;
+	Genotyper genotyper_;
 
-    size_t current_generation_index_;
-    PopulationPtrsPtr current_populations_;
-    PopulationDataPtrsPtr current_population_datas_;
-    size_t update_step_;
+	size_t current_generation_index_;
+	PopulationPtrsPtr current_populations_;
+	PopulationDataPtrsPtr current_population_datas_;
+	size_t update_step_;
 
-    bfs::ofstream os_popconfigs_;
+	bfs::ofstream os_popconfigs_;
 };
 
 

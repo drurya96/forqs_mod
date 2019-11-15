@@ -40,6 +40,9 @@
 #include <algorithm>
 
 #include "Population_ChromosomePairs.hpp"
+#include "RecombinationPositionGeneratorImplementation.hpp"
+
+
 
 using namespace std;
 
@@ -75,6 +78,8 @@ Parameters SimulatorConfig::parameters() const
 		if (it->get())
 			parameters.insert_name_value("recombination_position_generator", (*it)->object_id());
 
+	//make_recombination_generators(parameters);
+
 	if (variant_indicator.get())
 		parameters.insert_name_value("variant_indicator", variant_indicator->object_id());
 
@@ -109,9 +114,10 @@ void SimulatorConfig::configure(const Parameters& parameters, const Registry& re
 		parameters.value<string>("population_config_generator"));
 
 	vector<string> rpg_ids = parameters.values<string>("recombination_position_generator");
-	for (vector<string>::const_iterator it=rpg_ids.begin(); it!=rpg_ids.end(); ++it)
+	for (vector<string>::const_iterator it=rpg_ids.begin(); it!=rpg_ids.end(); ++it){
 		recombination_position_generators.push_back(
 			registry.get<RecombinationPositionGenerator>(*it));
+	}
 
 	string mutation_generator_id = parameters.value<string>("mutation_generator", "");
 	if (!mutation_generator_id.empty())
@@ -129,20 +135,19 @@ void SimulatorConfig::configure(const Parameters& parameters, const Registry& re
 	for (vector<string>::const_iterator it=reporter_ids.begin(); it!=reporter_ids.end(); ++it){
 		reporters.push_back(registry.get<Reporter>(*it));
 	}
-	
-
-	//cout << "recombination_position_generators size: " << recombination_position_generators.size() << endl;
-
-
-	//cout << "Setting array to size 1 and initializing" << endl;
-
-	//recombination_position_generators_array.resize(1);
-	//recombination_position_generators_array[0] = recombination_position_generators;
-
-	// Now we need to iterate registry, check item.class_name() and determine if it is FitnessFunction_Recombination
-	// If so, modify the thing vector appropriately. 
 }
 
+void SimulatorConfig::make_recombination_generators(Parameters& parameters) const
+{
+
+	//recombination_position_generators.clear();
+	for (RecombinationPositionGeneratorPtrs::const_iterator it=recombination_position_generators.begin();
+		it!=recombination_position_generators.end(); ++it)
+		if (it->get())
+			parameters.insert_name_value("recombination_position_generator", (*it)->object_id());
+
+
+}
 
 void SimulatorConfig::write_child_configurations(ostream& os, set<string>& ids_written) const
 {
@@ -197,30 +202,91 @@ Simulator::Simulator(SimulatorConfig& config, const Parameters& parameters)
 	for (Configurable::Registry::iterator it = config_.registry.begin(); it != config_.registry.end(); it++){
 		cname = (*(it->second)).class_name();
 		if(cname == "FitnessFunction_Recombination"){
-			//string tid = typeid(*(it->second)).name();
-
-
-			//DerivedType * m_derivedType = dynamic_cast<DerivedType*>(&m_baseType);
-
 			FitnessFunction_Recombination * ffptr = dynamic_cast<FitnessFunction_Recombination*>(&(*(it->second)));
 			FitnessFunction_Recombination ff = *ffptr;
 			set_recombination_generators(ff, config_.recombination_position_generators_array);
-
-			//cout << ff.getLowerBound() << endl;
-
-
-			//double lb = (*(it->second)).lower_bound_;
-			//cout<<tid<<endl;
-			//set_recombination_generators(it->second, config_.recombination_position_generators_array);
-			//config_.recombination_position_generators_array.resize(10);
-			//config_.recombination_position_generators_array[0] = config_.recombination_position_generators;
 		}
 	}
 }
 
 
 void set_recombination_generators(FitnessFunction_Recombination& ff, RecombinationPositionGeneratorPtrsArray& rpg_vector){
-	rpg_vector.resize(10);
+	int number_of_indecies = 1000000;
+	rpg_vector.resize(number_of_indecies);
+
+	//RecombinationPositionGeneratorPtrs default_rpgptrs = rpg_vector[0];
+	
+	/*
+	RecombinationPositionGeneratorPtrs default_rpgptrs;
+	default_rpgptrs.resize(rpg_vector[0].size());
+	
+	for (unsigned int i=0; i < rpg_vector[0].size(); i++){
+		// rpg_vector[0][i] is an rpg_pointer
+		// *rpg_vector[0][i] is an rpg
+		RecombinationPositionGenerator_Uniform* oldptr = dynamic_cast<RecombinationPositionGenerator_Uniform*>(&(*rpg_vector[0][i]));
+		RecombinationPositionGenerator_Uniform old = *oldptr;
+		//RecombinationPositionGenerator_Uniform old_copy = RecombinationPositionGenerator_Uniform(old);
+		//RecombinationPositionGeneratorPtr old_copy_ptr = RecombinationPositionGeneratorPtr(old_copy);
+		//default_rpgptrs[i] = old_copy_ptr;
+
+		RecombinationPositionGeneratorPtr old_copy_ptr = RecombinationPositionGeneratorPtr(new RecombinationPositionGenerator_Uniform(old));
+		default_rpgptrs[i] = old_copy_ptr;
+	}
+	*/
+	
+
+
+	
+	for(int i=0; i < number_of_indecies; i++){
+		//rpgptrs is a vector of rpg pointers
+		double new_rate = (double)i/number_of_indecies;
+		(void) new_rate;
+		//RecombinationPositionGeneratorPtrs new_rpgptrs = default_rpgptrs;
+
+		RecombinationPositionGeneratorPtrs new_rpgptrs;
+		new_rpgptrs.resize(rpg_vector[0].size());
+		for (unsigned int i=0; i < rpg_vector[0].size(); i++){
+			// rpg_vector[0][i] is an rpg_pointer
+			// *rpg_vector[0][i] is an rpg
+			RecombinationPositionGenerator_Uniform* oldptr = dynamic_cast<RecombinationPositionGenerator_Uniform*>(&(*rpg_vector[0][i]));
+			RecombinationPositionGenerator_Uniform old = *oldptr;
+			RecombinationPositionGeneratorPtr old_copy_ptr = RecombinationPositionGeneratorPtr(new RecombinationPositionGenerator_Uniform(old));
+			new_rpgptrs[i] = old_copy_ptr;
+		}
+
+		//step through new_rpgptrs
+		RecombinationPositionGeneratorPtrs::iterator it;
+		for (it = new_rpgptrs.begin(); it < new_rpgptrs.end(); it++){
+
+			RecombinationPositionGenerator_Uniform* old_generatorptr = dynamic_cast<RecombinationPositionGenerator_Uniform*>(&(**it));
+			//cout << typeid(old_generatorptr).name() << endl;
+			RecombinationPositionGenerator_Uniform old_generator = *old_generatorptr;
+			// it is a pointer to a rpg pointer
+			// **it is a rpg
+
+			// we need to step through chromsomeInfos......
+			RecombinationPositionGenerator_Uniform::ChromosomeInfos new_chromsome_infos;
+
+			RecombinationPositionGenerator_Uniform::ChromosomeInfos::iterator ft;
+
+			for (ft = old_generator.infos_.begin(); ft != old_generator.infos_.end(); ft++){
+				// Make a new ChromosomeInfo and add it to new Infos
+				RecombinationPositionGenerator_Uniform::ChromosomeInfo new_chromosome_info((*ft).length, new_rate);
+				new_chromsome_infos.push_back(new_chromosome_info);
+			}
+
+			// create a new rpg
+			RecombinationPositionGenerator_Uniform new_rpg(old_generator.object_id(), new_chromsome_infos);
+			(**it) = new_rpg;
+		}
+
+		if (i % 100000 == 0){cout << i << endl;}
+
+		// add a pointer to the new rpg to the rpg vector
+		rpg_vector[i] = new_rpgptrs;
+		//rpg_vector[i] = rpg_vector[0];
+	}
+
 	cout << "lower bound is " << ff.getLowerBound() << endl;
 	cout << "upper bound is " << ff.getUpperBound() << endl;
 }

@@ -122,6 +122,11 @@ RecombinationPositionGenerator_Uniform::RecombinationPositionGenerator_Uniform(c
     infos_(infos)
 {}
 
+RecombinationPositionGenerator_Uniform::RecombinationPositionGenerator_Uniform(const RecombinationPositionGenerator_Uniform& old)
+:   RecombinationPositionGenerator(old.object_id()), 
+    common_rate_(1.0),
+    infos_(old.get_infos())
+{}
 
 vector<unsigned int> RecombinationPositionGenerator_Uniform::get_positions(size_t chromosome_pair_index) const
 {

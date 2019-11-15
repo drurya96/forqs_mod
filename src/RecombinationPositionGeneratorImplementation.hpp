@@ -40,6 +40,7 @@
 #include "RecombinationPositionGenerator.hpp"
 #include "RecombinationMap.hpp"
 #include "Random.hpp"
+#include "FitnessFunctionImplementation.hpp"
 
 
 ///
@@ -74,19 +75,19 @@
 
 class RecombinationPositionGenerator_Trivial : public RecombinationPositionGenerator
 {
-    public:
+	public:
 
-    RecombinationPositionGenerator_Trivial(const std::string& id) 
-    :   RecombinationPositionGenerator(id)
-    {}
+	RecombinationPositionGenerator_Trivial(const std::string& id) 
+	:   RecombinationPositionGenerator(id)
+	{}
 
-    virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
+	virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "RecombinationPositionGenerator_Trivial";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "RecombinationPositionGenerator_Trivial";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 };
 
 
@@ -107,23 +108,23 @@ class RecombinationPositionGenerator_Trivial : public RecombinationPositionGener
 
 class RecombinationPositionGenerator_SingleCrossover : public RecombinationPositionGenerator
 {
-    public:
+	public:
 
-    RecombinationPositionGenerator_SingleCrossover(const std::string& id)
-    :   RecombinationPositionGenerator(id)
-    {}
+	RecombinationPositionGenerator_SingleCrossover(const std::string& id)
+	:   RecombinationPositionGenerator(id)
+	{}
 
-    virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
+	virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "RecombinationPositionGenerator_SingleCrossover";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
-    virtual void initialize(const SimulatorConfig& config);
+	virtual std::string class_name() const {return "RecombinationPositionGenerator_SingleCrossover";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual void initialize(const SimulatorConfig& config);
 
-    private:
-    std::vector<unsigned int> chromosome_lengths_;
+	private:
+	std::vector<unsigned int> chromosome_lengths_;
 };
 
 
@@ -141,7 +142,7 @@ class RecombinationPositionGenerator_SingleCrossover : public RecombinationPosit
 /// rates = \<float\> ... | none | optional; specific rates for all chromosomes, number of rates must match number of chromosomes
 ///
 /// Note: 'rate' is the expected number of recombination positions (crossovers) for that chromosome per meiosis; 
-///       the actual number of recombination positions ~ Poisson(rate).
+///	   the actual number of recombination positions ~ Poisson(rate).
 ///
 /// Example: [tutorial_1_recombination_reporter.txt](../../examples/tutorial_1_recombination_reporter.txt)
 ///
@@ -151,33 +152,40 @@ class RecombinationPositionGenerator_SingleCrossover : public RecombinationPosit
 
 class RecombinationPositionGenerator_Uniform : public RecombinationPositionGenerator
 {
-    public:
+	public:
 
-    struct ChromosomeInfo
-    {
-        size_t length;
-        double rate;
-        Random::DistributionPtr poisson;
-        ChromosomeInfo(size_t _length, double _rate = 1.0);
-    };
+	struct ChromosomeInfo
+	{
+		size_t length;
+		double rate;
+		Random::DistributionPtr poisson;
+		ChromosomeInfo(size_t _length, double _rate = 1.0);
+	};
 
-    RecombinationPositionGenerator_Uniform(const std::string& id, 
-                                           std::vector<ChromosomeInfo> infos = std::vector<ChromosomeInfo>());
+	RecombinationPositionGenerator_Uniform(const std::string& id, 
+										   std::vector<ChromosomeInfo> infos = std::vector<ChromosomeInfo>());
 
-    virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
+	RecombinationPositionGenerator_Uniform(const RecombinationPositionGenerator_Uniform& old);
 
-    // Configurable interface
+	std::vector<ChromosomeInfo> get_infos() const {return infos_;}
 
-    virtual std::string class_name() const {return "RecombinationPositionGenerator_Uniform";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
-    virtual void initialize(const SimulatorConfig& config);
+	virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
 
-    private:
-    
-    double common_rate_;
-    typedef std::vector<ChromosomeInfo> ChromosomeInfos;
-    ChromosomeInfos infos_;
+	// Configurable interface
+
+	virtual std::string class_name() const {return "RecombinationPositionGenerator_Uniform";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual void initialize(const SimulatorConfig& config);
+
+	
+
+	private:
+	
+	double common_rate_;
+	typedef std::vector<ChromosomeInfo> ChromosomeInfos;
+	ChromosomeInfos infos_;
+	friend void set_recombination_generators(FitnessFunction_Recombination& ff, RecombinationPositionGeneratorPtrsArray& rpg_vector);
 };
 
 
@@ -202,25 +210,25 @@ class RecombinationPositionGenerator_Uniform : public RecombinationPositionGener
 
 class RecombinationPositionGenerator_RecombinationMap : public RecombinationPositionGenerator
 { 
-    public:
+	public:
 
-    RecombinationPositionGenerator_RecombinationMap(const std::string& id, 
-        const std::vector<std::string>& filenames = std::vector<std::string>());
+	RecombinationPositionGenerator_RecombinationMap(const std::string& id, 
+		const std::vector<std::string>& filenames = std::vector<std::string>());
 
-    virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
+	virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "RecombinationPositionGenerator_RecombinationMap";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "RecombinationPositionGenerator_RecombinationMap";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 
-    private:
+	private:
 
-    std::vector<std::string> filenames_;
-    std::vector< boost::shared_ptr<RecombinationMap> > recombination_maps_;
+	std::vector<std::string> filenames_;
+	std::vector< boost::shared_ptr<RecombinationMap> > recombination_maps_;
 
-    void read_files();
+	void read_files();
 };
 
 
@@ -244,23 +252,23 @@ class RecombinationPositionGenerator_RecombinationMap : public RecombinationPosi
 
 class RecombinationPositionGenerator_Composite : public RecombinationPositionGenerator
 { 
-    public:
+	public:
 
-    RecombinationPositionGenerator_Composite(const std::string& id);
+	RecombinationPositionGenerator_Composite(const std::string& id);
 
-    virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
+	virtual std::vector<unsigned int> get_positions(size_t chromosome_pair_index) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "RecombinationPositionGenerator_Composite";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "RecombinationPositionGenerator_Composite";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 
-    private:
+	private:
 
-    RecombinationPositionGeneratorPtr default_rpg_;
-    typedef std::map<size_t,RecombinationPositionGeneratorPtr> RPGMap;
-    RPGMap rpg_map_;
+	RecombinationPositionGeneratorPtr default_rpg_;
+	typedef std::map<size_t,RecombinationPositionGeneratorPtr> RPGMap;
+	RPGMap rpg_map_;
 };
 
 
