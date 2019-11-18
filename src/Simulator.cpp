@@ -200,11 +200,14 @@ Simulator::Simulator(SimulatorConfig& config, const Parameters& parameters)
 	string cname;
 	//Parameters temp_params;
 	for (Configurable::Registry::iterator it = config_.registry.begin(); it != config_.registry.end(); it++){
-		cname = (*(it->second)).class_name();
+		cname = (it->second)->class_name();
 		if(cname == "FitnessFunction_Recombination"){
 			FitnessFunction_Recombination * ffptr = dynamic_cast<FitnessFunction_Recombination*>(&(*(it->second)));
 			FitnessFunction_Recombination ff = *ffptr;
-			set_recombination_generators(ff, config_.recombination_position_generators_array);
+			cout << ff.modify_status() << endl;
+			if (ff.modify_status()){
+				set_recombination_generators(ff, config_.recombination_position_generators_array);
+			}
 		}
 	}
 }

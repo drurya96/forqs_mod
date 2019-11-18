@@ -66,21 +66,21 @@
 
 class FitnessFunction_Trivial : public QuantitativeTrait
 {
-    public:
+	public:
 
-    FitnessFunction_Trivial(const std::string& id) : QuantitativeTrait(id) {}
+	FitnessFunction_Trivial(const std::string& id) : QuantitativeTrait(id) {}
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const
-    {
-        (*population_data.trait_values)[object_id()] = 
-            DataVectorPtr(new DataVector(population_data.population_size, 1));
-    }
+	virtual void calculate_trait_values(const PopulationData& population_data) const
+	{
+		(*population_data.trait_values)[object_id()] = 
+			DataVectorPtr(new DataVector(population_data.population_size, 1));
+	}
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "FitnessFunction_Trivial";}
-    virtual Parameters parameters() const {return Parameters();}
-    virtual void configure(const Parameters& parameters, const Registry& registry) {}
+	virtual std::string class_name() const {return "FitnessFunction_Trivial";}
+	virtual Parameters parameters() const {return Parameters();}
+	virtual void configure(const Parameters& parameters, const Registry& registry) {}
 };
 
 
@@ -110,33 +110,33 @@ class FitnessFunction_Trivial : public QuantitativeTrait
 /// Example: [example_stepping_stone.txt](../../examples/example_stepping_stone.txt)
 ///
 /// Note: the term 'width' to parametrize Gaussian fitness decay comes from
-///       Lande 1976 Evolution (Natural Selection and Random Genetic Drift in Phenotypic Evolution)
+///	   Lande 1976 Evolution (Natural Selection and Random Genetic Drift in Phenotypic Evolution)
 ///
 /// \ingroup FitnessFunctions
 ///
 
 class FitnessFunction_Optimum : public QuantitativeTrait
 {
-    public:
+	public:
 
-    FitnessFunction_Optimum(const std::string& id, const std::string& quantitative_trait_id = "",
-                            double optimum = 0, double radius = 0, double power = 0);
+	FitnessFunction_Optimum(const std::string& id, const std::string& quantitative_trait_id = "",
+							double optimum = 0, double radius = 0, double power = 0);
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+	virtual void calculate_trait_values(const PopulationData& population_data) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "FitnessFunction_Optimum";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "FitnessFunction_Optimum";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 
-    private:
+	private:
 
-    std::string qtid_;
-    double optimum_;
-    double radius_;
-    double power_;
-    double gaussian_width_;
+	std::string qtid_;
+	double optimum_;
+	double radius_;
+	double power_;
+	double gaussian_width_;
 };
 
 
@@ -164,30 +164,30 @@ class FitnessFunction_Optimum : public QuantitativeTrait
 
 class FitnessFunction_TruncationSelection : public QuantitativeTrait
 {
-    public:
+	public:
 
-    FitnessFunction_TruncationSelection(const std::string& id);
+	FitnessFunction_TruncationSelection(const std::string& id);
 
-    void calculate_trait_values_with_threshold(const PopulationData& population_data, double threshold) const;
+	void calculate_trait_values_with_threshold(const PopulationData& population_data, double threshold) const;
 
-    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "FitnessFunction_TruncationSelection";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "FitnessFunction_TruncationSelection";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 
-    private:
+	private:
 
-    std::string qtid_;
-    double proportion_selected_;
-    bool lower_tail_;
-    bool single_threshold_;
-    size_t single_threshold_population_index_;
-    bool ignore_zero_;
+	std::string qtid_;
+	double proportion_selected_;
+	bool lower_tail_;
+	bool single_threshold_;
+	size_t single_threshold_population_index_;
+	bool ignore_zero_;
 
-    double calculate_threshold(const PopulationData& population_data) const;
+	double calculate_threshold(const PopulationData& population_data) const;
 };
 
 // Austin Drury 10/8/2019
@@ -214,23 +214,23 @@ class FitnessFunction_TruncationSelection : public QuantitativeTrait
 
 class FitnessFunction_BoundedSelection : public QuantitativeTrait
 {
-    public:
+	public:
 
-    FitnessFunction_BoundedSelection(const std::string& id);
+	FitnessFunction_BoundedSelection(const std::string& id);
 
-    void calculate_trait_values_with_threshold(const PopulationData& population_data) const;
+	void calculate_trait_values_with_threshold(const PopulationData& population_data) const;
 
-    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "FitnessFunction_BoundedSelection";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "FitnessFunction_BoundedSelection";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 
-    private:
+	private:
 
-    std::string qtid_;
+	std::string qtid_;
 	double lower_bound_;
 	double upper_bound_;
 };
@@ -259,33 +259,33 @@ class FitnessFunction_BoundedSelection : public QuantitativeTrait
 
 class FitnessFunction_Recombination : public QuantitativeTrait
 {
-    public:
+	public:
 
-    FitnessFunction_Recombination(const std::string& id);
+	FitnessFunction_Recombination(const std::string& id);
 
-	//void set_recombination_array();
-
-    void modify_trait_values(const PopulationData& population_data) const;
+	void modify_trait_values(const PopulationData& population_data) const;
 
 	double calculate_new_value(const double value) const;
 
-    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
 
-    // Configurable interface
+	// Configurable interface
 
-    virtual std::string class_name() const {return "FitnessFunction_Recombination";}
-    virtual Parameters parameters() const;
-    virtual void configure(const Parameters& parameters, const Registry& registry);
+	virtual std::string class_name() const {return "FitnessFunction_Recombination";}
+	virtual Parameters parameters() const;
+	virtual void configure(const Parameters& parameters, const Registry& registry);
 
 	double getLowerBound(void){ return this->lower_bound_; }
 	double getUpperBound(void){ return this->upper_bound_; }
+	bool modify_status(void){ return this->modify_rate_; }
 
-    //private:
+	//private:
 
-    std::string qtid_;
+	std::string qtid_;
 	double lower_bound_;
 	double upper_bound_;
 	double variation_;
+	bool modify_rate_;
 };
 
 
