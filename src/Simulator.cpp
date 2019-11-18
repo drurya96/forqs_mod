@@ -283,11 +283,10 @@ void set_recombination_generators(FitnessFunction_Recombination& ff, Recombinati
 			(**it) = new_rpg;
 		}
 
-		if (i % 100000 == 0){cout << i << endl;}
+		if (i % 100000 == 0){cout << ((double)i/number_of_indecies)*100 << "%" << endl;}
 
 		// add a pointer to the new rpg to the rpg vector
 		rpg_vector[i] = new_rpgptrs;
-		//rpg_vector[i] = rpg_vector[0];
 	}
 
 	cout << "lower bound is " << ff.getLowerBound() << endl;

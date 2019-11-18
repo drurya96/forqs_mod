@@ -688,20 +688,15 @@ void Population::create_organisms(const Config& config,
 		ChromosomePairRange range_mom = populations[entry.first]->chromosome_pair_range(index_mom);
 		ChromosomePairRange range_dad = populations[entry.second]->chromosome_pair_range(index_dad);
 		
-		// These values are the trait values of the parents chosen to mate
-		double mom_value = generator_mom.fitness_cdf_->at(index_mom);
-		double dad_value = generator_dad.fitness_cdf_->at(index_dad);
 
-		range_mom.recombination_rate = mom_value*100000;
-		range_dad.recombination_rate = dad_value*100000;
+		if (recombination_position_generators_array.size() != 1){
+			// These values are the trait values of the parents chosen to mate
+			double mom_value = generator_mom.fitness_cdf_->at(index_mom);
+			double dad_value = generator_dad.fitness_cdf_->at(index_dad);
 
-		//cout << "Mom Recombination Rate Index: " << range_mom.recombination_rate << endl;
-		//cout << "Dad Recombination Rate Index: " << range_dad.recombination_rate << endl;
-
-
-		// Next I need to figure out how to get these trait values to the chromosomepairranges.......
-
-
+			range_mom.recombination_rate = mom_value*100000;
+			range_dad.recombination_rate = dad_value*100000;
+		}
 
 		range_child->create_child(range_mom, range_dad, recombination_position_generators_array);
 	}
