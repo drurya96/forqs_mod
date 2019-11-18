@@ -411,7 +411,8 @@ FitnessFunction_Recombination::FitnessFunction_Recombination(const string& id)
 :   QuantitativeTrait(id), 
 	lower_bound_(0),
 	upper_bound_(1000000000),
-	variation_(0.1),
+	upper_variation_(0.1),
+	lower_variation_(0.1),
 	modify_rate_(false)
 {}
 
@@ -422,8 +423,8 @@ void FitnessFunction_Recombination::modify_trait_values(const PopulationData& po
 	// fitness = (trait_value >= threshold) ? 1 : 0;
 
 	// modify fitness to follow distribution of recombination
-	// lower bound function: ((x/lower_bound)^(1/variation))/(1+(x/lower_bound)^(1/varation))
-	// upper bound function: 1/(1+(x/lower_bound)^(1/varation))
+	// lower bound function: ((x/lower_bound)^(1/lower_variation))/(1+(x/lower_bound)^(1/lower_variation))
+	// upper bound function: 1/(1+(x/lower_bound)^(1/upper_variation))
 	//
 	// take the minimum fitness
 
@@ -440,8 +441,8 @@ void FitnessFunction_Recombination::modify_trait_values(const PopulationData& po
 }
 
 double FitnessFunction_Recombination::calculate_new_value(const double value) const{
-	double inside_l = ((double)value-lower_bound_)/variation_;
-	double inside_u = ((double)value-upper_bound_)/variation_;
+	double inside_l = ((double)value-lower_bound_)/lower_variation_;
+	double inside_u = ((double)value-upper_bound_)/upper_variation_;
 	double lower_v = 0.5 + (tanh(inside_l)*0.5);
 	double upper_v = 0.5 + (tanh(inside_u*-1)*0.5);
 
@@ -467,7 +468,8 @@ Parameters FitnessFunction_Recombination::parameters() const
 	parameters.insert_name_value("quantitative_trait", qtid_);
 	parameters.insert_name_value("lower_bound", lower_bound_);
 	parameters.insert_name_value("upper_bound", upper_bound_);
-	parameters.insert_name_value("variation", variation_);
+	parameters.insert_name_value("upper_variation", upper_variation_);
+	parameters.insert_name_value("lower_variation", lower_variation_);
 	parameters.insert_name_value("modify_rate", modify_rate_);
 
 	return parameters;
@@ -480,6 +482,7 @@ void FitnessFunction_Recombination::configure(const Parameters& parameters, cons
 	qtid_ = parameters.value<string>("quantitative_trait");
 	lower_bound_ = parameters.value<double>("lower_bound", 0);
 	upper_bound_ = parameters.value<double>("upper_bound", 1000000000);
-	variation_ = parameters.value<double>("variation", 0.1);
+	upper_variation_ = parameters.value<double>("upper_variation", 0.1);
+	lower_variation_ = parameters.value<double>("lower_variation", 0.1);
 	modify_rate_ = parameters.value<bool>("modify_rate", false);
 }

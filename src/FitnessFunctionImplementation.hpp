@@ -284,7 +284,8 @@ class FitnessFunction_Recombination : public QuantitativeTrait
 	std::string qtid_;
 	double lower_bound_;
 	double upper_bound_;
-	double variation_;
+	double upper_variation_;
+	double lower_variation_;
 	bool modify_rate_;
 };
 
