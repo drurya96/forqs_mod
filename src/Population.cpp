@@ -723,7 +723,7 @@ void Population::create_organisms(const Config& config,
 
 			//cout << fitness_function_ff->getLowerBound() << endl;
 
-			cout << "Mom: " << mom_value << "\tDad: " << dad_value << endl;
+			//cout << "Mom: " << mom_value << "\tDad: " << dad_value << endl;
 
 			range_mom.recombination_rate = mom_value*100000;
 			range_dad.recombination_rate = dad_value*100000;
