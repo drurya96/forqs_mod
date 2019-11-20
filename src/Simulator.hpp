@@ -137,6 +137,7 @@ class Simulator
 	size_t current_generation_index_;
 	PopulationPtrsPtr current_populations_;
 	PopulationDataPtrsPtr current_population_datas_;
+	FitnessFunction_Recombination* fitnessfunctionptr_;
 	size_t update_step_;
 
 	bfs::ofstream os_popconfigs_;

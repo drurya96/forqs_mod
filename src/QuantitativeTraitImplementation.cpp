@@ -59,7 +59,7 @@ QuantitativeTrait_PopulationComposite::QuantitativeTrait_PopulationComposite(con
 
 
 void QuantitativeTrait_PopulationComposite::calculate_trait_values(
-    const PopulationData& population_data) const
+    const PopulationData& population_data, const Population& population) const
 {
     if (population_data.population_index >= qts_.size())
         throw runtime_error("[QuantitativeTrait_PopulationComposite] Bad population_index.");
@@ -68,7 +68,7 @@ void QuantitativeTrait_PopulationComposite::calculate_trait_values(
     TraitValueMap& trait_values = *population_data.trait_values;
 
     if (!trait_values.count(qt.object_id()))
-        qt.calculate_trait_values(population_data);
+        qt.calculate_trait_values(population_data, population);
 
     trait_values[object_id()] = trait_values[qt.object_id()];
 }
@@ -121,7 +121,7 @@ QuantitativeTrait_GenerationComposite::QuantitativeTrait_GenerationComposite(con
 {}
 
 
-void QuantitativeTrait_GenerationComposite::calculate_trait_values(const PopulationData& population_data) const
+void QuantitativeTrait_GenerationComposite::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
     if (qts_.empty())
         throw runtime_error("[QuantitativeTrait_GenerationComposite] Initialization error: no quantitative traits."
@@ -138,7 +138,7 @@ void QuantitativeTrait_GenerationComposite::calculate_trait_values(const Populat
     TraitValueMap& trait_values = *population_data.trait_values;
 
     if (!trait_values.count(qt.object_id()))
-        qt.calculate_trait_values(population_data);
+        qt.calculate_trait_values(population_data, population);
 
     trait_values[object_id()] = trait_values[qt.object_id()];
 }
@@ -190,7 +190,7 @@ QuantitativeTrait_SingleLocusFitness::QuantitativeTrait_SingleLocusFitness(const
 }
 
 
-void QuantitativeTrait_SingleLocusFitness::calculate_trait_values(const PopulationData& population_data) const
+void QuantitativeTrait_SingleLocusFitness::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
     const GenotypeDataPtr& g = population_data.genotypes->get(locus_);
 
@@ -381,7 +381,7 @@ QuantitativeTrait_IndependentLoci::QuantitativeTrait_IndependentLoci(const std::
 {}
 
 
-void QuantitativeTrait_IndependentLoci::calculate_trait_values(const PopulationData& population_data) const
+void QuantitativeTrait_IndependentLoci::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
     DataVectorPtr trait_values(new DataVector(population_data.population_size));
     (*population_data.trait_values)[object_id()] = trait_values;
@@ -540,7 +540,7 @@ QuantitativeTrait_Expression::QuantitativeTrait_Expression(const string& id)
 {}
 
 
-void QuantitativeTrait_Expression::calculate_trait_values(const PopulationData& population_data) const
+void QuantitativeTrait_Expression::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
     try
     {
@@ -620,7 +620,7 @@ void QuantitativeTrait_Expression::configure(const Parameters& parameters, const
 // QuantitativeTrait_Alternator
 //
 
-void QuantitativeTrait_Alternator::calculate_trait_values(const PopulationData& population_data) const
+void QuantitativeTrait_Alternator::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
     DataVectorPtr result(new DataVector(population_data.population_size));
     (*population_data.trait_values)[object_id()] = result;

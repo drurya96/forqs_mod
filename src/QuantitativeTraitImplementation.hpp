@@ -71,7 +71,7 @@ class QuantitativeTrait_PopulationComposite : public QuantitativeTrait
     QuantitativeTrait_PopulationComposite(const std::string& id, 
                                           const QuantitativeTraitPtrs& qts = QuantitativeTraitPtrs()); 
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
     // Configurable interface
 
     virtual std::string class_name() const {return "QuantitativeTrait_PopulationComposite";}
@@ -110,7 +110,7 @@ class QuantitativeTrait_GenerationComposite : public QuantitativeTrait
     QuantitativeTrait_GenerationComposite(const std::string& id, 
                                           const GenerationQTMap& qts = GenerationQTMap()); 
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
     // Configurable interface
 
@@ -159,7 +159,7 @@ class QuantitativeTrait_SingleLocusFitness : public QuantitativeTrait
                                          Locus locus = Locus("id_dummy"), 
                                          std::vector<double> w = std::vector<double>(3));
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
     // Configurable interface
 
@@ -271,7 +271,7 @@ class QuantitativeTrait_IndependentLoci : public QuantitativeTrait
                                       QTLEffects qtl_effects = QTLEffects(),
                                       double environmental_variance = 0);
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
     const QTLEffects& qtl_effects() const {return qtl_effects_;}    
 
@@ -319,7 +319,7 @@ class QuantitativeTrait_Expression : public QuantitativeTrait
 
     QuantitativeTrait_Expression(const std::string& id);
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
     // Configurable interface
 
@@ -363,7 +363,7 @@ class QuantitativeTrait_Alternator : public QuantitativeTrait
 
     QuantitativeTrait_Alternator(const std::string& id) : QuantitativeTrait(id) {}
 
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
     // Configurable interface
 

@@ -204,6 +204,7 @@ Simulator::Simulator(SimulatorConfig& config, const Parameters& parameters)
 		if(cname == "FitnessFunction_Recombination"){
 			FitnessFunction_Recombination * ffptr = dynamic_cast<FitnessFunction_Recombination*>(&(*(it->second)));
 			FitnessFunction_Recombination ff = *ffptr;
+			this->fitnessfunctionptr_ = &ff;
 			cout << ff.modify_status() << endl;
 			if (ff.modify_status()){
 				set_recombination_generators(ff, config_.recombination_position_generators_array);
@@ -360,7 +361,6 @@ Loci construct_loci_list(const QuantitativeTraitPtrs& quantitative_traits,
 void Simulator::simulate_single_generation() // main loop iteration
 {
 	// sanity checks
-
 	const size_t generation_count = config_.population_config_generator->generation_count();
 
 	if (!current_populations_.get())
@@ -381,8 +381,8 @@ void Simulator::simulate_single_generation() // main loop iteration
 		popconfigs, 
 		*current_populations_, 
 		*current_population_datas_, 
-		config_.recombination_position_generators_array);
-
+		config_.recombination_position_generators_array,
+		fitnessfunctionptr_);
 	// generate mutations
 
 	if (config_.mutation_generator.get())
@@ -419,14 +419,9 @@ void Simulator::simulate_single_generation() // main loop iteration
 		 ++population_index, ++population, ++popdata, ++currentpopdata)
 	{
 
-		// Somewhere here I need to try to get the ChromosomePairRanges into the PopulationData..............
-
-		// Actually instead try inside Population::create_populations...................
-
 		(*popdata)->generation_index = current_generation_index_;
 		(*popdata)->population_index = population_index;
 		(*popdata)->population_size = (*population)->population_size();
-		//(*popdata)->organisms = (*currentpopdata)->organisms;
 
 		genotyper_.genotype(loci_all, **population, *config_.variant_indicator, 
 			*(*popdata)->genotypes);
@@ -437,11 +432,10 @@ void Simulator::simulate_single_generation() // main loop iteration
 	for (QuantitativeTraitPtrs::const_iterator qt=config_.quantitative_traits.begin();
 		 qt!=config_.quantitative_traits.end(); ++qt)
 	{
-		(*qt)->calculate_trait_values(*next_population_datas);
+		(*qt)->calculate_trait_values(*next_population_datas, *next_populations);
 	}
 
 	// update reporters
-
 	current_populations_ = next_populations;
 	current_population_datas_ = next_population_datas;
 

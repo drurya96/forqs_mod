@@ -70,7 +70,7 @@ class FitnessFunction_Trivial : public QuantitativeTrait
 
 	FitnessFunction_Trivial(const std::string& id) : QuantitativeTrait(id) {}
 
-	virtual void calculate_trait_values(const PopulationData& population_data) const
+	virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const
 	{
 		(*population_data.trait_values)[object_id()] = 
 			DataVectorPtr(new DataVector(population_data.population_size, 1));
@@ -122,7 +122,7 @@ class FitnessFunction_Optimum : public QuantitativeTrait
 	FitnessFunction_Optimum(const std::string& id, const std::string& quantitative_trait_id = "",
 							double optimum = 0, double radius = 0, double power = 0);
 
-	virtual void calculate_trait_values(const PopulationData& population_data) const;
+	virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
 	// Configurable interface
 
@@ -168,9 +168,9 @@ class FitnessFunction_TruncationSelection : public QuantitativeTrait
 
 	FitnessFunction_TruncationSelection(const std::string& id);
 
-	void calculate_trait_values_with_threshold(const PopulationData& population_data, double threshold) const;
+	void calculate_trait_values_with_threshold(const PopulationData& population_data, double threshold, const Population& population) const;
 
-	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas, const PopulationPtrs& populations) const;
 
 	// Configurable interface
 
@@ -218,9 +218,9 @@ class FitnessFunction_BoundedSelection : public QuantitativeTrait
 
 	FitnessFunction_BoundedSelection(const std::string& id);
 
-	void calculate_trait_values_with_threshold(const PopulationData& population_data) const;
+	void calculate_trait_values_with_threshold(const PopulationData& population_data, const Population& population) const;
 
-	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas, const PopulationPtrs& populations) const;
 
 	// Configurable interface
 
@@ -263,11 +263,11 @@ class FitnessFunction_Recombination : public QuantitativeTrait
 
 	FitnessFunction_Recombination(const std::string& id);
 
-	void modify_trait_values(const PopulationData& population_data) const;
+	//void modify_trait_values(const PopulationData& population_data) const;
 
 	double calculate_new_value(const double value) const;
-
-	virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+	double trait_value_from_fitness(const double value) const;
+	virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
 	// Configurable interface
 
@@ -279,7 +279,7 @@ class FitnessFunction_Recombination : public QuantitativeTrait
 	double getUpperBound(void){ return this->upper_bound_; }
 	bool modify_status(void){ return this->modify_rate_; }
 
-	//private:
+	private:
 
 	std::string qtid_;
 	double lower_bound_;

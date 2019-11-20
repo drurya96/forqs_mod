@@ -40,54 +40,55 @@
 #include "DataVector.hpp"
 #include "PopulationData.hpp"
 #include "ChromosomePairRange.hpp"
+#include "FitnessFunctionImplementation.hpp"
 #include "shared_ptr.hpp"
 #include <vector>
 
 
 class MatingDistribution
 {
-    public:
+	public:
 
-    struct Entry
-    {
-        double weight;
-        size_t first;
-        std::string first_fitness;
-        size_t second;
-        std::string second_fitness;
-        mutable bool valid;
+	struct Entry
+	{
+		double weight;
+		size_t first;
+		std::string first_fitness;
+		size_t second;
+		std::string second_fitness;
+		mutable bool valid;
 
-        Entry(double _weight = 0, size_t _first = 0, size_t _second = 0)
-        :   weight(_weight), first(_first), second(_second), valid(true)
-        {}
+		Entry(double _weight = 0, size_t _first = 0, size_t _second = 0)
+		:   weight(_weight), first(_first), second(_second), valid(true)
+		{}
 
-        Entry(double _weight, 
-              size_t _first, const std::string& _first_fitness, 
-              size_t _second, const std::string& _second_fitness)
-        :   weight(_weight), 
-            first(_first), first_fitness(_first_fitness), 
-            second(_second), second_fitness(_second_fitness), valid(true)
-        {}
-    };
+		Entry(double _weight, 
+			  size_t _first, const std::string& _first_fitness, 
+			  size_t _second, const std::string& _second_fitness)
+		:   weight(_weight), 
+			first(_first), first_fitness(_first_fitness), 
+			second(_second), second_fitness(_second_fitness), valid(true)
+		{}
+	};
 
-    typedef std::vector<Entry> Entries;
+	typedef std::vector<Entry> Entries;
 
-    std::string default_fitness_function;
-    void push_back(const Entry& entry);
+	std::string default_fitness_function;
+	void push_back(const Entry& entry);
 
-    const Entries& entries() const {return entries_;} 
-    const std::vector<double>& cumulative_weights() const {return cumulative_weights_;}
-    bool empty() const {return entries_.empty();} 
+	const Entries& entries() const {return entries_;} 
+	const std::vector<double>& cumulative_weights() const {return cumulative_weights_;}
+	bool empty() const {return entries_.empty();} 
 
-    void validate_entries(const PopulationDataPtrs& population_datas) const;
-    const Entry& random() const;
+	void validate_entries(const PopulationDataPtrs& population_datas) const;
+	const Entry& random() const;
 
-    private:
+	private:
 
-    Entries entries_;
-    std::vector<double> cumulative_weights_;
+	Entries entries_;
+	std::vector<double> cumulative_weights_;
 
-    double total_weight() const {return cumulative_weights_.empty() ? 0 : cumulative_weights_.back();}
+	double total_weight() const {return cumulative_weights_.empty() ? 0 : cumulative_weights_.back();}
 };
 
 
@@ -109,76 +110,80 @@ typedef boost::shared_ptr<PopulationPtrs> PopulationPtrsPtr;
 
 class Population
 {
-    public:
+	public:
 
-    struct Config
-    {
-        size_t population_size;
+	struct Config
+	{
+		size_t population_size;
 
-        // for generating population from nothing
-        size_t chromosome_pair_count; 
-        unsigned int id_offset;
+		// for generating population from nothing
+		size_t chromosome_pair_count; 
+		unsigned int id_offset;
 
-        // for generating population from a previous generation
-        MatingDistribution mating_distribution;
+		// for generating population from a previous generation
+		MatingDistribution mating_distribution;
 
-        Config() 
-        :   population_size(0), chromosome_pair_count(0), id_offset(0)
-        {}
-    };
+		Config() 
+		:   population_size(0), chromosome_pair_count(0), id_offset(0)
+		{}
+	};
 
-    typedef std::vector<Config> Configs;
+	typedef std::vector<Config> Configs;
 
-    size_t population_size() const {return population_size_;}
-    size_t chromosome_pair_count() const {return chromosome_pair_count_;}
-    bool empty() const {return (population_size_ == 0);}
+	const TraitValueMapPtr trait_values;
 
-    void read_text(std::istream& is);
-    void write_text(std::ostream& os) const;
-    void read_binary(std::istream& is);
-    void write_binary(std::ostream& os) const;
+	size_t population_size() const {return population_size_;}
+	size_t chromosome_pair_count() const {return chromosome_pair_count_;}
+	bool empty() const {return (population_size_ == 0);}
 
-    void create_organisms(const Config& config,
-                          const PopulationPtrs& populations,
-                          const PopulationDataPtrs& population_datas,
-                          const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
+	void read_text(std::istream& is);
+	void write_text(std::ostream& os) const;
+	void read_binary(std::istream& is);
+	void write_binary(std::ostream& os) const;
 
-    // convenience function: creates new generation from previous by calling create_organisms() for each Population
+	void create_organisms(const Config& config,
+						const PopulationPtrs& populations,
+						const PopulationDataPtrs& population_datas,
+						const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array,
+						FitnessFunction_Recombination* fitness_function_ff);
 
-    static PopulationPtrsPtr create_populations(const Configs& configs,
-                                                const PopulationPtrs& previous, 
-                                                const PopulationDataPtrs& population_datas, 
-                                                const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
+	// convenience function: creates new generation from previous by calling create_organisms() for each Population
 
-    // implementation-dependent range iteration
+	static PopulationPtrsPtr create_populations(const Configs& configs,
+							const PopulationPtrs& previous, 
+							const PopulationDataPtrs& population_datas, 
+							const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array,
+							FitnessFunction_Recombination* fitness_function);
 
-    virtual void allocate_memory() = 0;
+	// implementation-dependent range iteration
 
-    virtual ChromosomePairRangeIterator begin() = 0;
-    virtual const ChromosomePairRangeIterator begin() const = 0;
+	virtual void allocate_memory() = 0;
 
-    virtual ChromosomePairRangeIterator end() = 0;
-    virtual const ChromosomePairRangeIterator end() const = 0;
+	virtual ChromosomePairRangeIterator begin() = 0;
+	virtual const ChromosomePairRangeIterator begin() const = 0;
 
-    virtual ChromosomePairRange chromosome_pair_range(size_t organism_index) = 0;
-    virtual const ChromosomePairRange chromosome_pair_range(size_t organism_index) const = 0;
+	virtual ChromosomePairRangeIterator end() = 0;
+	virtual const ChromosomePairRangeIterator end() const = 0;
 
-    virtual ~Population() {}
+	virtual ChromosomePairRange chromosome_pair_range(size_t organism_index) = 0;
+	virtual const ChromosomePairRange chromosome_pair_range(size_t organism_index) const = 0;
 
-    protected:
+	virtual ~Population() {}
 
-    Population()
-    :   population_size_(0), chromosome_pair_count_(0)
-    {}
+	protected:
 
-    size_t population_size_;
-    size_t chromosome_pair_count_;
+	Population()
+	:   trait_values(new TraitValueMap), population_size_(0), chromosome_pair_count_(0)
+	{}
 
-    private:
+	size_t population_size_;
+	size_t chromosome_pair_count_;
 
-    // disallow copying
-    Population(Population&);
-    Population& operator=(Population&);
+	private:
+
+	// disallow copying
+	Population(Population&);
+	Population& operator=(Population&);
 };
 
 
@@ -194,8 +199,8 @@ std::istream& operator>>(std::istream& is, std::vector<Population::Configs>& gen
 
 bool operator==(const Population& a, const Population& b);
 bool operator!=(const Population& a, const Population& b);
-std::ostream& operator<<(std::ostream& os, const Population& p);    // calls write_text()
-std::istream& operator>>(std::istream& is, Population& p);          // calls read_text()
+std::ostream& operator<<(std::ostream& os, const Population& p);	// calls write_text()
+std::istream& operator>>(std::istream& is, Population& p);		  // calls read_text()
 
 
 #endif // _POPULATION_HPP_

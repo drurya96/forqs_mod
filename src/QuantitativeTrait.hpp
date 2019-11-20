@@ -42,7 +42,8 @@
 #include "PopulationData.hpp"
 #include "shared_ptr.hpp"
 
-
+typedef boost::shared_ptr<Population> PopulationPtr;
+typedef std::vector<PopulationPtr> PopulationPtrs;
 
 //
 // QuantitativeTrait
@@ -59,7 +60,7 @@ class QuantitativeTrait : public Configurable
     // return set of loci (the QTLs contributing to the trait)
     const Loci& loci() const {return loci_;}
     // calculate trait values for a single population using genotypes
-    virtual void calculate_trait_values(const PopulationData& population_data) const;
+    virtual void calculate_trait_values(const PopulationData& population_data, const Population& population) const;
 
     // calculate trait values for all populations
     //
@@ -67,7 +68,7 @@ class QuantitativeTrait : public Configurable
     //       will work for most traits; however, some traits may need information
     //       about previously calculated trait values in all populations
     //       (e.g. threshold for truncation fitness)
-    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas) const;
+    virtual void calculate_trait_values(const PopulationDataPtrs& population_datas, const PopulationPtrs& populations) const;
 
     virtual ~QuantitativeTrait() {}
 

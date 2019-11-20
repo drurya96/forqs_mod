@@ -523,6 +523,13 @@ class RandomOrganismIndexGenerator
 			// pick random index according to fitnesses
 			double roll = Random::uniform_real(0, fitness_cdf_max_);
 			DataVector::const_iterator it = lower_bound(fitness_cdf_->begin(), fitness_cdf_->end(), roll);
+			/*
+			for (DataVector::const_iterator lt = fitness_cdf_->begin(); lt != fitness_cdf_->end(); lt++){
+			
+				cout << *lt << endl;
+
+			}
+			*/
 			return it - fitness_cdf_->begin();
 		}
 	}
@@ -535,9 +542,10 @@ class RandomOrganismIndexGenerator
 
 	//allows Population (need Population::create_populations) to access private members (A.D. 11/2019)
 	friend void Population::create_organisms(const Config& config,
-								  const PopulationPtrs& populations,
-								  const PopulationDataPtrs& population_datas,
-								  const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array);
+							const PopulationPtrs& populations,
+							const PopulationDataPtrs& population_datas,
+							const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array,
+							FitnessFunction_Recombination* fitness_function);
 	
 };
 
@@ -599,10 +607,12 @@ class RandomOrganismIndexGeneratorMap
 
 
 void Population::create_organisms(const Config& config,
-								  const PopulationPtrs& populations,
-								  const PopulationDataPtrs& population_datas,
-								  const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array)
+					const PopulationPtrs& populations,
+					const PopulationDataPtrs& population_datas,
+					const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array,
+					FitnessFunction_Recombination* fitness_function_ff)
 {
+
 	if (config.population_size == 0)
 		return;
 
@@ -629,7 +639,7 @@ void Population::create_organisms(const Config& config,
 		for (size_t i=0; i<config.population_size; ++i, ++range)
 		{
 			unsigned int id0 = config.id_offset + 2*i;
-			range->create_child(id0, id0+1); 
+			range->create_child(id0, id0+1);
 		}
 
 		return;
@@ -687,12 +697,33 @@ void Population::create_organisms(const Config& config,
 
 		ChromosomePairRange range_mom = populations[entry.first]->chromosome_pair_range(index_mom);
 		ChromosomePairRange range_dad = populations[entry.second]->chromosome_pair_range(index_dad);
-		
 
 		if (recombination_position_generators_array.size() != 1){
+			//double mom_value = *(populations[entry.first]->trait_values)["ff"][index_mom];
+			
+			double mom_value = (*(*(populations[entry.first]->trait_values))["ff"])[index_mom];
+			double dad_value = (*(*(populations[entry.second]->trait_values))["ff"])[index_dad];
+			
+			
 			// These values are the trait values of the parents chosen to mate
-			double mom_value = generator_mom.fitness_cdf_->at(index_mom);
-			double dad_value = generator_dad.fitness_cdf_->at(index_dad);
+
+			//mom_value and dad_value are fitness values, not trait values.
+			//undo the fitness function to correct
+
+			//const double mom_fit = generator_mom.fitness_cdf_->at(index_mom);
+			//const double dad_fit = generator_dad.fitness_cdf_->at(index_dad);
+
+			//double test = 0.5;
+
+			//double mom_value = fitness_function_ff->trait_value_from_fitness(mom_fit);
+			//cout << fitness_function_ff->trait_value_from_fitness(test) << endl;
+			//cout << fitness_function_ff->getLowerBound() << endl;
+			//double mom_value = mom_fit;
+			//double dad_value = dad_fit;
+
+			//cout << fitness_function_ff->getLowerBound() << endl;
+
+			cout << "Mom: " << mom_value << "\tDad: " << dad_value << endl;
 
 			range_mom.recombination_rate = mom_value*100000;
 			range_dad.recombination_rate = dad_value*100000;
@@ -705,16 +736,17 @@ void Population::create_organisms(const Config& config,
 
 // static
 PopulationPtrsPtr Population::create_populations(const Population::Configs& configs,
-												 const PopulationPtrs& previous, 
-												 const PopulationDataPtrs& population_datas,
-												 const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array)
+							const PopulationPtrs& previous, 
+							const PopulationDataPtrs& population_datas,
+							const RecombinationPositionGeneratorPtrsArray& recombination_position_generators_array,
+							FitnessFunction_Recombination* fitness_function)
 {
 	PopulationPtrsPtr result(new PopulationPtrs);
 
 	for (vector<Population::Config>::const_iterator it=configs.begin(); it!=configs.end(); ++it)
 	{
 		PopulationPtr p(new Population_ChromosomePairs);
-		p->create_organisms(*it, previous, population_datas, recombination_position_generators_array);
+		p->create_organisms(*it, previous, population_datas, recombination_position_generators_array, fitness_function);
 		result->push_back(p);
 	}		
 

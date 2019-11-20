@@ -71,21 +71,22 @@ void QuantitativeTrait::configure(const Parameters& parameters, const Registry& 
 }
 
 
-void QuantitativeTrait::calculate_trait_values(const PopulationData& population_data) const
+void QuantitativeTrait::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
     cerr << "[QuantitativeTrait] Warning: virtual calculate_trait_values(PopulationData) has not been defined in derived class.\n";
 }
 
 
-void QuantitativeTrait::calculate_trait_values(const PopulationDataPtrs& population_datas) const
+void QuantitativeTrait::calculate_trait_values(const PopulationDataPtrs& population_datas, const PopulationPtrs& populations) const
 {
-    for (PopulationDataPtrs::const_iterator popdata = population_datas.begin();
-         popdata != population_datas.end(); ++popdata)
-    {
-        if ((*popdata)->trait_values->count(object_id()))
-            throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
-        calculate_trait_values(**popdata);
-    }
+	PopulationDataPtrs::const_iterator popdata = population_datas.begin();
+	PopulationPtrs::const_iterator pop = populations.begin();
+	for (; popdata != population_datas.end(); ++popdata, ++pop)
+	{
+		if ((*popdata)->trait_values->count(object_id()))
+			throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
+		calculate_trait_values(**popdata, **pop);
+	}
 }
 
 

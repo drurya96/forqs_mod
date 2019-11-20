@@ -61,7 +61,7 @@ FitnessFunction_Optimum::FitnessFunction_Optimum(const string& id,
 {}
 
 
-void FitnessFunction_Optimum::calculate_trait_values(const PopulationData& population_data) const
+void FitnessFunction_Optimum::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
 	const DataVector& trait_values = *population_data.trait_values->get(qtid_);
 	DataVectorPtr fitnesses(new DataVector(trait_values.size()));
@@ -155,8 +155,7 @@ FitnessFunction_TruncationSelection::FitnessFunction_TruncationSelection(const s
 {}
 
 
-void FitnessFunction_TruncationSelection::calculate_trait_values_with_threshold(const PopulationData& population_data, 
-																				double threshold) const
+void FitnessFunction_TruncationSelection::calculate_trait_values_with_threshold(const PopulationData& population_data, double threshold, const Population& population) const
 {
 	const DataVector& trait_values = *population_data.trait_values->get(qtid_);
 
@@ -202,12 +201,12 @@ void FitnessFunction_TruncationSelection::calculate_trait_values_with_threshold(
 }
 
 
-void FitnessFunction_TruncationSelection::calculate_trait_values(const PopulationDataPtrs& population_datas) const
+void FitnessFunction_TruncationSelection::calculate_trait_values(const PopulationDataPtrs& population_datas, const PopulationPtrs& populations) const
 {
 	if (single_threshold_ && single_threshold_population_index_ >= population_datas.size())
 	{
 		QuantitativeTraitPtr qt(new FitnessFunction_Trivial(object_id()));
-		qt->calculate_trait_values(population_datas);
+		qt->calculate_trait_values(population_datas, populations);
 		return;
 	}
 
@@ -226,12 +225,13 @@ void FitnessFunction_TruncationSelection::calculate_trait_values(const Populatio
 	}
 
 	vector<double>::const_iterator threshold = thresholds.begin(); 
-	for (PopulationDataPtrs::const_iterator popdata = population_datas.begin(); 
-		 popdata != population_datas.end(); ++popdata, ++threshold)
+	PopulationDataPtrs::const_iterator popdata = population_datas.begin();
+	PopulationPtrs::const_iterator pop = populations.begin();
+	for (; popdata != population_datas.end(); ++popdata, ++threshold, ++pop)
 	{
 		if ((*popdata)->trait_values->count(object_id()))
 			throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
-		calculate_trait_values_with_threshold(**popdata, *threshold);
+		calculate_trait_values_with_threshold(**popdata, *threshold, **pop);
 	}
 }
 
@@ -330,7 +330,7 @@ FitnessFunction_BoundedSelection::FitnessFunction_BoundedSelection(const string&
 {}
 
 
-void FitnessFunction_BoundedSelection::calculate_trait_values_with_threshold(const PopulationData& population_data) const
+void FitnessFunction_BoundedSelection::calculate_trait_values_with_threshold(const PopulationData& population_data, const Population& population) const
 {
 	const DataVector& trait_values = *population_data.trait_values->get(qtid_);
 
@@ -365,15 +365,16 @@ void FitnessFunction_BoundedSelection::calculate_trait_values_with_threshold(con
 }
 
 
-void FitnessFunction_BoundedSelection::calculate_trait_values(const PopulationDataPtrs& population_datas) const
+void FitnessFunction_BoundedSelection::calculate_trait_values(const PopulationDataPtrs& population_datas, const PopulationPtrs& populations) const
 {
 
-	for (PopulationDataPtrs::const_iterator popdata = population_datas.begin(); 
-		 popdata != population_datas.end(); ++popdata)
+	PopulationDataPtrs::const_iterator popdata = population_datas.begin();
+	PopulationPtrs::const_iterator pop = populations.begin();
+	for (; popdata != population_datas.end(); ++popdata, ++pop)
 	{
 		if ((*popdata)->trait_values->count(object_id()))
 			throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
-		calculate_trait_values_with_threshold(**popdata);
+		calculate_trait_values_with_threshold(**popdata, **pop);
 	}
 }
 
@@ -416,7 +417,35 @@ FitnessFunction_Recombination::FitnessFunction_Recombination(const string& id)
 	modify_rate_(false)
 {}
 
-void FitnessFunction_Recombination::modify_trait_values(const PopulationData& population_data) const
+double FitnessFunction_Recombination::calculate_new_value(const double value) const{
+	double inside_l = ((double)value-lower_bound_)/lower_variation_;
+	double inside_u = ((double)value-upper_bound_)/upper_variation_;
+	double lower_v = 0.5 + (tanh(inside_l)*0.5);
+	double upper_v = 0.5 + (tanh(inside_u*-1)*0.5);
+
+	return min(lower_v, upper_v);
+}
+
+double FitnessFunction_Recombination::trait_value_from_fitness(const double value) const{
+	double t = atanh((2*value)-1);
+	const double v1 = lower_bound_+lower_variation_*t;
+	const double v2 = upper_bound_-upper_variation_*t;
+
+	double hypothetical_value_1 = calculate_new_value(v1);
+	double hypothetical_value_2 = calculate_new_value(v2);
+
+	double diff_1 = abs(hypothetical_value_1-value);
+	double diff_2 = abs(hypothetical_value_2-value);
+
+	if (diff_1 < diff_2){
+		return v1;
+	} else{
+		return v2;
+	}
+
+}
+
+void FitnessFunction_Recombination::calculate_trait_values(const PopulationData& population_data, const Population& population) const
 {
 	const DataVector& trait_values = *population_data.trait_values->get(qtid_);
 
@@ -430,36 +459,19 @@ void FitnessFunction_Recombination::modify_trait_values(const PopulationData& po
 
 	double new_value;
 	DataVectorPtr fitnesses(new DataVector(trait_values.size()));
+	DataVectorPtr values(new DataVector(trait_values.size()));
 	vector<double>::iterator ft = fitnesses->begin();
+	vector<double>::iterator vt = values->begin();
 
-	for (vector<double>::const_iterator it = trait_values.begin(); it != trait_values.end(); ++it, ++ft){
+	for (vector<double>::const_iterator it = trait_values.begin(); it != trait_values.end(); ++it, ++ft, ++vt){
 		new_value = calculate_new_value(*it);
+		//cout << "old_value: " << *it << "\tnew_value: " << new_value << endl;
 		*ft = new_value;
+		*vt = *it;
 	}
 
 	(*population_data.trait_values)[object_id()] = fitnesses;
-}
-
-double FitnessFunction_Recombination::calculate_new_value(const double value) const{
-	double inside_l = ((double)value-lower_bound_)/lower_variation_;
-	double inside_u = ((double)value-upper_bound_)/upper_variation_;
-	double lower_v = 0.5 + (tanh(inside_l)*0.5);
-	double upper_v = 0.5 + (tanh(inside_u*-1)*0.5);
-
-	return min(lower_v, upper_v);
-
-}
-
-void FitnessFunction_Recombination::calculate_trait_values(const PopulationDataPtrs& population_datas) const
-{
-
-	for (PopulationDataPtrs::const_iterator popdata = population_datas.begin(); 
-		 popdata != population_datas.end(); ++popdata)
-	{
-		if ((*popdata)->trait_values->count(object_id()))
-			throw runtime_error("[QuantitativeTrait::calculate_trait_values()] Quantitative trait id already used.");
-		modify_trait_values(**popdata);
-	}
+	(*population.trait_values)[object_id()] = values;
 }
 
 Parameters FitnessFunction_Recombination::parameters() const
